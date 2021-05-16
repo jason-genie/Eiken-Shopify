@@ -1,0 +1,21 @@
+<div class="product clearfix product-hover aspect-ratio-1">
+   <div class="left">
+      <div class="image">
+         <a href="#" class="aspect-product__wrapper">
+            {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+        	{{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+         </a>
+      </div>
+   </div>
+   <div class="right">
+      <div class="name"><a href="#">{{"products.product.title" | t}}</a></div>
+      <div class="price">
+        <span class="price-old money">$99.00</span>
+        <span class="price-new money">$69.00</span></div>
+      <div class="swatch-list">
+        <span class="swatch-item" data-title="Green" style="background-color:green"></span>
+        <span class="swatch-item" data-title="Orange" style="background-color:orange"></span>
+        <span class="swatch-item" data-title="Violet" style="background-color:violet"></span>
+     </div>
+   </div>
+</div>

@@ -1,0 +1,274 @@
+<style>
+  .breadcrumb {display: none}
+  {%- if section.settings.thumb_bg_color != blank -%}
+  .grid figcaption{
+    background-color: {{section.settings.thumb_bg_color}}
+  }
+  {%- endif -%}
+  #grid-gallery-{{section.id}}.grid-gallery figcaption h3 {
+    color:{{- section.settings.thumb_heading_color -}};
+    font-size:{{- section.settings.thumb_heading_fontsize | append: "px" -}}!important;
+    font-weight:{{- section.settings.thumb_heading_fontweight -}}!important;
+  }
+  #grid-gallery-{{section.id}}.grid-gallery figcaption p{
+    color:{{- section.settings.thumb_desc_color -}};
+    font-size:{{- section.settings.thumb_desc_fontsize | append: "px" -}};
+    font-weight:{{- section.settings.thumb_desc_fontweight -}};
+  }
+  #grid-gallery-{{section.id}} .slideshow figcaption h3 {
+    color:{{- section.settings.heading_color -}};
+    font-size:{{- section.settings.heading_fontsize | append: "px" -}}!important;
+    font-weight:{{- section.settings.heading_fontweight -}}!important;
+  }
+  #grid-gallery-{{section.id}}.grid-gallery .slideshow figcaption p{
+    color:{{- section.settings.desc_color -}};
+    font-size:{{- section.settings.desc_fontsize | append: "px" -}};
+    font-weight:{{- section.settings.desc_fontweight -}};
+  }
+</style>
+<div id="grid-gallery-{{section.id}}" class="grid-gallery" data-section-id="{{ section.id }}" data-section-type="gallery-template">
+  <section class="grid-wrap">
+    <ul class="grid">
+      <li class="grid-sizer"></li>
+      {%- for block in section.blocks -%}
+      {%- assign thumb_image = "https://via.placeholder.com/250x150" -%}
+      {%- if block.settings.thumb_image != blank -%}
+      {%- assign thumb_image =  block.settings.thumb_image |  img_url: "250x" -%}
+      {%- endif -%}
+      <li {{ block.shopify_attributes }}>
+        <figure>
+          <img src="{{ thumb_image}}"/>
+          <figcaption>
+            <h3>{{- block.settings.thumb_heading -}}</h3>
+            <p>{{- block.settings.thumb_desc -}}</p>
+          </figcaption>
+        </figure>
+      </li>
+      {%- endfor -%}
+    </ul>
+  </section>
+  <section class="slideshow">
+    <ul>
+      {%- for block in section.blocks -%}
+      {%- assign slide_image = "https://via.placeholder.com/560x320" -%}
+      {%- if block.settings.slide_image != blank -%}
+      {%- assign slide_image =  block.settings.slide_image |  img_url: "master" -%}
+      {%- endif -%}
+      <li {{ block.shopify_attributes }}>
+        <figure>
+          <figcaption>
+            <h3>{{block.settings.heading}}</h3>
+            <p>{{block.settings.desc}}</p>
+          </figcaption>
+          {%- if block.settings.slide_type == "video" and block.settings.video_url !=  blank -%}
+          <div class="gallery-video-wrapper">
+          {%- if block.settings.video_url.type == "youtube" -%}
+          <iframe src="//www.youtube.com/embed/{{- block.settings.video_url.id -}}?rel=0&showinfo=0&vq=720" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+          {%- endif -%}
+          {%- if block.settings.video_url.type == "vimeo" -%}
+          <iframe src="//player.vimeo.com/video/{{- block.settings.video_url.id -}}?byline=0&portrait=0&badge=0" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+          {%- endif -%}
+          </div>
+          {%- else -%}
+          <img src="{{ slide_image }}" alt=""/>
+          {%- endif -%}
+        </figure>
+      </li>
+      {%- endfor -%}
+    </ul>
+    <nav>
+      <span class="icon nav-prev"></span>
+      <span class="icon nav-next"></span>
+      <span class="icon nav-close"></span>
+    </nav>
+    <div class="info-keys icon">{{- "general.gallery.navigate_texts" | t -}}</div>
+  </section>
+</div>
+{% schema %}
+  {
+    "name": "Gallery Section",
+	"class": "gallery-template-wrapper",
+    "settings": [
+		{
+			"type": "header",
+			"content": "Thumbnail Content"
+		},
+		{
+            "type": "color",
+            "id": "thumb_bg_color",
+            "label": "Background Color"
+          },
+		{
+            "type": "color",
+            "id": "thumb_heading_color",
+            "label": "Title Color"
+          },
+          {
+            "type": "range",
+            "id": "thumb_heading_fontsize",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Title Fontsize",
+            "default": 20
+          },
+          {
+            "type": "range",
+            "id": "thumb_heading_fontweight",
+            "min": 100,
+            "max": 900,
+            "step": 100,
+            "label": "Title FontWeight",
+            "default": 500
+          },
+		  {
+            "type": "color",
+            "id": "thumb_desc_color",
+            "label": "Short Description Color"
+          },
+          {
+            "type": "range",
+            "id": "thumb_desc_fontsize",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Short Description Fontsize",
+            "default": 13
+          },
+          {
+            "type": "range",
+            "id": "thumb_desc_fontweight",
+            "min": 100,
+            "max": 900,
+            "step": 100,
+            "label": "Short Description FontWeight",
+            "default": 400
+          },
+			{
+			"type": "header",
+			"content": "Preview Content"
+		},
+		{
+            "type": "color",
+            "id": "heading_color",
+            "label": "Title Color"
+          },
+          {
+            "type": "range",
+            "id": "heading_fontsize",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Title Fontsize",
+            "default": 50
+          },
+          {
+            "type": "range",
+            "id": "heading_fontweight",
+            "min": 100,
+            "max": 900,
+            "step": 100,
+            "label": "Title FontWeight",
+            "default": 500
+          },
+		  {
+            "type": "color",
+            "id": "desc_color",
+            "label": "Short Description Color"
+          },
+          {
+            "type": "range",
+            "id": "desc_fontsize",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Short Description Fontsize",
+            "default": 13
+          },
+          {
+            "type": "range",
+            "id": "desc_fontweight",
+            "min": 100,
+            "max": 900,
+            "step": 100,
+            "label": "Short Description FontWeight",
+            "default": 400
+          }
+	],
+	"blocks": [
+		{
+          "type": "content",
+          "name": "Content",
+          "settings": [
+            {
+            "type": "header",
+            "content": "Thumbnail Content"
+            },
+			{
+				"type" :"image_picker",			
+				"id" : "thumb_image",
+				"label": "Image"
+			},
+			{
+				"type" :"text",			
+				"id" : "thumb_heading",
+				"label": "Title"
+			},
+			{
+				"type" :"text",			
+				"id" : "thumb_desc",
+				"label": "Short Description"
+			},
+			{
+            "type": "header",
+            "content": "Preview Content"
+            },
+			
+			{
+				"type" :"select",			
+				"id" : "slide_type",
+				"label": "Type",
+				"options": [
+					{
+						"value" :"image",
+						"label" :"Image"
+					},
+					{
+						"value" :"video",
+						"label" :"Video"
+					}
+				]
+			},
+			{
+				"type" :"image_picker",			
+				"id" : "slide_image",
+				"label": "Image"
+			},
+			{
+                "type": "video_url",
+                "id": "video_url",
+                "label": "YouTube or Vimeo ID",
+                "accept": [
+                  "youtube",
+                  "vimeo"
+                ]
+			},
+			{
+				"type" :"text",			
+				"id" : "heading",
+				"label": "Title"
+			},
+			{
+				"type" :"text",			
+				"id" : "desc",
+				"label": "Description"
+			}
+		  ]
+		}
+	]
+  }
+{% endschema %}

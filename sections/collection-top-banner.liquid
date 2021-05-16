@@ -1,0 +1,1735 @@
+{%- if section.blocks.size > 0 -%}
+{%-capture fx_class_strs-%}rt-fx-dominos,rt-fx-vertical-lines,rt-fx-fading,rt-fx-intro,rt-fx-surprising,rt-fx-typing{%-endcapture-%}
+{%-assign fx_classes = fx_class_strs | split: ','-%}
+{%-capture classes-%}row rich-banners banners {%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}{%-if section.settings.paddings != 0 -%}{{' with-paddings'}}{%-else-%}{{' no-paddings'}}{%-endif-%}{%-endcapture-%}
+<div data-placement_fullwidth="{%- if section.settings.placement_fullwidth == true and section.settings.background_use == false-%}1{%- else -%}0{%- endif -%}"
+     data-placement_background="{%- if section.settings.background_use == true -%}1{%- else -%}0{%- endif -%}"
+     data-placement_background_c="{{section.settings.background_color}}"
+     data-placement_background_i="{%-if section.settings.background_img != blank-%}{%-assign background_img_url = section.settings.background_img | img_url: section.settings.background_img_quality, crop: 'center'-%}{{background_img_url}}{%-endif-%}"
+     id="rich-banners-{{section.id}}" class="{{classes}}" data-section-id="{{ section.id }}" data-section-type="banner">
+  {%-if section.settings.heading != blank-%}
+  <div class="heading"><span style="color:{{section.settings.heading_color}};border-color:{{section.settings.heading_bd_color}};font-size:{{section.settings.heading_fontsize | append: "px" }};font-weight:{{section.settings.heading_fontweight}};">{{section.settings.heading}}</span></div>
+  {%-endif-%}
+  {%- for block in section.blocks limit: section.blocks.size -%}
+  {%-if block.type == 'group-start'-%}
+  <div id="rich-banner--group{{block.id}}" class="rich-banner--group{%-if block.settings.group_slider-%}{{' is-slider '}}{%-else-%}{{' is-column '}}{%-endif-%}col-rb-{{ block.settings.group_width }}{{' '}}col-rbm-{{ block.settings.group_mobile_width }}"
+       {%-if block.settings.group_slider-%}{{' '}}data-blockid="{{block.id}}" data-interval="{{block.settings.group_slider_interval}}" data-itemsperslide="{{block.settings.group_slider_items_per_slide}}" 
+       data-autoplay="{{block.settings.group_slider_autoplay}}" data-variablewidth="{{block.settings.group_slider_variable_width}}"{%-endif-%}>
+    {%-if block.settings.group_slider-%}
+    <a class="next-button arrow-btn" href="#myCarousel{{block.id}}" id="myCarousel{{block.id}}_next">
+      <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#global__symbols-next"></use></svg>
+    </a>
+    <a class="prev-button arrow-btn" href="#myCarousel{{block.id}}" id="myCarousel{{block.id}}_prev">
+      <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#global__symbols-prev"></use></svg>
+    </a>
+    <style>
+      #rich-banner--group{{block.id}} .arrow-btn > svg{
+        fill:{{block.settings.group_slider_arrow_color}};
+      }
+      #rich-banner--group{{block.id}} .arrow-btn:hover > svg{
+        fill:{{block.settings.group_slider_arrow_color_hover}};
+      }
+      #rich-banner--group{{block.id}}.is-slider .slick-slide {
+        padding:{{block.settings.group_slider_slide_padding}}px;
+      }
+      {%-if block.settings.group_slider_variable_width == true-%}
+      #rich-banner--group{{block.id}}.is-slider .slick-track,
+      #rich-banner--group{{block.id}}.is-slider .slick-list{
+        display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-moz-flex;display:-webkit-flex;display:flex;
+      }
+      {%-endif-%}
+    </style>
+    {%-endif-%}
+  {%-elsif block.type == 'group-end'-%}
+  </div>
+  {%-endif-%}
+  
+  {%-if block.type == 'banner'-%}
+  {%-include 'section-richbanners-banner'-%}
+  {%-elsif block.type == 'product'-%}
+  {%-include 'section-richbanners-product'-%}
+  {%-elsif block.type == 'linklist'-%}
+  {%-include 'section-richbanners-linklist'-%}
+  {%-elsif block.type == 'promotion'-%}
+  {%-include 'section-richbanners-promotion'-%}
+  {%-elsif block.type == 'blankspace'-%}
+  <div class="col-rb-{{ block.settings.blankspace_width }}{{' '}}col-rbm-{{ block.settings.blankspace_mobile_width }}">
+    <div id="rich-banner-{{block.id}}" class="rich-banner" style="background-color:{%-if block.settings.blankspace_bg_color != blank-%}{{block.settings.blankspace_bg_color}}{%-else-%}transparent{%-endif-%};">
+    </div>
+  </div>
+  <style>
+    @media (max-width: 767px) {
+      .rich-banners#rich-banners-{{section.id}} .rich-banner#rich-banner-{{block.id}} {
+        min-height:{{block.settings.blankspace_mobile_height | append: 'px'}}
+      }
+    }
+    @media (min-width: 768px) {
+      .rich-banners#rich-banners-{{section.id}} .rich-banner#rich-banner-{{block.id}} {
+        min-height:{{block.settings.blankspace_height | append: 'px'}}
+      }
+    }
+  </style>
+  {%-endif-%}
+  {%- endfor -%}
+</div>
+<style>
+  .rich-banners#rich-banners-{{section.id}} {
+    margin-top:{{section.settings.margin_top}}px;
+  }
+  @media (min-width: 768px) {
+    .rich-banners.with-paddings#rich-banners-{{section.id}} > div:not(.rich-banner--group),
+    .rich-banners.with-paddings#rich-banners-{{section.id}} > div.rich-banner--group > div {
+      padding:0px {{section.settings.paddings | divided_by: 2}}px;
+      margin-top:{{section.settings.paddings}}px;
+    }
+    {%-if section.settings.background_use == true-%}
+    .rich-banners#rich-banners-{{section.id}} .rich-banner.product-grid .product-hover .product-item-content {
+      background-color:{{section.settings.background_color}};
+    }
+    {%-endif-%}
+  }
+</style>
+{%- endif -%}
+{% schema %}
+  {
+    "name": "Collection Top Banner",
+    "class": "index-section section-wrapper",
+    "max_blocks": 24,
+    "settings": [
+	  {
+        "type": "checkbox",
+        "id": "placement_fullwidth",
+        "label": "Force Full Width"
+      },
+      {
+        "type": "checkbox",
+        "id": "visible_on_mobile",
+        "label": "Show on Mobile",
+        "default": true
+      },
+	  {
+        "type": "range",
+        "id": "margin_top",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Top Margin",
+        "default": 25
+	  },
+	  {
+        "type": "range",
+        "id": "paddings",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Paddings",
+        "default": 2
+	  },
+	  {
+		"type": "text",
+		"id": "heading",
+		"label": "Heading",
+		"default": "Your Heading"
+	  },
+	  {
+		"type" :"header",
+		"content":"Styling"
+	  },
+	  {
+		"type": "color",
+		"id": "heading_color",
+		"label": "Heading Color"
+	  },
+	  {
+		"type": "color",
+		"id": "heading_bd_color",
+		"label": "Heading Border Color"
+	  },
+      {
+        "type": "range",
+        "id": "heading_fontsize",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Heading Fontsize",
+        "default": 25
+      },
+      {
+        "type": "range",
+        "id": "heading_fontweight",
+        "min": 100,
+        "max": 900,
+        "step": 100,
+        "label": "Heading FontWeight",
+        "default": 400
+	  },
+	  {
+		"type" :"header",
+		"content":"Background (optional)"
+	  },
+	  {
+        "type": "paragraph",
+        "content": "(!) Please note that, the full width option above will be VOID if background is ON"
+      },
+  	  {
+  		"type": "checkbox",
+  		"id": "background_use",
+		"label" : "Use Background",
+		"default": false
+  	  },
+      {
+        "type": "image_picker",
+        "id": "background_img",
+        "label": "Image"
+	  },
+      {
+        "type": "select",
+        "id": "background_img_quality",
+        "label": "Image Quality",
+        "options": [
+            {
+              "value": "500x",
+              "label": "Low"
+            },
+            {
+              "value": "1000x",
+              "label": "Normal"
+            },
+            {
+              "value": "1920x",
+              "label": "High"
+            }
+		],
+      	"default": "1000x"
+      },
+	  {
+        "type": "color",
+        "id": "background_color",
+        "label": "Underlay Color",
+        "default": "#e6e6e6"
+	  }
+    ],
+    "blocks": [
+	  {
+        "type": "group-start",
+        "name": "— Group Start",
+        "settings": [
+		  {
+			"type": "header",
+			"content": "General"
+		  },
+		  {
+            "type": "range",
+            "id": "group_width",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width",
+            "default": 100
+          },
+          {
+            "type": "range",
+            "id": "group_mobile_width",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Mobile Width",
+            "default": 100
+          },
+		  {
+			"type": "header",
+			"content": "Slider"
+		  },
+		  {
+            "type": "checkbox",
+            "id": "group_slider",
+            "label": "Make this group a Slider",
+            "default": false
+          },
+		  {
+            "type": "range",
+            "id": "group_slider_items_per_slide",
+            "min": 1,
+            "max": 6,
+            "step": 1,
+            "label": "Items per Slide",
+            "default": 1
+          },
+		  {
+            "type": "checkbox",
+            "id": "group_slider_variable_width",
+            "label": "Variable Width",
+            "default": false
+          },
+		  {
+            "type": "range",
+            "id": "group_slider_slide_padding",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+			"unit": "px",
+            "label": "Slide Padding",
+            "default": 0
+		  },
+		  {
+            "type": "checkbox",
+            "id": "group_slider_autoplay",
+            "label": "Autoplay",
+            "default": false
+          },
+		  {
+            "type": "range",
+            "id": "group_slider_interval",
+            "min": 1000,
+            "max": 9000,
+            "step": 500,
+			"unit": "ms",
+            "label": "Interval (in milliseconds)",
+            "default": 2000
+		  },
+		  {
+			"type": "color",
+			"id": "group_slider_arrow_color",
+			"label": "Arrows Color",
+			"default": "#B3B0B0"
+		  },
+		  {
+			"type": "color",
+			"id": "group_slider_arrow_color_hover",
+			"label": "Arrows Hover Color",
+			"default": "#ffffff"
+		  }
+        ]
+      },
+	  {
+        "type": "group-end",
+        "name": "— Group End"
+      },
+      {
+        "type": "product",
+        "name": "Product",
+        "settings": [
+          {
+            "type": "header",
+            "content": "*** General"
+          },
+          {
+            "type": "product",
+            "id": "product_id",
+            "label": "Choose a Product"
+          },
+          {
+            "type": "range",
+            "id": "product_width",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width",
+            "default": 25
+          },
+          {
+            "type": "range",
+            "id": "product_mobile_width",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Mobile Width",
+            "default": 50
+          },
+		  {
+            "type": "header",
+            "content": "*** Background"
+          },
+          {
+            "type": "color",
+            "id": "product_bg_color",
+            "label": "Color",
+            "default": "#ffffff"
+          },
+		  {
+            "type": "checkbox",
+            "id": "product_shadow",
+            "label": "Shadow",
+            "default": false
+          },
+          {
+            "type": "header",
+            "content": "*** Borders"
+          },
+          {
+            "type": "select",
+            "id": "product_borders",
+            "label": "Enabled",
+            "options": [
+              {
+                "value": "0",
+                "label": "No"
+              },
+              {
+                "value": "1",
+                "label": "Yes"
+              }
+            ],
+            "default": "1"
+          },
+          {
+            "type": "checkbox",
+            "id": "product_borders_top",
+            "label": "Top Border",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "product_borders_bottom",
+            "label": "Bottom Border",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "product_borders_left",
+            "label": "Left Border",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "product_borders_right",
+            "label": "Right Border",
+            "default": true
+          },
+          {
+            "type": "header",
+            "content": "*** Borders on Mobile"
+          },
+          {
+            "type": "select",
+            "id": "product_mobile_borders",
+            "label": "Enabled",
+            "options": [
+              {
+                "value": "0",
+                "label": "No"
+              },
+              {
+                "value": "1",
+                "label": "Yes"
+              }
+            ],
+            "default": "0"
+          },
+          {
+            "type": "checkbox",
+            "id": "product_mobile_borders_top",
+            "label": "Top Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "product_mobile_borders_bottom",
+            "label": "Bottom Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "product_mobile_borders_left",
+            "label": "Left Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "product_mobile_borders_right",
+            "label": "Right Border",
+            "default": false
+          }
+        ]
+      },
+      {
+        "type": "promotion",
+        "name": "Promotion",
+        "settings": [
+          {
+            "type": "header",
+            "content": "*** General"
+          },
+          {
+            "type": "range",
+            "id": "promotion_width",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width",
+            "default": 33
+          },
+          {
+            "type": "range",
+            "id": "promotion_mobile_width",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Mobile Width",
+            "default": 50
+          },
+          {
+            "type": "header",
+            "content": "*** Background"
+          },
+          {
+            "type": "color",
+            "id": "promotion_bg_color",
+            "label": "Color",
+            "default": "#FFC107"
+          },
+          {
+            "type": "image_picker",
+            "id": "promotion_image",
+            "label": "Pick an Image"
+          },
+          {
+            "type": "select",
+            "id": "promotion_image_quality",
+            "label": "Image Quality",
+            "options": [
+              {
+                "value": "500x",
+                "label": "Low"
+              },
+              {
+                "value": "1000x",
+                "label": "Normal"
+              },
+              {
+                "value": "1920x",
+                "label": "High"
+              }
+            ],
+            "default": "1920x"
+          },
+          {
+            "type": "header",
+            "content": "*** Promotion Height"
+          },
+          {
+            "type": "range",
+            "id": "promotion_height",
+            "min": 20,
+            "max": 1000,
+            "step": 10,
+            "unit": "px",
+            "label": "Height",
+            "default": 200
+          },
+          {
+            "type": "range",
+            "id": "promotion_mobile_height",
+            "min": 10,
+            "max": 500,
+            "step": 10,
+            "unit": "px",
+            "label": "Height on Mobile",
+            "default": 50
+          },
+          {
+            "type": "header",
+            "content": "*** Content"
+          },
+          {
+            "type": "text",
+            "id": "promotion_text",
+            "label": "Texting",
+            "default": "Free Shipping"
+          },
+          {
+            "type": "text",
+            "id": "promotion_icon",
+            "label": "Font Awesome Icon",
+            "default": "fa-truck",
+            "info": "[Other icons?](https:\/\/fontawesome.com\/v4.7.0\/icons\/)"
+          },
+          {
+            "type": "url",
+            "id": "promotion_link",
+            "label": "URL"
+          },
+          {
+            "type": "header",
+            "content": "*** Styling"
+          },
+
+          {
+            "type": "color",
+            "id": "promotion_color",
+            "label": "Color",
+            "default": "#ffffff"
+          },
+          {
+            "type": "range",
+            "id": "promotion_text_size",
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "Text Size",
+            "default": 14
+          },
+          {
+            "type": "range",
+            "id": "promotion_icon_size",
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "Icon Size",
+            "default": 14
+          },
+          {
+            "type": "select",
+            "id": "promotion_icon_pos",
+            "label": "Icon Position",
+            "options": [ 
+              {
+                "value": "",
+                "label": "None"
+              },
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              },
+              {
+                "value": "top",
+                "label": "Top"
+              },
+              {
+                "value": "bottom",
+                "label": "Bottom"
+              }
+            ],
+            "default": "top"
+          },
+          {
+            "type": "header",
+            "content": "*** Shadow"
+          },
+		  {
+            "type": "checkbox",
+            "id": "promotion_text_shadow",
+            "label": "Shadow Text",
+            "default": false
+          },
+		  {
+            "type": "checkbox",
+            "id": "promotion_icon_shadow",
+            "label": "Shadow Icon",
+            "default": false
+          },
+          {
+            "type": "header",
+            "content": "*** Animation"
+          },
+          {
+            "type": "checkbox",
+            "id": "promotion_fx",
+            "label": "Enabled",
+            "default": false
+          },
+          {
+            "type": "select",
+            "id": "promotion_fx_type",
+            "label": "Style",
+            "options": [ 
+              {
+                "value": "0",
+                "label": "Domino"
+              },
+              {
+                "value": "1",
+                "label": "Vertical Lines"
+              },
+              {
+                "value": "2",
+                "label": "Fading"
+              },
+              {
+                "value": "3",
+                "label": "Intro"
+              },
+              {
+                "value": "4",
+                "label": "Surprising"
+              },
+              {
+                "value": "5",
+                "label": "Typing"
+              }
+            ],
+            "default": "1"
+          },
+          {
+            "type": "header",
+            "content": "*** Borders"
+          },
+          {
+            "type": "select",
+            "id": "promotion_borders",
+            "label": "Enabled",
+            "options": [
+              {
+                "value": "0",
+                "label": "No"
+              },
+              {
+                "value": "1",
+                "label": "Yes"
+              }
+            ],
+            "default": "0"
+          },
+          {
+            "type": "checkbox",
+            "id": "promotion_borders_top",
+            "label": "Top Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "promotion_borders_bottom",
+            "label": "Bottom Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "promotion_borders_left",
+            "label": "Left Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "promotion_borders_right",
+            "label": "Right Border",
+            "default": false
+          },
+          {
+            "type": "header",
+            "content": "*** Borders on Mobile"
+          },
+          {
+            "type": "select",
+            "id": "promotion_mobile_borders",
+            "label": "Enabled",
+            "options": [
+              {
+                "value": "0",
+                "label": "No"
+              },
+              {
+                "value": "1",
+                "label": "Yes"
+              }
+            ],
+            "default": "0"
+          },
+          {
+            "type": "checkbox",
+            "id": "promotion_mobile_borders_top",
+            "label": "Top Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "promotion_mobile_borders_bottom",
+            "label": "Bottom Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "promotion_mobile_borders_left",
+            "label": "Left Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "promotion_mobile_borders_right",
+            "label": "Right Border",
+            "default": false
+          }
+        ]
+      },
+      {
+        "type": "banner",
+        "name": "Banner",
+        "settings": [
+          {
+            "type": "header",
+            "content": "*** General"
+          },
+          {
+            "type": "range",
+            "id": "banner_width",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width",
+            "default": 50
+          },
+          {
+            "type": "range",
+            "id": "banner_mobile_width",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Mobile Width",
+            "default": 50
+          },
+          {
+            "type": "header",
+            "content": "*** Background"
+          },
+          {
+            "type": "color",
+            "id": "banner_bg_color",
+            "label": "Color",
+            "default": "#FFC107"
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_shadow",
+            "label": "Shadow",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_tilt",
+            "label": "Tilt Effect",
+            "default": false
+          },
+		  {
+            "type": "checkbox",
+            "id": "banner_rounded_edge",
+            "label": "Rounded Edge",
+            "default": false
+          },
+          {
+            "type": "image_picker",
+            "id": "banner_image",
+            "label": "Pick an Image"
+          },
+          {
+            "type": "select",
+            "id": "banner_image_quality",
+            "label": "Image Quality",
+            "options": [
+              {
+                "value": "500x",
+                "label": "Low"
+              },
+              {
+                "value": "1000x",
+                "label": "Normal"
+              },
+              {
+                "value": "1920x",
+                "label": "High"
+              }
+            ],
+            "default": "1000x"
+          },
+		  {
+            "type": "header",
+            "content": "*** Background Image Full Visibility"
+          },
+		  {
+            "type": "checkbox",
+            "id": "banner_image_full_visible",
+            "label": "On Desktop",
+            "default": false
+          },
+		  {
+            "type": "checkbox",
+            "id": "banner_image_full_visible_mobile",
+            "label": "On Mobile",
+            "default": false
+          },
+          {
+            "type": "header",
+            "content": "*** Banner Height"
+          },
+          {
+            "type": "range",
+            "id": "banner_height",
+            "min": 20,
+            "max": 1000,
+            "step": 10,
+            "unit": "px",
+            "label": "Height",
+            "default": 250
+          },
+          {
+            "type": "range",
+            "id": "banner_mobile_height",
+            "min": 10,
+            "max": 500,
+            "step": 10,
+            "unit": "px",
+            "label": "Height on Mobile",
+            "default": 100
+          },
+          {
+            "type": "header",
+            "content": "*** Content"
+          },
+          {
+            "type": "text",
+            "id": "banner_head",
+            "label": "Heading",
+            "default": "This is Heading"
+          },
+          {
+            "type": "textarea",
+            "id": "banner_cap",
+            "label": "Caption",
+            "default": "Your caption goes here"
+          },
+		  {
+			"type": "link_list",
+			"id": "banner_linklist",
+			"label": "Add a Linklist"
+		  },
+          {
+            "type": "text",
+            "id": "banner_cta",
+            "label": "CTA Button",
+            "default": "Button Text"
+          },
+          {
+            "type": "url",
+            "id": "banner_link",
+            "label": "URL",
+            "default": "/collections/all"
+          },
+          {
+            "type": "header",
+            "content": "*** Styling"
+          },
+		  {
+            "type": "header",
+            "content": "- Position:"
+          },
+          {
+            "type": "select",
+            "id": "banner_text_pos",
+            "label": "Horizontal Position",
+            "options": [
+              {
+                "value": "text-pos-left",
+                "label": "Left"
+              },
+              {
+                "value": "text-pos-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-pos-right",
+                "label": "Right"
+              }
+            ],
+            "default": "text-pos-center"
+          },
+          {
+            "type": "select",
+            "id": "banner_text_vpos",
+            "label": "Vertical Position",
+            "options": [
+              {
+                "value": "text-vpos-top",
+                "label": "Top"
+              },
+              {
+                "value": "text-vpos-middle",
+                "label": "Middle"
+              },
+              {
+                "value": "text-vpos-bottom",
+                "label": "Bottom"
+              }
+            ],
+            "default": "text-vpos-middle"
+          },
+          {
+            "type": "select",
+            "id": "banner_text_align",
+            "label": "Texting align",
+            "options": [
+              {
+                "value": "text-align-left",
+                "label": "Left"
+              },
+              {
+                "value": "text-align-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-align-right",
+                "label": "Right"
+              }
+            ],
+            "default": "text-align-center"
+          },
+		  {
+            "type": "range",
+            "id": "banner_side_padding_hori",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "%",
+            "label": "Horizontal Side Padding",
+            "default": 5
+          },
+		  {
+            "type": "range",
+            "id": "banner_side_padding_vert",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "%",
+            "label": "Vertical Side Padding",
+            "default": 5
+          },
+		  {
+            "type": "header",
+            "content": "- Heading:"
+          },
+          {
+            "type": "color",
+            "id": "banner_head_color",
+            "label": "Heading color",
+            "default": "#000000"
+          },
+          {
+            "type": "range",
+            "id": "banner_head_size",
+            "min": 15,
+            "max": 115,
+            "step": 1,
+            "unit": "px",
+            "label": "Heading Font Size",
+            "default": 40
+          },
+		  {
+            "type": "range",
+            "id": "banner_head_weight",
+            "min": 100,
+            "max": 700,
+            "step": 100,
+            "label": "Heading Font Weight",
+            "default": 700
+          },
+		  {
+            "type": "checkbox",
+            "id": "banner_head_shadow",
+            "label": "Shadow",
+            "default": false
+          },
+		  {
+            "type": "header",
+            "content": "- Caption:"
+          },
+          {
+            "type": "color",
+            "id": "banner_cap_color",
+            "label": "Caption color",
+            "default": "#000000"
+          },
+          {
+            "type": "range",
+            "id": "banner_cap_size",
+            "min": 10,
+            "max": 110,
+            "step": 1,
+            "unit": "px",
+            "label": "Caption Font Size",
+            "default": 14
+          },
+		  {
+            "type": "range",
+            "id": "banner_cap_weight",
+            "min": 100,
+            "max": 700,
+            "step": 100,
+            "label": "Caption Font Weight",
+            "default": 400
+          },
+		  {
+            "type": "checkbox",
+            "id": "banner_cap_shadow",
+            "label": "Shadow",
+            "default": false
+          },
+		  {
+            "type": "header",
+            "content": "- Linklist:"
+          },
+		  {
+            "type": "color",
+            "id": "banner_linklist_color",
+            "label": "Color",
+            "default": "#000000"
+          },
+          {
+            "type": "color",
+            "id": "banner_linklist_color_hover",
+            "label": "Hover Color",
+            "default": "#ffffff"
+          },
+          {
+            "type": "range",
+            "id": "banner_linklist_size",
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "Linklist Font Size",
+            "default": 13
+          },
+		  {
+            "type": "range",
+            "id": "banner_linklist_weight",
+            "min": 100,
+            "max": 700,
+            "step": 100,
+            "label": "Linklist Font Weight",
+            "default": 400
+          },
+          {
+            "type": "range",
+            "id": "banner_linklist_width",
+            "min": 200,
+            "max": 1000,
+            "step": 50,
+            "unit": "px",
+            "label": "Linklist Width (Desktop Only)",
+            "default": 350
+          },
+          {
+            "type": "range",
+            "id": "banner_linklist_col",
+            "min": 1,
+            "max": 5,
+            "step": 1,
+            "label": "Linklist Columns (Desktop Only)",
+            "default": 2
+          },
+		  {
+            "type": "header",
+            "content": "- CTA Button:"
+          },
+          {
+            "type": "color",
+            "id": "banner_cta_color",
+            "label": "CTA color",
+            "default": "#ffffff"
+          },
+          {
+            "type": "color",
+            "id": "banner_cta_bgcolor",
+            "label": "CTA background color",
+            "default": "#000000"
+          },
+          {
+            "type": "range",
+            "id": "banner_cta_size",
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "CTA Font Size",
+            "default": 13
+          },
+		  {
+            "type": "range",
+            "id": "banner_cta_weight",
+            "min": 100,
+            "max": 700,
+            "step": 100,
+            "label": "CTA Font Weight",
+            "default": 400
+          },
+          {
+            "type": "header",
+            "content": "*** Animation"
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_fx",
+            "label": "Enabled",
+            "default": false
+          },
+          {
+            "type": "select",
+            "id": "banner_fx_for",
+            "label": "Applied to",
+            "options": [ 
+              {
+                "value": "0",
+                "label": "Heading"
+              },
+              {
+                "value": "1",
+                "label": "Caption"
+              },
+              {
+                "value": "2",
+                "label": "Heading & Caption"
+              }
+            ],
+            "default": "0"
+          },
+          {
+            "type": "select",
+            "id": "banner_fx_type",
+            "label": "Style",
+            "options": [ 
+              {
+                "value": "0",
+                "label": "Domino"
+              },
+              {
+                "value": "1",
+                "label": "Vertical Lines"
+              },
+              {
+                "value": "2",
+                "label": "Fading"
+              },
+              {
+                "value": "3",
+                "label": "Intro"
+              },
+              {
+                "value": "4",
+                "label": "Surprising"
+              },
+              {
+                "value": "5",
+                "label": "Typing"
+              }
+            ],
+            "default": "1"
+          },
+		  {
+            "type": "header",
+            "content": "*** Borders"
+          },
+          {
+            "type": "select",
+            "id": "banner_borders",
+            "label": "Enabled",
+            "options": [
+              {
+                "value": "0",
+                "label": "No"
+              },
+              {
+                "value": "1",
+                "label": "Yes"
+              }
+            ],
+            "default": "0"
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_borders_top",
+            "label": "Top Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_borders_bottom",
+            "label": "Bottom Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_borders_left",
+            "label": "Left Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_borders_right",
+            "label": "Right Border",
+            "default": false
+          },
+          {
+            "type": "header",
+            "content": "*** Borders on Mobile"
+          },
+          {
+            "type": "select",
+            "id": "banner_mobile_borders",
+            "label": "Enabled",
+            "options": [
+              {
+                "value": "0",
+                "label": "No"
+              },
+              {
+                "value": "1",
+                "label": "Yes"
+              }
+            ],
+            "default": "0"
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_mobile_borders_top",
+            "label": "Top Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_mobile_borders_bottom",
+            "label": "Bottom Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_mobile_borders_left",
+            "label": "Left Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_mobile_borders_right",
+            "label": "Right Border",
+            "default": false
+          }
+        ]
+      },
+      {
+        "type": "linklist",
+        "name": "Link List",
+        "settings": [
+          {
+            "type": "header",
+            "content": "*** General"
+          },
+          {
+            "type": "range",
+            "id": "linklist_width",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width",
+            "default": 33
+          },
+		  {
+            "type": "range",
+            "id": "linklist_mobile_width",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Mobile Width",
+            "default": 50
+          },
+          {
+            "type": "header",
+            "content": "*** Content"
+          },
+          {
+            "type": "link_list",
+            "id": "linklist_linklist",
+            "label": "Choose a Linklist"
+          },
+          {
+            "type": "text",
+            "id": "linklist_cta",
+            "label": "CTA Button",
+            "default": "Button Text"
+          },
+		  {
+            "type": "url",
+            "id": "linklist_cta_url",
+            "label": "CTA URL",
+            "default": "/collections/all"
+          },
+          {
+            "type": "header",
+            "content": "*** Background"
+          },
+          {
+            "type": "color",
+            "id": "linklist_bg_color",
+            "label": "Color",
+            "default": "#FFC107"
+          },
+		  {
+            "type": "header",
+            "content": "*** Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "linklist_image",
+            "label": "Pick an Image"
+          },
+          {
+            "type": "select",
+            "id": "linklist_image_quality",
+            "label": "Image Quality",
+            "options": [
+              {
+                "value": "500x",
+                "label": "Low"
+              },
+              {
+                "value": "1000x",
+                "label": "Normal"
+              },
+              {
+                "value": "1920x",
+                "label": "High"
+              }
+            ],
+            "default": "1000x"
+          },
+		  {
+            "type": "select",
+            "id": "linklist_image_pos",
+            "label": "Image Position",
+            "options": [
+              {
+                "value": "",
+                "label": "Hidden"
+              },
+              {
+                "value": "1",
+                "label": "Top"
+              },
+              {
+                "value": "2",
+                "label": "Bottom"
+              }
+            ],
+            "default": "2"
+          },
+          {
+            "type": "header",
+            "content": "*** Linklist Height"
+          },
+          {
+            "type": "range",
+            "id": "linklist_height",
+            "min": 50,
+            "max": 1000,
+            "step": 10,
+            "unit": "px",
+            "label": "Height",
+            "default": 250
+          },
+          {
+            "type": "range",
+            "id": "linklist_mobile_height",
+            "min": 10,
+            "max": 500,
+            "step": 10,
+            "unit": "px",
+            "label": "Height on Mobile",
+            "default": 100
+          },
+          {
+            "type": "header",
+            "content": "*** Styling"
+          },
+		  {
+            "type": "header",
+            "content": "- Position:"
+          },
+          {
+            "type": "select",
+            "id": "linklist_text_pos",
+            "label": "Horizontal Position",
+            "options": [
+              {
+                "value": "text-pos-left",
+                "label": "Left"
+              },
+              {
+                "value": "text-pos-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-pos-right",
+                "label": "Right"
+              }
+            ],
+            "default": "text-pos-center"
+          },
+          {
+            "type": "select",
+            "id": "linklist_text_vpos",
+            "label": "Vertical Position",
+            "options": [
+              {
+                "value": "text-vpos-top",
+                "label": "Top"
+              },
+              {
+                "value": "text-vpos-middle",
+                "label": "Middle"
+              },
+              {
+                "value": "text-vpos-bottom",
+                "label": "Bottom"
+              }
+            ],
+            "default": "text-vpos-bottom"
+          },
+          {
+            "type": "select",
+            "id": "linklist_text_align",
+            "label": "Texting align",
+            "options": [
+              {
+                "value": "text-align-left",
+                "label": "Left"
+              },
+              {
+                "value": "text-align-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-align-right",
+                "label": "Right"
+              }
+            ],
+            "default": "text-align-center"
+          },
+		  {
+            "type": "range",
+            "id": "linklist_side_padding_hori",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "%",
+            "label": "Horizontal Side Padding",
+            "default": 5
+          },
+		  {
+            "type": "range",
+            "id": "linklist_side_padding_vert",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "%",
+            "label": "Vertical Side Padding",
+            "default": 5
+          },
+		  {
+            "type": "header",
+            "content": "- Color and Size:"
+          },
+          {
+            "type": "color",
+            "id": "linklist_text_color",
+            "label": "Text color",
+            "default": "#333333"
+          },
+          {
+            "type": "color",
+            "id": "linklist_cta_color",
+            "label": "CTA color",
+            "default": "#ffffff"
+          },
+          {
+            "type": "color",
+            "id": "linklist_cta_bgcolor",
+            "label": "CTA background color",
+            "default": "#000000"
+          },
+          {
+            "type": "range",
+            "id": "linklist_cta_size",
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "CTA Font Size",
+            "default": 13
+          },
+		  {
+            "type": "color",
+            "id": "linklist_sep_color",
+            "label": "Separate color",
+            "default": "#000000"
+          },
+		  {
+            "type": "header",
+            "content": "*** Borders"
+          },
+          {
+            "type": "select",
+            "id": "linklist_borders",
+            "label": "Enabled",
+            "options": [
+              {
+                "value": "0",
+                "label": "No"
+              },
+              {
+                "value": "1",
+                "label": "Yes"
+              }
+            ],
+            "default": "0"
+          },
+          {
+            "type": "checkbox",
+            "id": "linklist_borders_top",
+            "label": "Top Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "linklist_borders_bottom",
+            "label": "Bottom Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "linklist_borders_left",
+            "label": "Left Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "linklist_borders_right",
+            "label": "Right Border",
+            "default": false
+          },
+          {
+            "type": "header",
+            "content": "*** Borders on Mobile"
+          },
+          {
+            "type": "select",
+            "id": "linklist_mobile_borders",
+            "label": "Enabled",
+            "options": [
+              {
+                "value": "0",
+                "label": "No"
+              },
+              {
+                "value": "1",
+                "label": "Yes"
+              }
+            ],
+            "default": "0"
+          },
+          {
+            "type": "checkbox",
+            "id": "linklist_mobile_borders_top",
+            "label": "Top Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "linklist_mobile_borders_bottom",
+            "label": "Bottom Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "linklist_mobile_borders_left",
+            "label": "Left Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "linklist_mobile_borders_right",
+            "label": "Right Border",
+            "default": false
+          }
+        ]
+      },
+	  {
+        "type": "blankspace",
+        "name": "Blank Space",
+        "settings": [
+          {
+            "type": "header",
+            "content": "*** General"
+          },
+          {
+            "type": "range",
+            "id": "blankspace_width",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width",
+            "default": 25
+          },
+          {
+            "type": "range",
+            "id": "blankspace_mobile_width",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Mobile Width",
+            "default": 0
+          },
+          {
+            "type": "header",
+            "content": "*** Background"
+          },
+          {
+            "type": "color",
+            "id": "blankspace_bg_color",
+            "label": "Color",
+            "default": "#ffffff"
+          },
+          {
+            "type": "header",
+            "content": "*** Blank Space Height"
+          },
+          {
+            "type": "range",
+            "id": "blankspace_height",
+            "min": 10,
+            "max": 1000,
+            "step": 10,
+            "unit": "px",
+            "label": "Height",
+            "default": 50
+          },
+          {
+            "type": "range",
+            "id": "blankspace_mobile_height",
+            "min": 10,
+            "max": 500,
+            "step": 10,
+            "unit": "px",
+            "label": "Height on Mobile",
+            "default": 10
+          }
+		]
+      }
+    ]
+  }
+{% endschema %}

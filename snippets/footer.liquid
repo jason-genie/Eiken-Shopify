@@ -1,0 +1,25 @@
+{%- capture footer_class -%}{%- if settings.footer_layout == '1' -%}{{'full-width'}}{%- elsif settings.footer_layout == '4' -%}{{'fixed2 fixed3'}}{%- elsif settings.footer_layout == '3' -%}{{'fixed2'}}{%- else -%}{{'fixed'}}{%- endif -%}{%- endcapture -%}
+<div id="footer" class="footer {{footer_class}}">
+  <div class="background-footer"></div>
+  <div class="background">
+    <div class="shadow"></div>
+    <div class="pattern">
+      <div class="container">
+        {%- if settings.footer_section_top_layout != "" -%}
+          {%- section "footer-top" -%}
+        {%- endif -%}
+        {%- include "footer-center" -%}
+        {%- if settings.footer_section_bottom_layout != "" -%}
+          {%- section "footer-bottom" -%}
+        {%- endif -%}
+        {%- section "footer-copyright" -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  li {
+  margin-bottom: 10px !important;  
+  }
+</style>

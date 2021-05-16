@@ -1,0 +1,120 @@
+<header class="header-type-3 header-type-13 header-type-19">
+  <div class="background-header"></div>
+  <div class="slider-header">
+    <!-- Top of pages -->
+    <div id="top" class="{%- if settings.header_layout == '1' -%}full-width{%- elsif settings.header_layout == '4' -%}fixed3 fixed2{%- elsif settings.header_layout == '3' -%}fixed2{%- else -%}fixed{%- endif -%}">
+      <div class="background-top"></div>
+      <div class="background">
+        <div class="shadow"></div>
+        <div class="pattern">
+          <div class="top-bar">
+            <div class="container">
+              <!-- Links -->
+              <ul class="menu">
+                {%- if shop.customer_accounts_enabled -%}
+                <li><a href="/account">{{ 'general.top.my_account' | t }}</a></li>
+                {%- endif -%}
+                {%- if settings.wishlist_enable -%}
+                <li><a href="{{pages[settings.wishlist_page].url}}" id="wishlist-total">{{ 'general.top.wishlist' | t }}</a></li>
+                {%- endif -%}
+                <li><a href="/cart">{{ 'general.cart_info.cart' | t }}</a></li>
+                <li><a href="/checkout">{{ 'general.cart_info.checkout' | t }}</a></li>
+              </ul>
+              <!-- Currency & Language -->
+              {%- include 'currencies-switcher' -%}
+            </div>
+          </div>
+          <div class="container">
+            <div class="row">
+              <!-- Header Left -->
+              <div class="col-sm-3" id="header-left">		
+                <!-- Logo -->
+                {%- include "header-logo" -%}
+              </div>
+              <!-- Header Center -->
+              <div class="col-sm-5 orderable" id="header-center">
+                <!-- Menu -->
+                <div  class="megamenu-background">
+                  <div class="">
+                    <div class="overflow-megamenu container menu-one-only">
+                      {%- section 'header-menu1' -%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Header Right -->
+              <div class="col-sm-4 orderable" id="header-right">
+                {%- section 'header-top-block' -%}
+                {%- if shop.customer_accounts_enabled -%}
+                <a href="/account" class="my-account">{%- include "account-icon" -%}</a>
+                {%- endif -%}
+                {%- include 'cartblock' with 'header' -%}
+              </div>
+            </div>
+          </div>
+          {%- comment -%}MEGAMENU2{%- endcomment -%}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Slider -->
+  <div id="slider" class="{%- if settings.slideshow_layout == '1' -%}full-width{%- elsif settings.slideshow_layout == '4' -%}fixed3 fixed2{%- elsif settings.slideshow_layout == '3' -%}fixed2{%- else -%}fixed{%- endif -%}">
+    <div class="background-slider"></div>
+    <div class="background">
+      <div class="shadow"></div>
+      <div class="pattern">
+        <div class="container">
+          <div class="row slideshow-modules">
+            <div class="col-md-3 orderable">
+              <div class="overflow-menu2">
+                {%- section 'header-menu2' -%}
+              </div>
+            </div>
+            <div class="col-md-9">
+              <div class="shop-by-car">
+                <div class="select">
+                  <select class="shop-by-car-select" onChange="window.location.href=this.value">
+                    <option value="#">{{ 'search.general.collections' | t }}</option>
+                    {%- for _collection in collections -%}
+                    <option value="{{ _collection.url }}">
+                      {{ _collection.title }}
+                    </option>
+                    {%- endfor -%}
+                  </select>
+                </div>
+              </div>
+              <div class="shop-by-brands">
+                <div class="select">
+                  <select class="shop-by-brand-select" onChange="window.location.href=this.value">
+                    <option value="#">{{ 'search.general.vendors' | t }}</option>
+                    {%- for product_vendor in shop.vendors -%}
+                    <option value="/search?q=vendor:{{product_vendor|handle}}">
+                      {{product_vendor}}
+                    </option>
+                    {%- endfor -%}
+                  </select>
+                </div>
+              </div>
+              <!-- Search -->
+              <div class="search_form_overflow">
+                <form action="/search" method="get" role="search" class="search_form">
+                  <div class="overflow-input">
+                    <input type="search" name="q" class="input-block-level search-query" id="search_query" placeholder="{{ 'search.general.placeholder' | t }}" />
+                  </div>
+                  <div class="button-search">{%- include "search-icon" with "form" -%}</div>
+                  <div id="autocomplete-results" class="autocomplete-results"></div>
+                  <input type="hidden" name="type" value="product" />
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="row slideshow-modules">
+            <div class="col-md-12">
+              {%- include 'header-slideshow' -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,18 @@
+{%-layout none-%}
+{%- capture params -%}{% include 'querystring', name: 'limit', default: '4a4' %}{%- endcapture -%}
+{%- assign params_arr = params | split: 'a' -%}
+{%- assign item_per_page = params_arr[0] | plus: 0 -%}
+{%- assign _class = params_arr[1] | plus: 0 -%}
+
+{%- paginate collection.products by item_per_page -%}
+{%- if paginate.pages >= paginate.current_page -%}
+<div class="item"><div class="product-grid"><div class="row">                     
+  {%- for product in collection.products -%}
+  <div class="col-sm-{{_class}} col-xs-6{%- if _class == 2 -%}{{' '}}col-md-25 col-lg-2 col-sm-3{%- endif -%}{%- if _class == 25 -%}{{' '}}col-md-25 col-lg-25 col-sm-3{%- endif -%}">
+    {%- include 'product-item' -%}
+  </div>
+  {%- endfor -%}
+  </div></div>
+</div>
+{%- endif -%}
+{%- endpaginate -%}

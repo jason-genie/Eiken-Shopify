@@ -1,0 +1,88 @@
+.body-deco-fx {
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  z-index:0;
+}
+@keyframes rain{
+    0%{
+        background-position:0 0
+    }
+    100%{
+        background-position:500px 1000px
+    }
+}
+.effect-rain{
+    background-image:url(https://cdn.shopify.com/s/files/1/0057/0041/9684/files/rain.png?942274255835906969);
+    animation:rain 2s linear infinite
+}
+@keyframes sparkle{
+    0%{
+        background-position:0 0,0 0,0 0
+    }
+    100%{
+        background-position:-500px -1000px,-400px -400px,300px 300px
+    }
+}
+.effect-sparkle{
+    background-image:url(https://cdn.shopify.com/s/files/1/0057/0041/9684/files/sparkle1.png?942274255835906969),url(https://cdn.shopify.com/s/files/1/0057/0041/9684/files/sparkle2.png?942274255835906969);
+    animation:sparkle 60s linear infinite
+}
+@keyframes glass{
+    0%{
+        background-position:0 0,0 0,0 0
+    }
+    100%{
+        background-position:500px 1000px,400px 400px
+    }
+}
+.effect-sliding-glass{
+    background-image:url(https://cdn.shopify.com/s/files/1/0057/0041/9684/files/glass1.png?942274255835906969),url(https://cdn.shopify.com/s/files/1/0057/0041/9684/files/glass2.png?942274255835906969);
+    animation:glass 30s linear infinite
+}
+@keyframes confetti{
+    0%{
+        background-position:0 0,0 0,0 0
+    }
+    100%{
+        background-position:500px 1000px,400px 400px,300px 300px
+    }
+}
+.effect-confetti{
+    background-image:url(https://cdn.shopify.com/s/files/1/0057/0041/9684/files/confetti1.png?942274255835906969),url(https://cdn.shopify.com/s/files/1/0057/0041/9684/files/confetti2.png?942274255835906969);
+    animation:confetti 10s linear infinite
+}
+@keyframes snow{
+    0%{
+        background-position:0 0,0 0,0 0
+    }
+    100%{
+        background-position:500px 1000px,400px 400px,300px 300px
+    }
+}
+.effect-snow{
+    background-image:url(https://cdn.shopify.com/s/files/1/0057/0041/9684/files/snow1.png?942274255835906969),url(https://cdn.shopify.com/s/files/1/0057/0041/9684/files/snow2.png?942274255835906969);
+    animation:snow 20s linear infinite
+}
+body.deco-snow .header-notice {
+  &:after {
+    position:absolute;
+    width:100%;
+    height:77px;
+    background-image:url(https://cdn.shopify.com/s/files/1/0057/0041/9684/files/top_header_xmas.png?14932209666293851197);
+    background-repeat:no-repeat;
+  }
+}
+body.deco-snow:after {
+  position: absolute;
+  background-image: url(https://cdn.shopify.com/s/files/1/0057/0041/9684/files/footer-snow.png?4860714070242548096);
+  background-repeat: no-repeat;
+  content: "";
+  bottom: 0;
+  background-size: cover;
+  height: 56px;
+  left: 0;
+  width: 100%;
+}

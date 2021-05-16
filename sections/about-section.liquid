@@ -1,0 +1,222 @@
+<div class="page-about">
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+    {%- when 'team' -%}
+      <div class="container">
+        <div class="team-members">
+          {%- if block.settings.heading != blank -%}
+          <h2 class="team-heading text-center">{{ block.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if block.settings.subheading != blank -%}
+          <div class="about-subheading text-center">{{ block.settings.subheading }}</div>
+          {%- endif -%}
+          
+          <div class="row justify-content-center">
+          {%- for team in section.blocks -%}
+            {%- if team.type == 'member' -%}
+            <div class="col-lg-9 col-sm-4 col-md-3 team-member">
+              {%- if team.settings.image -%}
+              <div class="figure team-member-image">
+                {%- if team.settings.url != blank -%}
+                <a href="{{- team.settings.url -}}">
+                {%- endif -%}
+                  <img src="{{ team.settings.image | img_url: "500x500"}}"/>
+                {%- if team.settings.url != blank -%}
+                </a>
+                {%- endif -%}
+              </div>
+              {%- endif -%}
+              {%- if team.settings.heading != blank -%}
+              <h3 class="name">
+                {%- if team.settings.url != blank -%}
+                <a href="{{- team.settings.url -}}">
+                {%- endif -%}
+                  {{ team.settings.heading }}
+                {%- if team.settings.url != blank -%}
+                </a>
+                {%- endif -%}
+              </h3>
+              {%- endif -%}
+
+              {%- if team.settings.subheading != blank -%}
+              <p class="position">{{ team.settings.subheading }}</p>
+              {%- endif -%}
+            </div>
+            {%- endif -%}
+          {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    {%- when 'introduction' -%}
+      <div class="about-introduction row">
+        {%- if block.settings.image -%}
+        <div class="col-lg-6 col-md-6{% if block.settings.image_position == 'right' %} order-md-last{% endif %}">
+          <div class="about-background" style="background-image:url({{ block.settings.image | img_url: 'master' }});"></div>
+        </div>
+        {%- else -%}
+        <div class="col-lg-6 col-md-2"></div>
+        {%- endif -%}
+
+        <div class="col-lg-6 {% if block.settings.image %}col-md-6{% else %}col-md-8{% endif %}">
+          <div class="about-content-wrapper">
+            {%- if block.settings.heading != blank -%}
+            <h2 class="about-heading text-center">{{ block.settings.heading }}</h2>
+            {%- endif -%}
+            {%- if block.settings.subheading != blank -%}
+            <div class="about-subheading text-center">{{ block.settings.subheading }}</div>
+            {%- endif -%}
+            {%- if block.settings.content != blank -%}
+            <div class="about-content">{{ block.settings.content }}</div>
+            {%- endif -%}
+            
+            <div class="row">
+              <div class="col-lg-6 col-md-6">
+                {%- if block.settings.about_heading != blank -%}
+                <h3 class="about-subheading2">{{ block.settings.about_heading }}</h3>
+                {%- endif -%}
+                {%- if block.settings.about_content != blank -%}
+                <div class="about-content2">{{ block.settings.about_content }}</div>
+                {%- endif -%}
+              </div>
+              <div class="col-lg-6 col-md-6">
+                {%- if block.settings.contact_heading != blank -%}
+                <h3 class="about-subheading2">{{ block.settings.contact_heading }}</h3>
+                {%- endif -%}
+                {%- if block.settings.contact_content != blank -%}
+                <div class="about-content2">{{ block.settings.contact_content }}</div>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {%- endcase -%}
+  {%- endfor -%}
+</div>
+
+{% schema %}
+  {
+    "name": "About Us page",
+    "blocks": [
+      {
+        "type": "introduction",
+        "name": "Introduction",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "select",
+            "id": "image_position",
+            "label": "Image position",
+            "default": "left",
+            "options": [
+              {
+                "label": "Left",
+                "value": "left"
+              },
+              {
+                "label": "Right",
+                "value": "right"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default": "Who we are"
+          },
+          {
+            "type": "text",
+            "id": "subheading",
+            "label": "Sub heading"
+          },
+          {
+            "type": "html",
+            "id": "content",
+            "label": "Content",
+            "default": "Tell your brand's story through video and images"
+          },
+          {
+            "type": "header",
+            "content": "About"
+          },
+          {
+            "type": "text",
+            "id": "about_heading",
+            "label": "About heading"
+          },
+          {
+            "type": "html",
+            "id": "about_content",
+            "label": "About content"
+          },
+          {
+            "type": "header",
+            "content": "Contact"
+          },
+          {
+            "type": "text",
+            "id": "contact_heading",
+            "label": "Contact heading"
+          },
+          {
+            "type": "html",
+            "id": "contact_content",
+            "label": "Contact content"
+          }
+        ]
+      },
+      {
+        "type": "team",
+        "name": "Team Members",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default": "MEET OUR TEAM"
+          },
+          {
+            "type": "text",
+            "id": "subheading",
+            "label": "Subheading",
+            "default": "THE RIGHT PEOPLE FOR YOUR PROJECT"
+          }
+        ]
+      },
+      {
+        "type": "member",
+        "name": "Member",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default": "Name"
+          },
+          {
+            "type": "text",
+            "id": "subheading",
+            "label": "Subheading",
+            "default": "Position"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Url"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,14 @@
+<div class="ceramica-newsletter clearfix" id="newsletter{{_id}}">
+  <div class="heading">
+    <p>{{_acm_title}}</p>
+  </div>
+  <div class="content">
+    <p>{{_acm_text}}</p>
+  </div>
+  <div class="inputs">
+    <form action="{{settings.popup_mailchimp_action}}" method="post" name="mc-embedded-subscribe-form" target="_blank">
+      <input type="email" class="email" name="EMAIL" required="required" placeholder="{{_placeholder}}" />
+      <button type="submit" class="button subscribe">{{_bttext}}</button>
+    </form>
+  </div>
+</div>

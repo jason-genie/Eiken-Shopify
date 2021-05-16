@@ -1,0 +1,133 @@
+{%- if section.settings.copyright_align != '' -%}
+  {%- case section.settings.footer_social_hook -%}
+  {%- when 'cp_bottom' -%}
+  <div id="footer-copyright" class="text-{{section.settings.copyright_align}}{%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}" data-section-id="{{ section.id }}" data-section-type="footer-copyright">
+    {%- if section.settings.copyright_custom != blank -%}
+      {% include 'judgeme_widgets', widget_type: 'judgeme_verified_reviews_count_badge', concierge_install: true %}
+      {% include 'judgeme_widgets', widget_type: 'judgeme_all_reviews_text', concierge_install: true %}
+      {{section.settings.copyright_custom}}
+    </div>
+    {%- endif -%}
+    {%-  include "payment-icons" -%}
+    {%- include 'footer-cp-block-social-icon' -%}
+  </div>
+  {%- when 'cp_left' -%}
+  <div id="footer-copyright" class="col-sm-6 text-left{%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}" data-section-id="{{ section.id }}" data-section-type="footer-copyright">{%- include 'footer-cp-block-social-icon' -%}</div>
+  <div id="footer-copyright" class="col-sm-6 text-right{%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}" data-section-id="{{ section.id }}" data-section-type="footer-copyright">
+    {%- if section.settings.copyright_custom != blank -%}
+      {% include 'judgeme_widgets', widget_type: 'judgeme_all_reviews_text', concierge_install: true %}
+      {{section.settings.copyright_custom}}
+    </div>
+    {%- endif -%}
+    {%-  include "payment-icons" -%}</div>
+  {%- when 'cp_right' -%}
+  <div id="footer-copyright" class="col-sm-6 text-left{%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}" data-section-id="{{ section.id }}" data-section-type="footer-copyright">
+    {%- if section.settings.copyright_custom != blank -%}
+      {% include 'judgeme_widgets', widget_type: 'judgeme_all_reviews_text', concierge_install: true %}
+      {{section.settings.copyright_custom}}
+    </div>
+    {%- endif -%}
+    {%-  include "payment-icons" -%}
+  </div>
+  <div id="footer-copyright" class="col-sm-6 text-right{%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}" data-section-id="{{ section.id }}" data-section-type="footer-copyright">{%- include 'footer-cp-block-social-icon' -%}</div>
+  {%- else -%}
+  <div id="footer-copyright" class="col-sm-12 text-{{section.settings.copyright_align}}{%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}" data-section-id="{{ section.id }}" data-section-type="footer-copyright">
+    {%- if section.settings.copyright_custom != blank -%}
+      {% include 'judgeme_widgets', widget_type: 'judgeme_all_reviews_text', concierge_install: true %}
+      {{section.settings.copyright_custom}}
+    </div>
+    {%- endif -%}
+    {%-  include "payment-icons" -%}
+  </div>
+  {%- endcase -%}
+{%- endif -%}
+{% schema %}
+  {
+    "name": "Footer Copyright",
+	"class": "index-section section-wrapper copyright row",
+    "settings": [
+		{
+		  "type": "header",
+          "content": "General"
+		},
+        {
+        "type": "select",
+        "id": "copyright_align",
+        "label": "Alignment",
+        "options": [
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "",
+              "label": "Disabled"
+            }
+          ]
+        },
+        {
+          "type": "textarea",
+          "id": "copyright_custom",
+          "label": "Content",
+		  "default": "Copyright © 2017, Your Store. All Rights Reserved."
+        },
+		{
+		  "type": "header",
+          "content": "Social Icons"
+		},
+        {
+          "type": "select",
+          "id": "footer_social_hook",
+          "label": "Position",
+          "options": [
+            {			
+              "value": "center",
+              "label": "Hidden"
+            },
+            {
+              "value": "cp_bottom",
+              "label": "Bottom"
+            },
+            {
+              "value": "cp_left",
+              "label": "Left"
+            },
+            {
+              "value": "cp_right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "footer_social_heading",
+          "label": "Heading",
+		  "default": "Follow Us"
+        },
+        {
+          "type": "text",
+          "id": "footer_social_size",
+          "label": "Icon Size (in pixels)",
+		  "default": "26"
+        },
+		{
+		  "type": "header",
+          "content": "Payment Image"
+		},
+        {
+          "type": "image_picker",
+          "id": "payment_image",
+          "label": "Upload Image"
+        }
+		
+	]
+  }
+{% endschema %}

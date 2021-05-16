@@ -1,0 +1,84 @@
+{%- assign acm_use		= 'acm_use_'	| append: i | append: '_' | append: j | append: '_' | append: k -%}
+{%- if settings[acm_use] -%}
+
+{%- assign _id = i | append: j | append: k -%}
+
+{%- assign acm_type 		= 'acm_type_' 	| append: i | append: '_' | append: j | append: '_' | append: k -%}
+{%- assign acm_title 	= 'acm_title_' 	| append: i | append: '_' | append: j | append: '_' | append: k -%}
+{%- assign acm_text 		= 'acm_text_' 	| append: i | append: '_' | append: j | append: '_' | append: k -%}
+{%- assign acm_skin 		= 'acm_skin_' 	| append: i | append: '_' | append: j | append: '_' | append: k -%}
+{%- assign acm_limit		= 'acm_limit_'	| append: i | append: '_' | append: j | append: '_' | append: k -%}
+{%- assign acm_linklist	= 'acm_llist_'	| append: i | append: '_' | append: j | append: '_' | append: k -%}
+{%- assign acm_dim		= 'acm_imgdim_'	| append: i | append: '_' | append: j | append: '_' | append: k -%}
+
+{%- assign _acm_type 	= settings[acm_type]  -%}
+{%- assign _acm_title 	= settings[acm_title] -%}
+{%- assign _acm_text 	= settings[acm_text]  -%}
+{%- assign _acm_skin 	= settings[acm_skin]  -%}
+{%- assign _acm_limit	= settings[acm_limit] | plus: 0 -%}
+{%- assign _acm_items 	= linklists[settings[acm_linklist]].links -%}
+{%- assign _acm_dim		= settings[acm_dim] | split: ' ' -%}
+{%- assign _acm_width	= _acm_dim[0] -%}
+{%- assign _acm_height	= _acm_dim[1] -%}
+
+{%- if _acm_width == blank -%}
+{%- assign _acm_width = '100' -%}
+{%- endif -%}
+{%- if _acm_height == blank -%}
+{%- assign _acm_height = '100' -%}
+{%- endif -%}
+{%- assign _acm_url_imgdim = _acm_width | append: 'x' | append: _acm_height -%}
+
+{%- if _acm_skin == blank -%}
+{%- assign _acm_skin	= 'default' -%}
+{%- endif -%}
+
+{%- if _acm_limit == 0 -%}
+{%- assign _acm_limit = 12 -%}
+{%- endif -%}
+
+{%- if _acm_type == '0' -%}
+{{_acm_text}}
+{%- elsif _acm_type == '1' -%}
+
+{%- assign _t = 'footer_bottom,footer,footer_top,footer_left,footer_right,customfooter_top,customfooter_bottom,customfooter' | split: ',' -%}
+{%- if _t contains _ag_pos -%}
+<h4>{{_acm_title}}</h4>
+<div class="strip-line"></div>
+<div class="clearfix" style="clear:both">{{_acm_text}}</div>
+{%- else -%}
+<div class="box">
+<div class="box-heading">
+{{_acm_title}}
+</div>
+<div class="strip-line"></div>
+<div class="box-content">
+{{_acm_text}}
+</div>
+</div>
+{%- endif -%}
+{%- elsif _acm_type == '2' -%}
+{%- assign _skin_snippet = 'ag-links-' | append: _acm_skin -%}
+{%- include _skin_snippet -%}
+
+{%- elsif _acm_type == '3' -%}
+{%- assign _skin_snippet = 'ag-products-' | append: _acm_skin -%}
+{%- include _skin_snippet -%}
+
+{%- elsif _acm_type == '4' -%}
+{%- assign _skin_snippet = 'ag-productstabs-' | append: _acm_skin -%}
+{%- include _skin_snippet -%}
+
+{%- elsif _acm_type == '5' -%}
+{%- assign _placeholder = 'general.footer.mailchimp.email_address' | t -%}
+{%- assign _bttext = 'general.footer.mailchimp.subscribe_button' | t -%}
+{%- assign _skin_snippet = 'ag-newsletter-' | append: _acm_skin -%}
+{%- include _skin_snippet -%}
+
+{%- elsif _acm_type == '6' -%}
+{%- assign _skin_snippet = 'ag-latest-blogs-' | append: _acm_skin -%}
+{%- include _skin_snippet -%}
+{%- else -%}
+{%- endif -%}
+
+{%- endif -%}

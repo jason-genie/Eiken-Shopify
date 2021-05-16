@@ -1,0 +1,33 @@
+{%- assign bColumns = block.settings.footer_banner_layout | split: '-' -%}
+<div class="row" {{ block.shopify_attributes }}>
+  {%- for i in (1..bColumns.size) -%}
+  {%- assign j = i | minus:1 -%}
+  {%- assign b_link = 'footer_banner' | append:i | append:'_link' -%}
+  {%- assign b_img = 'footer_banner' | append:i  -%}
+  <div class="col-sm-{{bColumns[j]}}">
+    <div class="banner"><a href="{{block.settings[b_link]}}">
+      {%- if block.settings[b_img] != blank -%}
+      <img src="{{block.settings[b_img] | img_url:"master" }}" alt="" />
+      {%- else -%}
+      {%- if bColumns.size == 1 -%}
+      <img src="{{"noimage_1200_200.png"| asset_img_url:"master" }}" style="height: 200px" alt="" />
+      {%- else -%}
+      {%- if bColumns[j] == '8' -%}
+      <img src="{{"noimage_800_200.png"| asset_img_url:"master" }}" style="height: 200px" alt="" />
+      {%- endif -%}
+      {%- if bColumns[j] == '6' -%}
+      <img src="{{"noimage_600_200.png"| asset_img_url:"master" }}" style="height: 200px" alt="" />
+      {%- endif -%}
+      {%- if bColumns[j] == '4' -%}
+      <img src="{{"noimage_400_200.png"| asset_img_url:"master" }}" style="height: 200px" alt="" />
+      {%- endif -%}
+      {%- if bColumns[j] == '3' -%}
+      <img src="{{"noimage_300_200.png"| asset_img_url:"master" }}" style="height: 200px" alt="" />
+      {%- endif -%}
+      {%- endif -%}
+      {%- endif -%}
+      </a></div>
+  </div>
+  {%- endfor -%}
+</div>
+

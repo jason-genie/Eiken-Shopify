@@ -1,0 +1,11 @@
+{%- assign bColumns = settings.footer_banner_layout | split: '-' -%}
+<div class="row">
+  {%- for i in (1..bColumns.size) -%}
+  {%- assign j = i | minus:1 -%}
+  {%- assign b_link = 'footer_banner' | append:i | append:'_link' -%}
+  {%- assign b_img = 'footer_banner' | append:i | append:'.png' -%}
+  <div class="col-sm-{{bColumns[j]}}">
+    <div class="banner"><a href="{{settings[b_link]}}"><img src="{{b_img | asset_url}}" alt="" /></a></div>
+  </div>
+  {%- endfor -%}
+</div>

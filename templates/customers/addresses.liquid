@@ -1,0 +1,225 @@
+{%- if settings.sb_account_placement == 'left' -%}
+<div class="col-md-3{% if settings.sb_account_mobile %} hidden-sm hidden-xs{% endif %}">
+  {%- include 'sidebar-myaccount' -%}
+</div>
+{%- endif -%}
+<div id="content" class="{% if settings.sb_account_placement != '' %}col-md-9{% else %}col-md-12{% endif %} center-column body-other content-with-background">
+  <div class="clearfix">
+    <div id="address_tables">
+      <div id="view_addresses">
+        <h2>{{'customer.addresses.title' | t}}</h2>
+        {%- paginate customer.addresses by 10 -%}
+        {%- if customer.addresses.size > 0 -%}
+        <table class="table table-bordered table-hover">
+          {%- for address in customer.addresses -%}
+          <tr id="view_address_{{address.id}}">
+            <td class="text-left">
+              <ul class="list-unstyled">
+                <li>{{address.first_name}} {{address.last_name}} {% if address == customer.default_address %}({{'customer.addresses.default' | t}}){% endif %}</li>
+                <li>{{address.company}}</li>
+                <li>{{address.street}}</li>
+                <li>{{address.city}} {% if address.province_code %}, {{address.province_code}}{% endif %}</li>
+                <li>{{address.country}} {{address.zip}}</li>
+                <li>{{address.phone}}</li>
+              </ul>
+            </td>
+            <td class="text-right">
+              <button type="button" class="btn btn-info address-edit-toggle" data-form-id="{{ address.id }}">{{ 'customer.addresses.edit' | t }}</button>
+              <button type="button" class="btn btn-danger address-delete" data-form-id="{{ address.id }}" data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}">{{ 'customer.addresses.delete' | t }}</button>  
+            </td>
+          </tr>
+          {%- endfor -%}
+        </table>
+        {%- else -%}
+        <p class="empty">{{'customer.addresses.no_address_html' | t}}</p>
+        {%- endif -%}
+        <div id="address_pagination">{{paginate | default_pagination}}</div>
+        <div class="buttons clearfix">
+          <div class="pull-left"><a href="/account" class="btn btn-default">{{'customer.addresses.back' | t}}</a></div>
+          <div class="pull-right"><button type="button" class="btn address-new-toggle">{{ 'customer.addresses.add_new' | t }}</button></div>
+        </div>
+      </div>
+      {%- for address in customer.addresses -%}
+      <div id="EditAddress_{{ address.id }}" class="form-vertical hide">
+        {% form 'customer_address', address %}
+
+        <h4 class="h2">{{ 'customer.addresses.edit_address' | t }}</h4>
+        <fieldset class="form-horizontal">
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="AddressFirstName_{{ form.id }}">{{ 'customer.addresses.first_name' | t }}</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" id="AddressFirstName_{{ form.id }}" name="address[first_name]" value="{{ form.first_name }}">
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="AddressLastName_{{ form.id }}">{{ 'customer.addresses.last_name' | t }}</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" id="AddressLastName_{{ form.id }}" name="address[last_name]" value="{{ form.last_name }}">
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="AddressCompany_{{ form.id }}">{{ 'customer.addresses.company' | t }}</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" id="AddressCompany_{{ form.id }}" name="address[company]" value="{{ form.company }}">
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label class="col-sm-2 control-label"  for="AddressAddress1_{{ form.id }}">{{ 'customer.addresses.address1' | t }}</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" id="AddressAddress1_{{ form.id }}" name="address[address1]" value="{{ form.address1 }}">
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label class="col-sm-2 control-label"  for="AddressAddress2_{{ form.id }}">{{ 'customer.addresses.address2' | t }}</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" id="AddressAddress2_{{ form.id }}" name="address[address2]" value="{{ form.address2 }}">
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="AddressCity_{{ form.id }}">{{ 'customer.addresses.city' | t }}</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" id="AddressCity_{{ form.id }}" name="address[city]" value="{{ form.city }}">
+            </div>
+          </div>
+
+
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="AddressCountry_{{ form.id }}">{{ 'customer.addresses.country' | t }}</label>
+            <div class="col-sm-10">
+              <select id="AddressCountry_{{ form.id }}" class="form-control address-country-option" data-form-id="{{ form.id }}" name="address[country]" data-default="{{ form.country }}">{{ all_country_option_tags }}</select>
+            </div>
+          </div>
+
+          <div class="form-group required" id="AddressProvinceContainer_{{ form.id }}" style="display:none">
+            <label class="col-sm-2 control-label" for="AddressProvince_{{ form.id }}">{{ 'customer.addresses.province' | t }}</label>
+            <div class="col-sm-10">
+              <select class="form-control"id="AddressProvince_{{ form.id }}" name="address[province]" data-default="{{ form.province }}"></select>
+            </div>          
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="AddressZip_{{ form.id }}">{{ 'customer.addresses.zip' | t }}</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" id="AddressZip_{{ form.id }}" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters">
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="AddressPhone_{{ form.id }}">{{ 'customer.addresses.phone' | t }}</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="tel" id="AddressPhone_{{ form.id }}" name="address[phone]" value="{{ form.phone }}">
+            </div>
+          </div>
+          <div class="form-group required">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10">
+              {{ form.set_as_default_checkbox }}
+              <label for="address_default_address_{{ form.id }}">{{ 'customer.addresses.set_default' | t }}</label>
+            </div>
+          </div>
+        </fieldset>
+        <div class="text-center">
+          <div><input type="submit" class="btn" value="{{ 'customer.addresses.update' | t }}"></div>
+          <div><button type="button" class="btn btn-default text-link address-edit-toggle" data-form-id="{{ form.id }}">{{ 'customer.addresses.cancel' | t }}</button></div>
+        </div>
+        {% endform %}
+        <hr>
+      </div>
+      {%- endfor -%}
+
+      {%- endpaginate -%}
+    </div>
+    <div id="AddressNewForm" class="form-vertical hide">
+      {% form 'customer_address', customer.new_address %}
+      <h2>{{ 'customer.addresses.add_new' | t }}</h2>
+      <fieldset class="form-horizontal">
+        <div class="form-group required">
+          <label class="col-sm-2 control-label" for="AddressFirstNameNew">{{ 'customer.addresses.first_name' | t }}</label>
+          <div class="col-sm-10">
+            <input class="form-control"  type="text" id="AddressFirstNameNew" name="address[first_name]" value="{{ form.first_name }}">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-sm-2 control-label" for="AddressLastNameNew">{{ 'customer.addresses.last_name' | t }}</label>
+          <div class="col-sm-10">
+            <input class="form-control"  type="text" id="AddressLastNameNew" name="address[last_name]" value="{{ form.last_name }}">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label  class="col-sm-2 control-label" for="AddressCompanyNew">{{ 'customer.addresses.company' | t }}</label>
+          <div class="col-sm-10">
+            <input class="form-control"  type="text" id="AddressCompanyNew" name="address[company]" value="{{ form.company }}">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-sm-2 control-label" for="AddressAddress1New">{{ 'customer.addresses.address1' | t }}</label>
+          <div class="col-sm-10">
+            <input class="form-control"  type="text" id="AddressAddress1New" name="address[address1]" value="{{ form.address1 }}">
+          </div>
+        </div>
+
+        <div class="form-group required">
+          <label class="col-sm-2 control-label" for="AddressAddress2New">{{ 'customer.addresses.address2' | t }}</label>
+          <div class="col-sm-10">
+            <input class="form-control"  type="text" id="AddressAddress2New" name="address[address2]" value="{{ form.address2 }}">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-sm-2 control-label"  for="AddressCityNew">{{ 'customer.addresses.city' | t }}</label>
+          <div class="col-sm-10">
+            <input class="form-control"  type="text" id="AddressCityNew" name="address[city]" value="{{ form.city }}">
+          </div>
+        </div>
+
+        <div class="form-group required">
+          <label class="col-sm-2 control-label" for="AddressCountryNew">{{ 'customer.addresses.country' | t }}</label>
+          <div class="col-sm-10">
+            <select class="form-control"  id="AddressCountryNew" name="address[country]" data-default="{{ form.country }}">{{ all_country_option_tags }}</select>
+          </div>
+        </div>
+
+        <div id="AddressProvinceContainerNew" class="form-group required" style="display:none">
+          <label class="col-sm-2 control-label" for="AddressProvinceNew">{{ 'customer.addresses.province' | t }}</label>
+          <div class="col-sm-10">
+            <select class="form-control"  id="AddressProvinceNew" name="address[province]" data-default="{{ form.province }}"></select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-sm-2 control-label" for="AddressZipNew">{{ 'customer.addresses.zip' | t }}</label>
+          <div class="col-sm-10">
+            <input class="form-control" type="text" id="AddressZipNew" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters">
+          </div>
+        </div>
+
+        <div class="form-group required">
+          <label class="col-sm-2 control-label"  for="AddressPhoneNew">{{ 'customer.addresses.phone' | t }}</label>
+          <div class="col-sm-10">
+            <input class="form-control" type="tel" id="AddressPhoneNew" name="address[phone]" value="{{ form.phone }}">
+          </div>
+        </div>
+        <div class="form-group required">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-10">
+            {{ form.set_as_default_checkbox }}
+            <label for="address_default_address_new">{{ 'customer.addresses.set_default' | t }}</label>
+          </div>
+        </div>
+      </fieldset>
+      <div class="buttons clearfix">
+        <div class="pull-left"><button type="button" class="btn btn-default text-link address-new-toggle">{{ 'customer.addresses.cancel' | t }}</button></div>
+        <div class="pull-right"><input type="submit" class="btn" value="{{ 'customer.addresses.add' | t }}"></div>
+      </div>
+      {% endform %}
+      <hr>
+    </div>
+  </div>
+</div>
+{%- if settings.sb_account_placement == 'right' -%}
+<div class="col-md-3{% if settings.sb_account_mobile %} hidden-sm hidden-xs{% endif %}">
+  {%- include 'sidebar-myaccount' -%}
+</div>
+{%- endif -%}

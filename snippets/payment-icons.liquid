@@ -1,0 +1,5 @@
+{%- if section.settings.payment_image != blank -%}
+<div class="payment-image">
+  <img src="{{- section.settings.payment_image | img_url: "master" -}}" />
+</div>
+{%- endif -%}

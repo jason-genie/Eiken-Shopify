@@ -1,0 +1,65 @@
+<div class="linklist footer-accordion" {{ block.shopify_attributes }}>
+  {%- if block.settings.footer_linklist_heading != '' -%}
+  <h3 class="title footer-accordion-heading">
+    <span>{{block.settings.footer_linklist_heading}}</span>
+    <i class="fa fa-plus-svg">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="width: 12px;"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"></path></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"  style="width: 12px;"><path d="M0 10h24v4h-24z"/></svg>
+    </i>
+  </h3>
+  <div class="strip-line"></div>
+  {%- endif -%}
+  {%- if footer-block-linklist == '2' -%}
+  {%- assign list = linklists[block.settings.footer_linklist] -%}
+  {%- assign limit = list.links.size | plus:1 | divided_by:2 -%}
+  <div class="row footer-accordion-content">
+    <div class="col-sm-6">
+      <ul>
+        {%- for link in list.links limit:limit -%}
+        <li><a href="{{link.url}}">{{link.title}}</a></li>
+        {%- else -%}
+        {%- for i in(1..3) -%}
+        {%- if i == 3 -%}
+        <li><a href="#">. . . . . .</a></li>
+        {%- else -%}
+        <li><a href="#">{{"Link Item " | append: i}}</a></li>
+        {%- endif -%}
+        {%- endfor -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+    <div class="col-sm-6">
+      <ul>
+        {%- for link in list.links offset:limit -%}
+        <li><a href="{{link.url}}">{{link.title}}</a></li>
+        {%- else -%}
+        {%- for i in(3..5) -%}
+        {%- if i == 5 -%}
+        <li><a href="#">. . . . . .</a></li>
+        {%- else -%}
+        <li><a href="#">{{"Link Item " | append: i}}</a></li>
+        {%- endif -%}
+        {%- endfor -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+  {%- else -%}
+  <div class="clearfix footer-accordion-content">
+    <ul>
+      {%- assign list = linklists[block.settings.footer_linklist] -%}
+      {%- for link in list.links -%}
+      <li><a href="{{link.url}}">{{link.title}}</a></li>
+      {%- else -%}
+      {%- for i in(1..3) -%}
+      {%- if i == 3 -%}
+      <li><a href="#">. . . . . .</a></li>
+      {%- else -%}
+      <li><a href="#">{{"Link Item " | append: i}}</a></li>
+      {%- endif -%}
+      {%- endfor -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+  {%- endif -%}
+</div>

@@ -1,0 +1,8 @@
+{%- assign instructions = product.metafields.info -%}
+{%- if instructions.countdown != blank -%}
+{%- assign my_date = instructions.countdown | split: '-' -%}
+<div class="notranslate count_holder_item countdown-style-{{- settings.product_countdown_style -}}">
+  <h3>{{- "products.product.countdown"  | t -}}</h3>
+  <div class="countdown_{{product.id}} countdown" data-year="{{my_date[2]}}" data-month="{{my_date[0]}}" data-day="{{my_date[1]}}"></div>
+</div>
+{%- endif -%}

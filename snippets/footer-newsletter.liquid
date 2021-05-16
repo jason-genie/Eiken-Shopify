@@ -1,0 +1,17 @@
+<div class="newsletter">
+  {%- if settings.footer_newsletter_heading != '' -%}
+  <h3 class="title">{{settings.footer_newsletter_heading}}</h3>
+  <div class="strip-line"></div>
+  {%- endif -%}
+  <div class="clearfix default-newsletter">
+    {%- if settings.footer_newsletter_caption != '' -%}<p>{{settings.footer_newsletter_caption}}</p>{%- endif -%}
+    {%- if settings.popup_mailchimp_action != '' -%}
+    <form action="{{settings.popup_mailchimp_action}}" method="post" class="mailing-form" name="mc-embedded-subscribe-form" target="_blank">
+      <div class="group-input">      
+        <input placeholder="{{'general.footer.mailchimp.email_address' | t}}" type="email" required="required" name="EMAIL" class="email" />
+        <button type="submit" class="footer-button subscribe">{{'general.footer.mailchimp.subscribe_button' | t}}</button>
+      </div>
+    </form>
+    {%- endif -%}
+  </div>
+</div>

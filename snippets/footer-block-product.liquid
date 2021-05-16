@@ -1,0 +1,48 @@
+<div class="featured footer-accordion" {{ block.shopify_attributes }}>
+   <h4 class="title footer-accordion-heading {% if block.settings.footer_product_heading == blank %}footer-title-hide{% endif %}">
+    <span>
+      {%- if block.settings.footer_product_heading != blank -%}
+      {{block.settings.footer_product_heading}}
+      {%- else -%}
+      {{ "general.footer.product" | t }}
+      {%- endif -%}
+    </span>
+    <i class="fa fa-plus-svg">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="width: 12px;"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"></path></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"  style="width: 12px;"><path d="M0 10h24v4h-24z"/></svg>
+    </i>
+  </h4>
+  <div class="strip-line {% if block.settings.footer_product_heading == blank %}footer-title-hide{% endif %}"></div>
+  <div class="footer-accordion-content clearfix">
+    {%- assign featuredC = collections[block.settings.footer_product_collection] -%}
+    <div class="advanced-grid-products">
+      {%- for featuredP in featuredC.products limit: block.settings.footer_product_limit -%}
+      {%- assign featuredV = featuredP.selected_or_first_available_variant -%}
+      <div class="product clearfix">
+        <div class="image">
+          <a href="{{featuredP.url}}"><img src="{{featuredP.featured_image | product_img_url:'small'}}" alt="{{featuredP.title | escape}}" /></a>
+        </div>
+        <div class="right">
+          <div class="name"><a href="{{featuredP.url}}">{{featuredP.title}}</a></div>
+          <div class="price"><span class="money">{{featuredV.price | money}}</span>{%- if featuredV.compare_at_price > featuredV.price -%}{{' '}}<span class="price-old money">{{featuredV.compare_at_price | money}}</span>{%- endif -%}</div>
+        </div>
+      </div>
+      {%- else -%}
+      {%- assign  _limit = block.settings.footer_product_limit -%}
+      {%- for i in(1.._limit) -%}
+      <div class="product clearfix">
+        <div class="image">
+          <a href="#">
+            {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+            {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+          </a>
+        </div>
+        <div class="right">
+          <div class="name"><a href="#">{{"products.product.title" | t}}</a></div><div class="price"><span class="price-new money" data-currency-usd="{{ "19.99"| money_with_currency}}">{{ "1999.99"| money_with_currency}}</span></div>
+        </div>
+      </div>
+      {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>

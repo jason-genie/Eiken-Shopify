@@ -1,0 +1,345 @@
+<div id="content" class="col-md-12 center-column content-with-background main-cart-content">
+  {%- if cart.items == empty -%}
+  <p>{{'cart.general.empty' | t}}</p>
+  <div class="buttons">
+    <div class="pull-right"><a href="{{shop.url}}" class="btn btn-primary">{{'cart.general.continue_shopping' | t}}</a></div>
+  </div>
+  {%- else -%}
+  <form action="{% unless request.locale.primary %}{{ request.locale.root_url }}{% endunless %}/cart" method="post" id="cartform" enctype="multipart/form-data">
+    <div class="table-responsive cart-info">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <td class="text-center"></td>
+            <td class="text-center" style="padding-left: 20px;">{{'cart.general.name' | t}}</td>
+            <td class="text-center hidden-xs">{{'cart.general.quantity' | t}}</td>
+            <td class="text-right hidden-xs">{{'cart.general.price' | t}}</td>
+            <td class="text-right hidden-xs">{{'cart.general.total' | t}}</td>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for item in cart.items -%}
+          <tr>
+            <td class="text-center">
+              <a href="{{item.url}}"><img src="{{item | img_url:'medium'}}" alt="{{item.title | escape}}" title="{{item.title | escape}}" class="img-thumbnail" /></a>
+            </td>
+            <td class="text-center">
+              <a href="{{item.url}}">
+                {{item.product.title}}
+                {%- if item.product.variants.size > 1 -%}
+                <span class="variant_title"> - {{item.variant.title}}<br><br></span>
+                {%- endif -%}
+              </a>
+              {%- for p in item.properties -%}
+              {%- unless p.last == blank -%}
+              {{ p.first }}:
+              {%- if p.last contains '/uploads/' -%}
+              <a class="lightbox" href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+              {%- else -%}
+              {{ p.last }}
+              {%- endif -%}
+              <br />
+              {%- endunless -%}
+              {%- endfor -%}
+              <div class="mobile-cart-content row visible-xs">
+                <div class="col-xs-3">
+                  <input type="text" class="input-mobile" id="updates_{{item.id}}" name="updates[]" value="{{item.quantity}}" size="1" />
+                </div>
+                <div class="col-xs-6 moneymaker">
+                  <span class="money">{{item.price | money}}</span>
+                </div>
+                <div class="col-xs-3">
+                  <button class="cart-update btooltip" type="submit" name="update" title="{{'cart.general.update' | t | escape}}"><i class="fa fa-refresh"></i></button>
+                  &nbsp;
+                <a class="cart-remove btooltip" href="{% unless request.locale.primary %}{{ request.locale.root_url }}{% endunless %}/cart/change?line={{ forloop.index }}&quantity=0" title="{{'cart.general.remove' | t | escape}}"><i class="fa fa-remove"></i></a>
+              
+				</div>
+              </div>
+            </td>
+            <td class="text-center hidden-xs">
+              <input class="input-desktop" type="text" id="updates_{{item.id}}" name="updates[]" value="{{item.quantity}}" size="1" />
+              &nbsp;
+              <button class="cart-update btooltip" type="submit" name="update" title="{{'cart.general.update' | t | escape}}"><i class="fa fa-refresh"></i></button>
+              &nbsp;           
+              <a class="cart-remove btooltip" href="{% unless request.locale.primary %}{{ request.locale.root_url }}{% endunless %}/cart/change?line={{ forloop.index }}&quantity=0" title="{{'cart.general.remove' | t | escape}}"><i class="fa fa-remove"></i></a>
+			</td>
+            <td class="text-right hidden-xs"><span class="money">{{item.price | money}}</span></td>
+            <td class="text-right hidden-xs"><span class="money">{{item.price | times:item.quantity | money}}</span></td>
+          </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+    <div class="cart-total">
+      <table>
+        <tr>
+          <td class="text-right"><strong>{{'cart.general.subtotal' | t}}</strong></td>
+          <td class="text-right"><span class="money">{{cart.total_price | money}}</span></td>
+        </tr>
+      </table>
+    </div>
+    <div class="buttons">
+      <div class="pull-left"><a href="{% unless request.locale.primary %}{{ request.locale.root_url }}{% endunless %}/" class="btn btn-default" id="home-cart">{{'cart.general.continue_shopping' | t}}</a></div>
+      <div class="pull-right cart__condition__wrapper">
+       <input type="submit" name="checkout" id="update-cart" class="btn btn-primary checkout-button {% if settings.cart_terms_enable %}btn-disabled{% endif %}" value="{{'cart.general.checkout' | t}}" />
+        {%- if settings.cart_terms_enable -%}
+        {%- if settings.cart_terms_page != blank -%}
+        {% if request.locale.iso_code == 'fr' %}
+        {%- assign terms_conditions_url = 'https://eikenshop.com/fr/pages/general-terms-and-conditions-of-sale' -%}
+        {% else %}
+        {%- assign terms_conditions_url = 'https://eikenshop.com/pages/general-terms-and-conditions-of-sale' -%}
+        {%- endif -%}
+        {%- endif -%}
+        <div class="product-cart__condition">
+          <input type="checkbox" class="product-cart__agree" data-message="{{ 'cart.general.terms_conditions_message' | t | escape }}" />
+          <label for="product-cart__agree">{{ 'cart.general.terms_conditions_html' | t : terms_conditions_url: terms_conditions_url }}</label>
+        </div>
+        {%- endif -%}
+      </div>
+    </div>
+    {% if request.locale.iso_code == 'fr' %}
+        <div class="payment-logo"> <img class="payement-logo-img" src="https://cdn.shopify.com/s/files/1/0134/7738/0153/files/Secure_payments_powered_by_Mollie_--_Cards_PayPal__2x_44ac156f-83d2-48ed-ae2d-09ae19c6131a.png?v=1601638246"> </div>
+    {% else %}
+    	<div class="payment-logo"> <img class="payement-logo-img" src="https://cdn.shopify.com/s/files/1/0134/7738/0153/files/Secure_payments_powered_by_Mollie_--_Cards_iDeal_PayPal__2x_1f09ae7c-1961-4f24-977b-77a26b397e33.png?v=1601635791"> </div>
+  	{% endif %}
+  </form>
+  
+
+  {%- endif -%}
+  
+</div>
+
+<style>
+  
+  .breadcrumb-type-5 .breadcrumb .container ul {
+    display: none; 
+  }
+  
+  .breadcrumb .container h1 {
+    margin-bottom: 20px; 
+  }
+
+ .row.footer-blocks-wrapper.footer-blocks-bottom {
+   display: none;
+ }
+  
+.money {
+  color: #333333;
+}
+  
+
+  .legal {
+    font-size: 10px;
+    margin-left: 10px;
+  }
+  
+  .code_promo_tunnel {
+   	max-width: 60%;
+ 	background-color: #f5f5f5;
+    border: 1px solid lightgray;
+    padding: 10px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    margin-top: 20px;
+    filter: drop-shadow(5px 5px 2px lightgrey);
+  }
+  
+  .promo-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  
+  #home-cart {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+  }
+  
+.uneditable-input {
+  	background-color: whitesmoke !important;
+    color: grey !important;
+    font-size: 13px !important;
+    border: none !important;
+    padding: 10px 10px 10px !important;
+  }
+  
+  .text-center {
+    font-size:14px !important;
+  }
+  .col-md-12 {    
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+ 
+.buttons{
+  	overflow:auto;
+  	margin: 15px 20px 10px;
+}
+  
+.responsive .cart-total {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+  
+  .cart-info table tbody td {
+ border-bottom: 1px solid #e6e6e6;
+  }
+  
+    .button, .btn {
+   font-size: 20px !important;
+   padding-left: 30px !important;
+   padding-right: 30px !important;
+  }
+  
+  	.payment-logo {
+   overflow: auto;
+   margin: 10px 17px 10px;
+   float: right !important;
+}
+  
+  .payement-logo-img {
+   width: 300px;
+  }
+  
+  
+@media (max-width: 767px) {
+  .doubly-message {
+   font-size: 11px;
+  }
+	.responsive .row>div {
+    padding-left: 1px;
+    padding-right: 1px;
+}
+  
+    .text-center {
+    font-size:12px !important;
+  }
+  
+  .breadcrumb-type-5 .breadcrumb .container>div {
+        padding-top: 33px;
+  }
+  
+  .table {
+    margin: 0 0 10px;
+  }
+    .col-md-12 {    
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+  
+  .moneymaker {
+    margin-left: 20px !important;
+  }
+  
+  .button, .btn {
+   font-size: 20px !important;
+   padding-left: 10px;
+}
+    .responsive .cart-total {
+    padding-bottom: 15px;
+    padding-top: 15px;
+}
+  
+    .payment-logo {
+    float: inherit !important;
+    overflow: auto;
+    margin: 5px 0px 5px !important;
+    padding-top: 20px;
+    border-top: 1px solid #e5e5e5;
+}
+  
+  	#home-cart {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    margin-left: 5px;
+    }
+  
+    .code_promo_tunnel {
+   	max-width: 100%;
+ 	background-color: #f5f5f5;
+    border: 1px solid lightgray;
+    padding: 10px;
+    margin-top: 20px;
+  }
+     .responsive .main-fixed .cart-info table td:first-child {
+    padding-right: 20px;
+  }
+}
+  
+  .payment-logo {
+    float: left;
+    overflow: auto;
+    margin: 5px 0px 5px !important;
+  }
+  
+   .payement-logo-img {
+	width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+   }
+  
+  .buttons{
+   overflow: auto;
+   margin: 10px 0px 15px !important;
+  }
+  
+  .responsive .cart-total {
+    padding-bottom: 15px;
+    padding-top: 15px;
+}
+</style>
+
+{% if request.locale.iso_code == 'fr' %}
+<style>
+    #update-cart {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    padding-left: 50px !important;
+    padding-right: 50px !important;
+  }
+  
+  @media (max-width: 767px) {
+#update-cart {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    padding-left:25px !important;
+    padding-right: 25px !important;
+    margin-right: 5px;
+}
+    .product-cart__condition {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    max-width: 250px;
+    text-align: justify;
+}
+}
+  
+</style>
+{% else %}
+<style>
+    #update-cart {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    padding-left: 50px !important;
+    padding-right: 50px !important;
+  }
+  
+    @media (max-width: 767px) {
+#update-cart {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    padding-left: 50px !important;
+    padding-right: 50px !important;
+    margin-right: 5px;
+}
+  }
+  
+</style>
+{% endif %}

@@ -1,0 +1,76 @@
+{{- 'rt.vendors.scss.css' | asset_url | stylesheet_tag -}}
+{{- 'rt.vendor.scss.css' | asset_url | stylesheet_tag -}}
+{{- 'rt.application.scss.css' | asset_url | stylesheet_tag -}}
+{{- 'rt.custom.scss.css' | asset_url | stylesheet_tag -}}
+{{- 'custom_code.scss.css' | asset_url | stylesheet_tag -}}
+{%- if template == 'page.gallery' -%}
+{{- 'gallery.scss.css' | asset_url | stylesheet_tag -}}
+{%- endif -%}
+<script>
+  if(navigator.userAgent.indexOf("Chrome-Lighthouse") == -1) { 
+//window.lazySizesConfig.lazyClass = 'b-lazy';
+window.sidebar={% if settings.content_sidebar %}1{% else %}!1{% endif %},
+window.template="{{template}}",
+window.rtl={% if settings.page_direction == 'LTR' %}!1{% else %}1{% endif %},
+window.popup_mailchimp_expire={{settings.popup_mailchimp_expire | plus:0}},
+window.popup_mailchimp_period={{settings.popup_mailchimp_period | plus:0}},
+window.popup_mailchimp_delay={{settings.popup_mailchimp_delay | plus:0}},
+window.popup_mailchimp_close={{settings.popup_mailchimp_close | plus:0}},
+window.products={},window.product_image_zoom={{settings.product_image_zoom | plus:0}},
+window.asset_url="{{'?' | asset_url}}",
+window.swatch_color={{settings.product_swatch_color}},
+window.swatch_size={{settings.product_swatch_size}},
+window.shopping_cart_type="{{settings.shopping_cart_type}}",
+window.contact_map_address="{{settings.contact_map_address | strip_newlines}}",
+window.money_format="{{shop.money_format}}",
+window.show_multiple_currencies={{settings.show_multiple_currencies}},
+{%- if settings.show_multiple_currencies -%}
+window.shopCurrency="{{shop.currency}}",
+window.defaultCurrency="{{settings.default_currency}}",
+window.cookieCurrency="",
+window.jsonCurrency={{shop.money_with_currency_format | strip_html | json}},
+window.jsonMoney={{shop.money_format | strip_html | json}},
+window.formatCurrency="{{settings.currency_format | default: 'money_with_currency_format'}}",
+{%- endif -%}
+window.all_results_text="{{'search.general.see_all_results' | t | escape}}",
+window.megamenu_active=!1,
+window.megamenu_hover=!1,
+window.megamenu_responsive=!1,
+window.megamenu_responsive_design="yes",
+window.fixed_header="{{settings.fixed_header}}",
+window.compare="{%- if settings.compare_enable -%}1{%- endif -%}",
+window.pitem_row="{{- settings.product_item_per_row -}}",
+window.swatch_color="{%- if settings.product_swatch_color -%}1{%- endif -%}",
+window.swatch_size="{%- if settings.product_swatch_size -%}1{%- endif -%}",
+window.swatch_color_advanced="{%- if settings.product_swatch_color_advanced  -%}1{%- endif -%}";
+window.hn_use = {{settings.hn_use}};
+window.hn_once = {{settings.hn_once}};
+window.social_instagram = {{settings.social_instagram}};
+var theme = {
+  apps: {
+    details: {{ 'apps.lookbook.details' | t | json }},
+    buyNow: {{ 'apps.lookbook.buy_now' | t | json }},
+  },
+  strings: {
+    addToCart: {{ 'products.product.add_to_cart' | t | json }},
+    soldOut: {{ 'products.product.sold_out' | t | json }},
+    unavailable: {{ 'products.product.unavailable' | t | json }},
+    inStock: {{ 'products.product.in_stock' | t | json }},
+    available: {{ 'products.product.available' | t | json }},
+    outStock: {{ 'products.product.out_of_stock' | t | json }},
+    sale: {{ 'products.product.sale' | t | json }},
+    btn_select_options: {{'products.product.select_options' | t | json }},
+    btn_add_to_cart: {{'products.product.add_to_cart' | t | json }}
+  },
+  settings: {
+    moneyFormat: {{- shop.money_format | json -}},
+  },
+  inventory: {{ settings.product_info_status | json }},
+  sale_percentages: {{ settings.shop_sale_percentages | json }},
+  asset_url: {{ '?' | asset_url | json }}
+}
+}
+</script>
+<script src="{{ 'jquery-2.1.4.min.js' | asset_url }}" defer="defer"></script>
+{%-if settings.revolution_slider_used-%}{%- include 'roarvslider-supp' -%}{%-endif-%}
+{%- include 'weketing-tracking' -%}

@@ -1,0 +1,62 @@
+{%- if settings.sb_blog_placement == 'left' -%}
+<div id="sidebar" class="col-md-3 col-sm-12{% if settings.sb_blog_mobile %} hidden-sm hidden-xs{% endif %}">
+  {%- include 'sidebar-blog' -%}
+</div>
+{%- endif -%}
+
+<div id="col-main" class="center-column content-with-background blog-page{% if settings.sb_blog_placement != '' %} col-md-9{% else %} col-md-12{% endif %} col-sm-12">
+  {%- paginate blog.articles by settings.blog_pagination_limit -%}
+  {%- if blog.articles.size > 0 -%}
+  <div class="posts posts-3-columns-grid posts-grid">
+    {%- for article in blog.articles -%}
+    <div class="post post-with-3-columns">
+      <div class="post-content">
+        {%- if article.image -%}
+        <div class="post-media">
+          <img alt="{{article.title | escape}}" src="{{article.image.src | img_url: '600x400', crop: 'top'}}" />
+        </div>
+        {%- endif -%}
+        {%- if article.tags.size > 0 -%}
+        <div class="tags">
+          {%- for tag in article.tags limit:2 -%}
+          {{tag | link_to_add_tag: tag}}
+          {%- endfor -%}
+        </div>
+        {%- endif -%}
+        <div class="date-published">{{article.published_at | date: "%b %d, %Y"}}</div>
+        <h2 class="post-title">
+          <a href="{{article.url}}">{{article.title}}</a>
+        </h2>
+        <div class="post-description">
+          {%- if article.excerpt != '' -%}
+          {{article.excerpt}}
+          {%- else -%}
+          {{article.content | strip_html | truncatewords: 20}}
+          {%- endif -%}
+        </div>
+        <a href="{{article.url}}" class="button-more">{{'blogs.general.read_more' | t}}</a>
+      </div>       
+    </div>
+    {%- endfor -%}
+  </div>
+  {%- if settings.blog_pagination_type == "1" -%}
+  {%- include 'pagination' -%}
+  {%- else -%}
+  <div class="pagination-ajax">
+    <a href="javascript:void(0);" data-page="2" id="load-more" data-loading-text="{{'blogs.general.loading' | t}}" class="button">{{'blogs.general.load_more' | t}}</a>
+  </div>
+  {%- endif -%}
+  {%- else -%}
+  <p class="empty">{{ 'blogs.general.no_acticles' | t }}</p>
+  <div class="buttons">
+    <div class="pull-right"><a href="{{shop.url}}" class="btn btn-primary">{{'blogs.general.continue' | t}}</a></div>
+  </div>
+  {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+{%- if settings.sb_blog_placement == 'right' -%}
+<div id="sidebar" class="col-md-3 col-sm-12{% if settings.sb_blog_mobile %} hidden-sm hidden-xs{% endif %}">
+  {%- include 'sidebar-blog' -%}
+</div>
+{%- endif -%}

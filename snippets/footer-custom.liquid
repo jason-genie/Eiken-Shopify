@@ -1,0 +1,54 @@
+{%- comment -%}{{' '}}Check FOOTER CUSTOM layout {%- endcomment -%}
+{%- assign footer_custom_display = true -%}
+{%- if settings.footer_custom_layout == '1' and template != 'index' -%}
+{%- assign footer_custom_display = false -%}
+{%- endif -%}
+{%- if footer_custom_display -%}
+{%- capture footer_custom_class -%}{%- if settings.custom_footer_layout == '1' -%}{{'full-width'}}{%- elsif settings.custom_footer_layout == '4' -%}{{'fixed2 fixed3'}}{%- elsif settings.custom_footer_layout == '3' -%}{{'fixed2'}}{%- else -%}{{'fixed'}}{%- endif -%}{%- endcapture -%}
+{%- assign list_hooks = "footer_about_hook|footer_banner_hook|footer_html_hook|footer_html2_hook|footer_product_hook|footer_info1_hook|footer_info2_hook|footer_linklist1_hook|footer_linklist2_hook|footer_linklist3_hook|footer_linklist4_hook|footer_linklist5_hook|footer_linklist6_hook|footer_newsletter_hook|footer_social_hook" | split: "|" | uniq -%}
+{%- assign str_hooks = "" -%}
+{%- assign hook_size = list_hooks.size | minus:1 -%}
+{%- for i in (0..hook_size) -%}
+{%- if settings[list_hooks[i]] == 'custom' -%}
+{%- assign str_hooks = str_hooks | append:list_hooks[i] | append:"|" -%}
+{%- endif -%}
+{%- endfor -%}
+{%- assign new_hooks = str_hooks | split:"|" -%}
+{%- if new_hooks.size > 0 -%}
+{%- assign hook_size = new_hooks.size | minus:1 -%}
+{%- for i in (0..hook_size) -%}
+{%- assign i_plus = i | plus:1 -%}
+{%- for j in (i_plus..hook_size) -%}
+{%- assign pos_current_name = new_hooks[i] | replace:'_hook','_order' -%}
+{%- assign pos_next_name = new_hooks[j] | replace:'_hook','_order' -%}
+{%- assign pos_current = settings[pos_current_name] | plus:0 -%}
+{%- assign pos_next = settings[pos_next_name] | plus:0 -%}
+{%- if pos_next < pos_current -%}
+{%- assign hook_old = new_hooks[j] | prepend:"|" -%}
+{%- assign hook_new = new_hooks[j] | append:"|" | append:new_hooks[i] -%}
+{%- assign str_hooks = str_hooks | remove:hook_old | replace:new_hooks[i],hook_new -%}
+{%- endif -%}
+{%- endfor -%}
+{%- endfor -%}
+{%- assign new_hooks = str_hooks | split:"|" -%}
+<div class="custom-footer {{footer_custom_class}}">
+  <div class="background-custom-footer"></div>
+  <div class="background">
+    <div class="shadow"></div>
+    <div class="pattern">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            {%- for i in (1..new_hooks.size) -%}
+            {%- assign j = i | minus:1 -%}
+            {%- assign snippet_name = new_hooks[j] | remove:'_hook' | replace:'_', '-' -%}
+            {%- include snippet_name with 'custom' -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endif -%}
+{%- endif -%}

@@ -1,0 +1,202 @@
+{%- layout none -%}
+{%- assign tmp =  shop.url | append: page.url | append: "/" -%}
+{%- assign s_handles = canonical_url | replace : tmp, ""  -%}
+{%- assign handles = s_handles | split: "," -%}
+{%- assign options =  page.content | split: "," -%}
+<div id="be_compare_features_table_inner" class="compare-content">
+  <table id="be_compare_features_table" class="table table-hover">
+    <tbody id="table-compare">
+
+        {%- if settings.compare_image -%}
+      <tr class="odd image">
+        <th><span>{{- "compare.compare.image" | t -}}</span></th>
+        {%- for r_handle in handles limit: handles.size -%}
+        {%- assign h_tmp = r_handle | split: "_sp_" -%}
+        {%- assign _handle = h_tmp[0] -%}
+        {%- assign _id = h_tmp[1] -%}
+        {%- if _handle != blank -%}
+        {%- assign _product =  all_products[_handle] -%}
+        {%- assign current_variant = _product.selected_or_first_available_variant -%}
+        {%- endif -%}
+        <td class="{%- cycle 'odd ', 'even ' -%}fastor_{{- r_handle -}}">
+          <div class="image_wrap">
+            <a href="{{ _product.url | within: collections.all }}">
+              <img src="{{ _product | img_url: '150x' }}" alt="" srcset="{{ _product | img_url: '150x' }} 150w, {{ _product | img_url: '235x' }} 235w, {{ _product | img_url: '768x' }} 768w" sizes="(max-width: 150px) 100vw, 150px" />
+            </a>
+          </div>
+        </td>  
+        {%- endfor -%}
+      </tr>
+        {%- endif -%}
+      {%- if settings.compare_title -%}
+      <tr class="even image">
+        <th><span>{{- "compare.compare.product_name" | t -}}</span></th>
+        {%- for r_handle in handles limit: handles.size -%}
+        {%- assign h_tmp = r_handle | split: "_sp_" -%}
+        {%- assign _handle = h_tmp[0] -%}
+        {%- assign _id = h_tmp[1] -%}
+        {%- if _handle != blank -%}
+        {%- assign _product =  all_products[_handle] -%}
+        {%- assign current_variant = _product.selected_or_first_available_variant -%}
+        {%- endif -%}
+        <td class="{%- cycle 'odd ', 'even ' -%}fastor_{{- r_handle -}}">
+            <a href="{{ _product.url | within: collections.all }}">
+              {{- _product.title -}}
+            </a>
+        </td>  
+        {%- endfor -%}
+      </tr>
+        {%- endif -%}
+      {%- if settings.compare_price -%}
+      <tr class="odd c_price">
+        <th><span>{{- "compare.compare.unit_price" | t -}}</span></th>
+        {%- for r_handle in handles limit: handles.size -%}
+        {%- assign h_tmp = r_handle | split: "_sp_" -%}
+        {%- assign _handle = h_tmp[0] -%}
+        {%- assign _id = h_tmp[1] -%}
+        {%- if _handle != blank -%}
+        {%- assign _product =  all_products[_handle] -%}
+        {%- assign current_variant = _product.selected_or_first_available_variant -%}
+        {%- endif -%}
+        <td class="price {%- cycle ' odd ', ' even ' -%}fastor_{{- r_handle -}}">
+          {%- if _product.available -%}
+          {%- if current_variant.compare_at_price > current_variant.price -%}
+          <span class="price-old money">{{current_variant.compare_at_price | money}}</span>
+          {%- endif -%}
+          <span class="price-new money">{{current_variant.price | money}}</span>
+          {%- else -%}
+          <span class="price-old">{{'products.product.sold_out' | t}}</span>
+          {%- endif -%}
+        </td>  
+        {%- endfor -%}
+      </tr>
+      {%- endif -%}
+      {%- if settings.compare_availability -%}
+
+      <tr class="even availability">
+        <th><span>{{- "compare.compare.availability" | t -}}</span></th>
+        {%- for r_handle in handles limit: handles.size -%}
+        {%- assign h_tmp = r_handle | split: "_sp_" -%}
+        {%- assign _handle = h_tmp[0] -%}
+        {%- assign _id = h_tmp[1] -%}
+        {%- if _handle != blank -%}
+        {%- assign _product =  all_products[_handle] -%}
+        {%- assign current_variant = _product.selected_or_first_available_variant -%}
+        {%- endif -%}
+        <td class="{%- cycle 'odd ', 'even ' -%}fastor_{{- r_handle -}}">
+          <span>
+            {%- if _product.available -%}
+            {{- 'products.product.in_stock' | t -}}
+            {%- else -%}
+            {{- 'products.product.out_of_stock' | t -}}
+            {%- endif -%}
+          </span>
+        </td>  
+        {%- endfor -%}
+      </tr>
+      
+      {%- endif -%}
+      {%- if settings.compare_rating -%}
+      <tr class="odd rating">
+        <th><span>{{- "compare.compare.rating" | t -}}</span></th>
+        {%- for r_handle in handles limit: handles.size -%}
+        {%- assign h_tmp = r_handle | split: "_sp_" -%}
+        {%- assign _handle = h_tmp[0] -%}
+        {%- assign _id = h_tmp[1] -%}
+        {%- if _handle != blank -%}
+        {%- assign _product =  all_products[_handle] -%}
+        {%- assign current_variant = _product.selected_or_first_available_variant -%}
+        {%- endif -%}
+        <td class="{%- cycle 'odd ', 'even ' -%}fastor_{{- r_handle -}}">
+          <span class="shopify-product-reviews-badge star_content" data-id="{{ _product.id }}"></span>
+        </td>  
+        {%- endfor -%}
+      </tr>
+      
+      {%- endif -%}
+      {%- if settings.compare_summary -%}
+      <tr class="even summary">
+        <th><span>{{- "compare.compare.summary" | t -}}</span></th>
+        {%- for r_handle in handles limit: handles.size -%}
+        {%- assign h_tmp = r_handle | split: "_sp_" -%}
+        {%- assign _handle = h_tmp[0] -%}
+        {%- assign _id = h_tmp[1] -%}
+        {%- if _handle != blank -%}
+        {%- assign _product =  all_products[_handle] -%}
+        {%- assign current_variant = _product.selected_or_first_available_variant -%}
+        {%- endif -%}
+        <td class="{%- cycle 'odd ', 'even ' -%}fastor_{{- r_handle -}}">
+          <span>{{- _product.description | strip_html | truncatewords: 15 -}}</span>
+        </td>  
+        {%- endfor -%}
+      </tr>
+      
+      {%- endif -%}
+      {%- if page.content !=  blank -%}
+      {%- assign tmp_options = page.content | split: "," -%}
+      {%- for _option in tmp_options -%}
+      {%- assign _option_handle = _option | handleize  -%}
+      <tr class="{%- cycle 'odd ', 'even ' -%} option">
+        <th><span>{{- _option -}}</span></th>
+        {%- for r_handle in handles limit: handles.size -%}
+        {%- assign h_tmp = r_handle | split: "_sp_" -%}
+        {%- assign _handle = h_tmp[0] -%}
+        {%- assign _id = h_tmp[1] -%}
+        {%- if _handle != blank -%}
+        {%- assign _product =  all_products[_handle] -%}
+        {%- assign current_variant = _product.selected_or_first_available_variant -%}
+        {%- endif -%}
+        <td class="{%- cycle 'odd ', 'even ' -%}fastor_{{- r_handle -}}">
+          {%- for option in _product.options_with_values  %}
+          {%- assign option_handle = option.name | handleize  -%}
+          {%- if option_handle == _option_handle -%}
+          <span class="compare-{{_option_handle}}">
+            {{- option.values | join: ", " -}}
+          </span>
+          {%- break -%}
+          {%- endif -%}
+          {%- endfor -%}
+        </td>  
+        {%- endfor -%}
+      </tr>
+      {%- endfor -%}
+      {%- endif -%}
+      <tr class="actions">
+        <th></th>
+        {%- for r_handle in handles limit: handles.size -%}
+        {%- assign h_tmp = r_handle | split: "_sp_" -%}
+        {%- assign _handle = h_tmp[0] -%}
+        {%- assign _id = h_tmp[1] -%}
+        {%- if _handle != blank -%}
+        {%- assign _product =  all_products[_handle] -%}
+        {%- assign current_variant = _product.selected_or_first_available_variant -%}
+        {%- endif -%}
+        <td class="{%- cycle 'odd ', 'even ' -%}fastor_{{- r_handle -}}">
+          <div class="product_after_shop_loop_buttons">
+            {%- if _product.available -%}
+            {%- if _product.variants.size > 1 -%}
+            <a rel="nofollow" href="{{ _product.url | within: collection }}" class="btn btn-primary">
+              <i class="fa fa-shopping-cart"></i>
+            </a>
+            {%- else -%}
+            <form action="/cart/add" method="post" enctype="multipart/form-data">
+              <input type="hidden" name="quantity" value="1" />
+              <input type="hidden" name="id" value="{{current_variant.id}}" />
+              <button type="submit" class="btn btn-primary btooltip" title="{{'wishlist.general.add' | t | escape}}"><i class="fa fa-shopping-cart"></i></button>
+            </form>
+            {%- endif -%}
+            {%- else -%}
+            <a rel="nofollow" href="{{ _product.url | within: collection }}" class="btn btn-primary">
+              <i class="fa fa-shopping-cart"></i>
+            </a>
+            {%- endif -%}
+          </div>
+          <a href="javascript:void(0);" class="btn btn-default remove remove_from_compare" data-rev="{{- r_handle -}}" title="{{ 'wishlists.wishlist.remove_product' | t }}">
+            <i class="fa fa-times"></i>
+          </a>
+        </td>  
+        {%- endfor -%}
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,196 @@
+<style>
+  {%- if section.settings.bg_color != blank -%}
+  #primary-{{section.id}} .mobile-nav-wrapper{
+    background-color: {{section.settings.bg_color}}
+  }
+  {%- endif -%}
+  {%- if section.settings.content_color != blank -%}
+  .mobile-nav .mobile-nav__item,
+  .mobile-nav .mobile-nav__item a {
+    color: {{section.settings.content_color}}	
+  }
+  {%- endif -%}
+  {%- if section.settings.border_color != blank -%} 
+  .mobile-nav .mobile-nav__item {
+    border-color: {{section.settings.border_color}}
+  }
+  {%- endif -%}
+</style>
+<div id="primary-{{section.id}}"  data-section-id="{{ section.id }}" data-section-type="mobile-nav-section">
+  <nav class="mobile-nav-wrapper">
+    <ul class="mobile-nav">
+      <li class="mobile-nav__item">
+        <div class="mobile-nav-icon">
+          <button type="button" aria-label="close menu"><span></span></button>{{ 'general.header.close' | t }}
+        </div>
+      </li>
+      
+      {%- if section.settings.linklist != blank -%}
+        {%- for link in linklists[section.settings.linklist].links -%}
+          {%- include 'mobile-navigation-link' -%}
+        {%- endfor -%}
+      {%- endif -%}
+      
+      {%- if settings.wishlist_enable and settings.wishlist_page -%}
+      <li class="mobile-nav__item">
+        <a href="/pages/{{ settings.wishlist_page }}" class="mobile-nav__link">{{ 'general.top.wishlist' | t }}</a>
+      </li>
+      {%- endif -%}
+      
+      {%- if settings.show_multiple_currencies -%}
+      <li class="mobile-nav__item mobile-nav-currency">
+        {%- include 'currencies-switcher', _has_language: false -%}
+      </li>
+      {%- endif -%}
+      <li class="mobile-nav__item mobile-nav-language">
+        <div class="dropdown language__picker">
+          <a href="javascript:void(0);" class="dropdown-toggle language_wrapper" data-hover="dropdown" data-toggle="dropdown">
+            <div class="language__current notranslate"></div>
+          </a>
+          <ul class="dropdown-menu language__switcher">
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  <ul class="mobile-nav-bar">
+    <li class="mobile-nav-item mobile-nav-icon">
+      <button type="button" aria-label="close menu"><span></span></button>
+    </li>
+      <li class="mobile-nav-logo text-center">
+    <div class="container">
+      <a href="{% if request.locale.iso_code == 'fr' %}{{shop.url | append: '/fr' }}{% else %}{{shop.url}}{% endif %}" title="{{ shop.name | escape }}">
+        {%- assign _logo = "fastor4logo.png" | asset_img_url: 'master'  -%}
+        {%- if settings.main_logo != blank -%}
+        {%- assign _logo = settings.main_logo | img_url: 'master' -%}
+        {%- endif -%}
+        <img src="{{ _logo }}"{{' '}}{%-if settings.mobile_logo_max_width != blank -%}style="max-width:55px;"{%-endif-%}{{' '}}title="{{ shop.name | escape }}" alt="{{ shop.name | escape }}" />
+      </a>
+    </div>
+  </li>
+  {% comment %}
+  <div class="mobile-nav-logo text-center">
+    <div class="container">
+      <a href="{% if request.locale.iso_code == 'fr' %}{{shop.url | append: '/fr' }}{% else %}{{shop.url}}{% endif %}" title="{{ shop.name | escape }}">
+        {%- if settings.main_logo != blank -%}
+        {%- assign _logo = settings.main_logo | img_url: 'master' -%}
+        <img src="{{ _logo }}"{{' '}}{%-if settings.mobile_logo_max_width != blank -%}style="max-width:55px;"{%-endif-%}{{' '}}title="{{ shop.name | escape }}" alt="{{ shop.name | escape }}" />
+        {%- else -%}
+        <div class="logo-text">{{shop.name}}</div>
+        {%- endif -%}
+      </a>
+    </div>
+  </div>
+  {% endcomment %}
+    <li class="mobile-nav-item mobile-nav-search">
+      <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#global__symbols-search"></use></svg>
+    </li>
+    <li class="mobile-nav-item mobile-nav-cart">
+      <a href="/cart">
+        <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#global__symbols-cart-desktop"></use></svg>
+        <span class="total_count_ajax">{{ cart.item_count }}</span>
+      </a>
+    </li>
+  </ul>
+  <form action="/search" method="get" role="search" class="mobile-nav-search-form">
+    <div class="mobile-nav-search-close"><span></span></div>
+    <input type="search" name="q" class="input-block-level search-query" placeholder="{{ 'search.general.placeholder' | t }}" />
+    <div class="autocomplete-results"></div>
+    <input type="hidden" name="type" value="product" />
+  </form>
+  {% comment %}
+  <div class="mobile-nav-logo text-center">
+    <div class="container">
+      <a href="{{shop.url}}" title="{{ shop.name | escape }}">
+        {%- if settings.main_logo != blank -%}
+        {%- assign _logo = settings.main_logo | img_url: 'master' -%}
+        <img src="{{ _logo }}"{{' '}}{%-if settings.mobile_logo_max_width != blank -%}style="max-width:{{settings.mobile_logo_max_width}}px;"{%-endif-%}{{' '}}title="{{ shop.name | escape }}" alt="{{ shop.name | escape }}" />
+        {%- else -%}
+        <div class="logo-text">{{shop.name}}</div>
+        {%- endif -%}
+      </a>
+    </div>
+  </div>
+  {% endcomment %}
+</div>
+
+<style>
+
+  @media screen and  (max-width: 320px) and (min-width: 0px) {
+    .mobile-nav-logo {
+      padding: 10px 15px !important;
+    }}
+  
+  @media screen and  (max-width: 360px) and (min-width: 321px) {
+    .mobile-nav-logo {
+      padding: 10px 40px !important;
+    }}
+  
+    @media screen and (max-width: 375px) and (min-width: 361px) {
+    .mobile-nav-logo {
+    padding: 10px 50px !important;
+    }}
+  
+    @media screen and (max-width: 411px) and (min-width: 376px) {
+    .mobile-nav-logo {
+      padding: 10px 70px !important;
+    }}
+  
+    @media screen and (max-width: 414px) and (min-width: 412px) {
+    .mobile-nav-logo {
+	padding: 10px 70px !important;    
+    }}
+  
+      @media screen and (max-width: 768px) and (min-width: 415px) {
+    .mobile-nav-logo {
+	padding: 10px 240px !important;    
+    }}
+  
+        @media screen and (max-width: 991px) and (min-width: 768px) {
+    .mobile-nav-logo {
+	padding: 10px 210px !important;    
+    }}
+  
+    .mobile-nav-logo {
+    padding: 10px 30px;
+    }
+  
+</style>
+  
+{% schema %}
+  {
+    "name": "Mobile Nagivation",
+	"class": "header-mobile-section",
+    "settings": [
+		{
+			"type": "header",
+			"content": "General"
+		},
+		{
+            "type": "link_list",
+            "id": "linklist",
+            "label": "Choose a Linklist"
+		},
+		{
+			"type": "header",
+			"content": "Styling"
+		},
+		{
+			"type": "color",
+			"id": "bg_color",
+			"label": "Background"
+		},
+		{
+			"type": "color",
+			"id": "content_color",
+			"label": "Content"
+		},
+		{
+			"type": "color",
+			"id": "border_color",
+			"label": "Border"
+		}
+		
+	]
+  }
+{% endschema %}

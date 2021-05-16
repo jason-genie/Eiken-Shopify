@@ -1,0 +1,11 @@
+<h4>{{_acm_title}}</h4>
+<div class="strip-line"></div>
+<div class="clearfix fashion2-newsletter" style="clear: both" id="newsletter{{_id}}">
+  {%- if _acm_text != blank -%}
+  <p>{{_acm_text}}</p>
+  {%- endif -%}
+  <form action="{{settings.popup_mailchimp_action}}" method="post" name="mc-embedded-subscribe-form" target="_blank">
+    <input type="email" class="email" name="EMAIL" required="required" placeholder="{{_placeholder}}" />
+    <button type="submit" class="button subscribe">{{_bttext}}</button>
+  </form>
+</div>

@@ -1,0 +1,25 @@
+<div class="footer-about-us">
+  {%- if footer-about == '2' -%}
+  {%- if settings.footer_about_logo -%}<img src="{{'footer_about.png' | asset_url}}" alt="" />{%- endif -%}
+  <div class="row">
+    <div class="col-sm-6">
+      {%- if settings.footer_about_address != '' -%}<h6{%- if settings.footer_about_logo -%}{{' '}}class="has-logo"{%- endif -%}>{{settings.footer_about_address}}</h6>{%- endif -%}
+    </div>
+    <div class="col-sm-6">
+      <p{%- if settings.footer_about_logo -%}{{' '}}class="has-logo"{%- endif -%}>
+        {%- if settings.footer_about_phone  != '' -%}{{settings.footer_about_phone}}<br/>{%- endif -%}
+        {%- if settings.footer_about_email  != '' -%}{{settings.footer_about_email}}<br/>{%- endif -%}
+      </p>
+    </div>
+  </div>
+  {%- else -%}
+  {%- if settings.footer_about_logo -%}<img src="{{'footer_about.png' | asset_url}}" alt="" />{%- endif -%}
+  {%- if settings.footer_about_address != '' -%}<h6{%- if settings.footer_about_logo -%}{{' '}}class="has-logo"{%- endif -%}>{{settings.footer_about_address}}</h6>{%- endif -%}
+  {%- if settings.footer_about_phone  != '' or settings.footer_about_email  != '' -%}
+  <ul>
+    {%- if settings.footer_about_phone  != '' -%}<li>{{settings.footer_about_phone}}</li>{%- endif -%}
+    {%- if settings.footer_about_email  != '' -%}<li>{{settings.footer_about_email}}</li>{%- endif -%}
+  </ul>
+  {%- endif -%}
+  {%- endif -%}
+</div>

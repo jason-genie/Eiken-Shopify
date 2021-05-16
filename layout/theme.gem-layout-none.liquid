@@ -1,0 +1,112 @@
+{% comment %}
+	GEMPAGE BUILDER (https://apps.shopify.com/gempage)
+
+	You SHOULD NOT modify source code in this page because
+	It is automatically generated from GEMPAGE BUILDER
+	Try to edit page with the live editor.
+{% endcomment %}
+<!DOCTYPE html>
+<!--[if IE 7]><html lang="en" class="ie7 {% unless settings.responsive_design %}no-{% endunless %}responsive{% if settings.page_direction == 'RTL' %} rtl{% endif %}"{% if settings.page_direction == 'RTL' %} dir="rtl"{% endif %}><![endif]-->
+<!--[if IE 8]><html lang="en" class="ie8 {% unless settings.responsive_design %}no-{% endunless %}responsive{% if settings.page_direction == 'RTL' %} rtl{% endif %}"{% if settings.page_direction == 'RTL' %} dir="rtl"{% endif %}><![endif]-->
+<!--[if IE 9]><html lang="en" class="ie9 {% unless settings.responsive_design %}no-{% endunless %}responsive{% if settings.page_direction == 'RTL' %} rtl{% endif %}"{% if settings.page_direction == 'RTL' %} dir="rtl"{% endif %}><![endif]-->
+<!--[if !IE]><!--><html lang="en" class="{% unless settings.responsive_design %}no-{% endunless %}responsive{% if settings.page_direction == 'RTL' %} rtl{% endif %}"{% if settings.page_direction == 'RTL' %} dir="rtl"{% endif %}><!--<![endif]-->
+<head>
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-155342728-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-155342728-1');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    'send_to': 'AW-763264375',
+    'value': 'replace with value',
+    'items': [{
+      'id': 'replace with value',
+      'location_id': 'replace with value',
+      'google_business_vertical': 'custom'
+    }]
+  });
+</script>
+
+        <!--KOLT_SECU_NOFOLLOW_START-->
+        {% assign instructions = page.metafields.kolt_su_metadata %}
+        {% assign page_key_no_folow = 'kt_' | append: page.id| append: '_nf' %}
+        {% if instructions[page_key_no_folow] == "true" %}
+        	<meta name="robots" content="nofollow,noindex ">
+        {% endif %}
+        <!--KOLT_SECU_NOFOLLOW_END-->
+        
+        <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KGZ3VB3');</script>
+<!-- End Google Tag Manager -->
+
+ <!-- Global site tag (gtag.js) - Google Ads: 763264375 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-763264375"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-763264375');
+</script>
+<script>
+  gtag('event', 'conversion', {
+      'send_to': 'AW-763264375/Ec5aCLbM77gBEPf6-esC',
+      'value': {{ checkout.total_price | money_without_currency | replace: ',', '.' }},
+      'currency': 'EUR',
+      'transaction_id': '{{ order.order_number }}' 
+  });
+</script>
+        
+<meta name="google-site-verification" content="iV4oLa6e3KueFFd0Dlaz-XpcDEZTFg-DGzgIO_1ZVkQ" />
+<meta name="google-site-verification" content="b96dhouuJ37i28PpbkYvuF3Jr_Y5_gjjiMp-fB-ZNl4" />
+<meta name="p:domain_verify" content="4ab892fdc829bfbac2ad8e56b9aae527"/>
+
+<meta charset="utf-8" />
+  <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1' /><![endif]-->
+  {%- if settings.responsive_design -%}<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />{%- endif -%}
+  {%- if canonical_url != '' -%}<link rel="canonical" href="{{ canonical_url }}" />{%- endif -%}
+  {%- if settings.favicon -%}<link rel="shortcut icon" href="{{ 'favicon.png' | asset_url }}" type="image/x-icon" />{%- endif -%}
+  {%- if settings.iphone_icon -%}<link rel="apple-touch-icon-precomposed" href="{{ 'iphone_icon.png' | asset_url }}" />{%- endif -%}
+  {%- if settings.iphone_icon_retina -%}<link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ 'iphone_icon_retina.png' | asset_url }}" />{%- endif -%}
+  {%- if settings.ipad_icon -%}<link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ 'ipad_icon.png' | asset_url }}" />{%- endif -%}
+  {%- if settings.ipad_icon_retina -%}<link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ 'ipad_icon_retina.png' | asset_url }}" />{%- endif -%}
+  {%- if page_description or page_description != '' -%}<meta name="description" content="{{ page_description }}" />{%- endif -%}
+  {%- if template contains 'index' -%}{%- if page_title != blank and page_title != 'Welcome' -%}<title>{{ page_title }}</title>{%- else -%}<title>{{ shop.name }}</title>{%- endif -%}{%- elsif template == '404' -%}<title>Page Not Found | {{ shop.name }}</title>{%- else -%}<title>{{ page_title }} | {{ shop.name }}</title>{%- endif -%}
+  {%- include 'fonts' -%}
+  {%- include 'social-meta-tags' -%}
+  {%- include 'shopify-head' -%}
+  {{ content_for_header }}
+  {% include 'judgeme_core' %}
+<!-- TrustBox script -->
+<script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+<!-- End TrustBox script -->
+{% include 'ra-roarnotify-init' %}
+<!--Gem_Page_Header_Script-->
+{% include 'gem-app-header-scripts' %}
+<!--End_Gem_Page_Header_Script-->
+  <style>
+   .jdgm-carousel-item__review {
+   height: calc(50% - 2em) !important;
+    }
+  </style>
+</head>
+{% capture body_class %}{% if settings.page_width == '3'  %} body-full-width{% endif %}{% if settings.advanced_product_list != '' %} product-list-type-{{settings.advanced_product_list}}{% endif %}{% if settings.advanced_product_grid != '' %} product-grid-type-{{settings.advanced_product_grid}}{% endif %}{% if settings.advanced_dropdown_menu != '' %} dropdown-menu-type-{{settings.advanced_dropdown_menu}}{% endif %}{% if settings.advanced_product_button != '' %} products-buttons-action-type-{{settings.advanced_product_button}}{% endif %}{% if settings.advanced_prev_next != '' %} buttons-prev-next-type-{{settings.advanced_prev_next}}{% endif %}{% if settings.advanced_input != '' %} inputs-type-{{settings.advanced_input}}{% endif %}{% if settings.advanced_myaccount != '' %} my-account-type-{{settings.advanced_myaccount}}{% endif %}{% if settings.advanced_cart_block != '' %} cart-block-type-{{settings.advanced_cart_block}}{% endif %}{% if settings.advanced_top_bar != '' %} top-bar-type-{{settings.advanced_top_bar}}{% endif %}{% if settings.advanced_product_page != '' %} product-page-type-{{settings.advanced_product_page}}{% endif %}{% if settings.advanced_megamenu_type != '' %} megamenu-type-{{settings.advanced_megamenu_type}}{% endif %}{% if settings.advanced_search != '' %} search-type-{{settings.advanced_search}}{% endif %}{% if settings.advanced_megamenu_label != '' %} megamenu-label-type-{{settings.advanced_megamenu_label}}{% endif %}{% if settings.advanced_box == '7' %} box-type-4{% else %} no-box-type-7{% endif %}{% if settings.advanced_box != '' %} box-type-{{settings.advanced_box}}{% endif %}{% if settings.advanced_header_margin_top != '' %} header-margin-top-{{settings.advanced_header_margin_top}}{% endif %}{% if settings.advanced_sale_new != '' %} sale-new-type-{{settings.advanced_sale_new}}{% endif %}{% if settings.advanced_button != '' %} button-body-type-{{settings.advanced_button}}{% endif %}{% if settings.advanced_countdown != '' %} countdown-special-type-{{settings.advanced_countdown}}{% endif %}{% if settings.advanced_footer != '' %} footer-type-{{settings.advanced_footer}}{% endif %}{% if settings.advanced_breadcrumb != '' %} breadcrumb-type-{{settings.advanced_breadcrumb}}{% endif %}{% if settings.advanced_border_width != '' %} border-width-{{settings.advanced_border_width}}{% endif %}{% if settings.body_background_color == '#ffffff' or settings.main_background_color == settings.body_background_color or settings.main_background_color == 'rgba(0,0,0,0)' %} body-white{% else %} body-other{% endif %}{% if settings.main_background_color == 'rgba(0,0,0,0)' %} body-white-type-2{% endif %}{% if settings.main_background_color == 'rgba(0,0,0,0)' and settings.box_product_bg == '#ffffff' %} body-white-type-3{% endif %}{% if settings.advanced_banner_hover != '' %} banners-effect-{{settings.advanced_banner_hover}}{% endif %}{{' body-header-type-' | append: settings.header_type}}{% if settings.header_always_show_vermenu_cat %} show-vertical-megamenu-category-page{% endif %}{% if settings.header_always_show_vermenu %} show-vertical-megamenu{% endif %}{% if template == "page.collection" %} templatePageCollection{% endif %}{% endcapture %}
+<body>
+<div class="gem-container">
+	{{ content_for_layout }}
+</div><!-- end .gem-container -->
+<!--Gem_Page_Footer_Script-->
+{% include 'gem-app-footer-scripts' %}
+<!--End_Gem_Page_Footer_Script-->
+</body>
+</html>

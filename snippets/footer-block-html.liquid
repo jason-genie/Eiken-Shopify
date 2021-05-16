@@ -1,0 +1,7 @@
+<div class="html" {{ block.shopify_attributes }}>
+  {%- if block.settings.footer_html_heading != '' -%}
+  <h4 class="title">{{block.settings.footer_html_heading}}</h4>
+  <div class="strip-line"></div>
+  {%- endif -%}
+  <div class="clearfix">{{block.settings.footer_html_custom}}</div>
+</div>

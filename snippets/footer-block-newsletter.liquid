@@ -1,0 +1,28 @@
+<div class="newsletter newsletter-footer-{{block.settings.type}}" {{ block.shopify_attributes }}>
+  {%- if block.settings.footer_newsletter_heading != '' -%}
+  <h3 class="title">{{block.settings.footer_newsletter_heading}}</h3>
+  <div class="strip-line"></div>
+  {%- endif -%}
+  <div class="clearfix default-newsletter">
+    {%- if block.settings.footer_newsletter_caption != '' -%}<p>{{block.settings.footer_newsletter_caption}}</p>{%- endif -%}
+    {%- if settings.popup_mailchimp_action != '' -%}
+    <form action="{{settings.popup_mailchimp_action}}" method="post" class="mailing-form" name="mc-embedded-subscribe-form" target="_blank">
+      <div class="group-input">      
+        <label>Enter your email address below:<input placeholder="{{'general.footer.mailchimp.email_address' | t}}" type="email" required="required" name="EMAIL" class="email" /></label></div>
+      <div class="group-input2"> 
+      	<input type="checkbox"required="required" value "rgpd" name="rgpd" class="checkbox" id="rgpd"> <label for="rgpd">By subscribing, you accept that EIKEN stores and uses your email address in order to send you our newsletter and exclusive offers.</label></div>
+      <div class="group-input3"> 
+        <button type="submit" class="footer-button subscribe">{{'general.footer.mailchimp.subscribe_button' | t}}</button>
+      </div>
+    </form>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+.checkbox {
+    margin: 10px 0px 0 0 !important;
+    height: 20px !important;
+    width: 20px !important;
+}
+</style>

@@ -1,0 +1,36 @@
+<div id="content" class="col-md-12 center-column content-with-background">
+  <div class="row">
+    <div class="col-sm-12">
+      {{page.content}}
+      <div id="map_container">
+        <div id="contact_map" class="map"></div>
+        <div class="map_info col-xs-12 col-sm-6 col-md-4">
+          <div class="map_content">
+            <div class="about-us">
+              {%- if settings.contact_logo -%}<img src="{{'contact_logo.png' | asset_url}}" alt="" />{%- endif -%}
+              {%- if settings.contact_address != '' -%}<h6>{{settings.contact_address}}</h6>{%- endif -%}
+              {%- if settings.contact_phone  != '' or settings.contact_email  != '' -%}
+              <ul>
+                {%- if settings.contact_phone  != '' -%}<li>{{settings.contact_phone}}</li>{%- endif -%}
+                {%- if settings.contact_email  != '' -%}<li>{{settings.contact_email}}</li>{%- endif -%}
+              </ul>
+              {%- endif -%}
+            </div>
+            {%- if settings.contact_social -%}
+            {%- assign social_icons = "twitter|facebook|google-plus|pinterest|instagram|tumblr|youtube-play|vimeo|behance|github|flickr|rss" | split: "|" | uniq -%}
+            <ul class="social-icons">
+              {%- assign social_number = social_icons.size | minus:1 -%}
+              {%- for i in (0..social_number) -%}
+              {%- assign social_name = 'social_icon_' | append:social_icons[i] -%}
+              {%- if settings[social_name] != '' -%}
+              <li><a href="{{settings[social_name]}}"><i class="fa fa-{{social_icons[i]}}"></i></a></li>
+              {%- endif -%}
+              {%- endfor -%}
+            </ul>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

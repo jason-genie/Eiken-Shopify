@@ -1,0 +1,340 @@
+{%-assign _onepone = ' '-%}
+{%-if settings.image_lazy_loading_used -%}
+{%-assign _onepone = ' class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-'-%}
+{%-endif-%}
+<style>
+  .your-collections-{{section.id}} .slick-list {
+    background-color:{{section.settings.id_bg_category | default: "transparent"}};
+  }
+  .your-collections-{{section.id}} .CollectionGrid-tile {
+    {%-if section.settings.id_spacing-%}
+    border-right: 2px solid {{section.settings.id_bg_category}};
+    {%-endif-%}
+    flex-direction: {{section.settings.id_position_heading}};
+  }
+  .your-collections-{{section.id}} .CollectionGrid-tileName.js-dotdotdot p{
+    font-weight: {{section.settings.id_font_weight_item}};
+    color:{{section.settings.id_color_heading_item}};
+    font-size:{{section.settings.id_size_item}}px;
+  }
+  #id_category-{{section.id}}.your-collections-{{section.id}} .CollectionGrid-container .heading{
+    {%- if section.settings.heading_color != blank -%}
+    color: {{section.settings.heading_color}};
+    {%- endif -%}
+    font-size: {{section.settings.heading_fontsize | append: "px"}};
+    font-weight: {{section.settings.heading_fontweight}}!important
+  }
+  {%- if section.settings.heading_border_color != blank -%}
+  #id_category-{{section.id}}.your-collections-{{section.id}} .heading span {
+    border-color: {{section.settings.heading_border_color}};
+  }
+  {%- endif -%}
+</style>
+{%-assign image_img_url = section.settings.id_image_quality -%}
+<div class="{% if section.settings.placement_fullwidth %}section-placement-fullwidth{% endif %} product-tab-arrow-{{ section.settings.arrow_position }}  product-tab-border-{{ section.settings.tab_border }} your-collections-{{section.id}} your-collections-wrapper" style="background:{{section.settings.id_bg_category}};margin-top:{{section.settings.id_magrin_top}}px;"
+     data-placement_fullwidth="{%- if section.settings.placement_fullwidth -%}1{%- else -%}0{%- endif -%}" id="id_category-{{section.id}}" data-autoplay="{{section.settings.id_autoplay}}" data-speed="{{section.settings.id_speed}}" data-limit="{{section.settings.id_limit_item}}" data-section-id="{{ section.id }}" data-section-type="your-collections">
+  <div class="CollectionGrid-container row">
+    {% if section.settings.id_heading_section != blank %}
+    <div class="heading">
+      <span>{{section.settings.id_heading_section}}</span>
+    </div>
+    {% endif %}
+    <div class="CollectionGrid-{{section.id}} {% if section.settings.placement_fullwidth  == false %}container{% endif %}  tab-content">
+      {%- for block in section.blocks -%}
+      {%- assign _collection = collections[block.settings.id_collection]-%}
+      {%- if _collection.empty? -%}
+      {%- include 'your-collections-onboarding' -%}
+      {%- else -%}
+      <a class="CollectionGrid-tile {{block.id}}"
+         href="{{_collection.url}}" style=" background:{{section.settings.id_bg_item}} !important;">
+        
+       	{%-if block.settings.id_image != blank -%}
+        <div class="CollectionGrid-tileImage align-center">
+          <img {{_onepone}}src="{{block.settings.id_image | img_url:image_img_url}}" alt="{{_collection.title}}">
+        </div>
+        {%-else-%}
+        {%-if _collection.products_count == 0-%}
+        <div class="CollectionGrid-tileImage align-center is--onboarding">
+          {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+          {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+        {%-else-%}
+        {%-assign _first_product = _collection.products[0]-%}
+        <div class="CollectionGrid-tileImage align-center">
+          <img {{_onepone}}src="{{_first_product.featured_image |  img_url:image_img_url}}" alt="{{_collection.title}}">
+        </div>
+        {%-endif-%}
+        {%-endif-%}
+        
+        <div class="CollectionGrid-tileName js-dotdotdot">
+          <p>
+            {%- if block.settings.id_heading_item != blank -%}{{block.settings.id_heading_item}}{%-else-%}{{_collection.title}} {%-endif-%}
+          </p>
+        </div>
+      </a>
+      {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+    "name": "Your Collections",
+    "class": "your-collections section-wrapper",
+    "settings": [
+        {
+            "type": "header",
+            "content": "General"
+        },
+        {
+            "type": "checkbox",
+            "id": "placement_fullwidth",
+            "label": "Force Full Width",
+            "default": true
+        },
+		{
+			"type" : "select",
+			"id": "tab_border",
+			"label": "Border",
+			"options": [
+				{
+					"value": "default",
+					"label": "Default"
+				},
+				{
+					"value": "none",
+					"label": "None"
+				}
+			]
+		},
+		{
+			"type" : "select",
+			"id": "arrow_position",
+			"label": "Arrow Position",
+			"options": [
+				{
+					"value": "default",
+					"label": "Default"
+				},
+				{
+					"value": "beside",
+					"label": "Beside"
+				}
+			]
+		},
+        {
+            "type": "range",
+            "id": "id_magrin_top",
+            "min": 0,
+            "max": 50,
+            "step": 10,
+            "unit": "px",
+            "label": "Margin Top",
+            "default": 20
+        },
+        {
+            "type": "text",
+            "id": "id_heading_section",
+            "label": "Section Heading",
+            "default": "Your Heading"
+        },
+        {
+            "type": "color",
+            "id": "id_bg_category",
+            "label": "Container Background ",
+            "default": "#fff"
+        },
+        {
+            "type": "color",
+            "id": "id_bg_item",
+            "label": "Item Backgroud",
+            "default": "#fff"
+        },
+        {
+            "type": "select",
+            "id": "id_image_quality",
+            "label": "Image Quality",
+            "options": [
+                {
+                    "value": "500x",
+                    "label": "Low"
+                },
+                {
+                    "value": "1000x",
+                    "label": "Normal"
+                },
+                {
+                    "value": "1920x",
+                    "label": "High"
+                }
+            ],
+            "default": "1920x"
+        },
+        {
+            "type": "header",
+            "content": "Slider"
+        },
+        {
+            "type": "range",
+            "id": "id_limit_item",
+            "min": 3,
+            "max": 12,
+            "step": 1,
+            "label": "Items on Desktop",
+            "default": 4
+        },
+        {
+            "type": "checkbox",
+            "id": "id_spacing",
+            "label": "Add Spacing",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "id_autoplay",
+            "label": "Autoplay",
+            "default": false
+        },
+        {
+            "type": "text",
+            "id": "id_speed",
+            "label": "Speed",
+            "default": "5000"
+        },
+        {
+            "type": "header",
+            "content": "Items"
+        },
+        {
+            "type": "range",
+            "id": "id_size_item",
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "Title Font Size",
+            "default": 20
+        },
+        {
+            "type": "range",
+            "id": "id_font_weight_item",
+            "min": 100,
+            "max": 700,
+            "step": 100,
+            "label": "Title Font Weight",
+            "default": 500
+        },
+        {
+            "type": "color",
+            "id": "id_color_heading_item",
+            "label": "Title Color",
+            "default": "#000"
+        },
+        {
+            "type": "select",
+            "id": "id_position_heading",
+            "label": "Title Position",
+            "options": [
+                {
+                    "value": "column-reverse",
+                    "label": "Top"
+                },
+                {
+                    "value": "column",
+                    "label": "Bottom"
+                }
+            ],
+            "default": "column"
+        },
+
+		{
+			"type" :"header",
+			"content": "Styling"
+		},
+		{
+			"type" :"header",
+			"content": "- Heading"
+		},
+		{
+            "type": "color",
+            "id": "heading_color",
+            "label": "Color"
+        },
+		{
+            "type": "color",
+            "id": "heading_border_color",
+            "label": "Border Color"
+        },
+        {
+          "type": "range",
+          "id": "heading_fontsize",
+          "min": 10,
+          "max": 70,
+          "step": 1,
+          "unit": "px",
+          "label": "FontSize",
+          "default": 25
+        },
+        {
+          "type": "range",
+          "id": "heading_fontweight",
+          "min": 100,
+          "max": 900,
+          "step": 100,
+          "label": "FontWeight",
+          "default": 400
+        }
+    ],
+    "blocks": [
+        {
+            "type": "collection",
+            "name": "Your Collection",
+            "settings": [
+                {
+                    "type": "header",
+                    "content": "Content"
+                },
+                {
+                    "type": "collection",
+                    "id": "id_collection",
+                    "label": "Collection"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "id_image",
+                    "label": "Image"
+                },
+                {
+                    "type": "text",
+                    "id": "id_heading_item",
+                    "label": "Collection Title",
+                    "default": "Collection Title"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Your Collections",
+            "category": "Content",
+            "blocks": [
+                {
+                    "type": "collection"
+                },
+                {
+                    "type": "collection"
+                },
+                {
+                    "type": "collection"
+                },
+                {
+                    "type": "collection"
+                },
+                {
+                    "type": "collection"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,320 @@
+{%-assign _onepone = ' '-%}
+{%-if settings.image_lazy_loading_used -%}
+{%-assign _onepone = ' class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-'-%}
+{%-endif-%}
+<style>
+  .collections-list-{{section.id}} .CollectionGrid-tileName.js-dotdotdot p {
+    font-size: {{section.settings.id_size_item}}px;
+    font-weight: {{section.settings.id_fw_item_collection}};
+    color:{{section.settings.id_cl_heading_item_collection}};
+  }
+  #id_category-{{section.id}}.collections-list-{{section.id}} .heading{
+    {%- if section.settings.heading_color != blank -%}
+    color: {{section.settings.heading_color}};
+    {%- endif -%}
+    font-size: {{section.settings.heading_fontsize | append: "px"}};
+    font-weight: {{section.settings.heading_fontweight}}!important
+  }
+  {%- if section.settings.heading_border_color != blank -%}
+  #id_category-{{section.id}}.collections-list-{{section.id}} .heading span {
+    border-color: {{section.settings.heading_border_color}};
+  }
+  {%- endif -%}
+</style>
+{%- assign image_img_url = section.settings.image_width | append:"x" | append: section.settings.image_height  -%}
+<div class="product-tab-arrow-{{ section.settings.arrow_position }}  product-tab-border-{{ section.settings.tab_border }} collections-list-{{section.id}}" id="id_category-{{section.id}}" style="background:{{section.settings.id_bg_collection}};margin-top:{{section.settings.id_magrin_top}}px;"
+     data-autoplay="{{section.settings.id_autoplay_collection}}" data-speed="{{section.settings.id_speed_collection}}" data-limit="{{section.settings.id_limit_collection}}" data-section-id="{{ section.id }}" data-section-type="collections-list"
+  	 data-count="{{section.blocks | size}}">
+  {%- if section.settings.id_heading_collection != blank -%}
+  <div class="heading">
+    <span>{{section.settings.id_heading_collection}}</span>
+  </div>
+  {%- endif -%}
+  <div class="tab-content content-colection-list-{{section.id}} content-colection-list">
+    {%- for block in section.blocks -%}
+    {%- assign _collection = collections[block.settings.id_collection_list]-%}
+    {%- if _collection.empty? -%}
+    {%- include 'collection-onboarding' -%}
+    {%- else -%}
+    <div class="wapper-content">
+      <div class="item">  
+        <div class="CollectionGrid-tileName js-dotdotdot">
+          <p>{%-if block.settings.id_heading_item!= blank -%} {{block.settings.id_heading_item}} {%- else -%} {{_collection.title}} {%- endif -%}</p>
+        </div>
+        {%- for item in _collection.products limit: section.settings.id_limit_product-%}
+        {%- assign current_variant = item.selected_or_first_available_variant -%}
+        {%- for variant in product.variants -%}
+        {%- if variant.available == true and variant.price < current_variant.price -%}
+        {%- assign current_variant = variant -%}	
+        {%- endif -%}
+        {%- endfor -%}
+        <div class="products">
+          <div class="product">
+            <div class="product-micro">
+              <div class="row product-micro-row">
+                <div class="col-md-4 col-xs-4">
+                  <div class="product-image">
+
+                    <div class="image"> 
+                      {%- if current_variant.compare_at_price > current_variant.price and settings.product_sale_badge != '' -%}
+                      <div class="sale">
+                        {%- if settings.product_sale_badge == '0' -%}
+                        {{'products.product.sale' | t}}
+                        {%- else -%}
+                        -{{current_variant.compare_at_price | minus:current_variant.price | times:100.0 | divided_by:current_variant.compare_at_price | money_without_currency | times:100 | remove:'.0'}}%
+                        {%- endif -%}
+                      </div>
+                      {%- elsif settings.product_new_badge and product.tags contains 'latest' -%}
+                      <div class="new">{{'products.product.new' | t}}</div>
+                      {%- endif -%}
+                      <a href="{{item.url}}"><img {{_onepone}}src="{{item.featured_image | img_url:image_img_url }}" alt="{{item.title}}"> </a>
+                    </div>
+                    <!-- /.image --> 
+
+                  </div>
+                  <!-- /.product-image --> 
+                </div>
+                <!-- /.col -->
+                <div class="col2 col-md-8 col-xs-6">
+                  <div class="product-info-more right">
+                    <div class="name"><a href="{{item.url}}">{{item.title}}</a></div>
+                    <div class="price">
+                      {%- if item.available -%}
+                      <span class="price-old money{% unless current_variant.compare_at_price > current_variant.price %} hide{% endunless %}">{{current_variant.compare_at_price | money}}</span>
+                      <span class="price-new money">{{current_variant.price | money}}</span>
+                      {%- else -%}
+                      <span class="price-new money">{{current_variant.price | money}}</span>
+                      {%- endif -%}
+                    </div>
+
+                  </div>
+                </div>
+                <!-- /.col --> 
+              </div>
+              <!-- /.product-micro-row --> 
+            </div>
+            <!-- /.product-micro --> 
+
+          </div>
+        </div>
+        {%- endfor -%}
+      </div>
+    </div>
+    {%- endif -%}
+    {%- endfor -%}
+  </div>
+  <!-- /.sidebar-widget-body --> 
+</div>
+<!-- /.sidebar-widget --> 
+
+{% schema %}
+{
+    "name": "Collection List",
+    "class": "collections-list",
+    "settings": [
+        {
+            "type": "header",
+            "content": "General"
+        },
+        {
+            "type": "select",
+            "id": "tab_border",
+            "label": "Border",
+            "options": [
+                {
+                    "value": "default",
+                    "label": "Default"
+                },
+                {
+                    "value": "none",
+                    "label": "None"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "arrow_position",
+            "label": "Arrow Position",
+            "options": [
+                {
+                    "value": "default",
+                    "label": "Default"
+                },
+                {
+                    "value": "beside",
+                    "label": "Beside"
+                }
+            ]
+        },
+        {
+            "type": "range",
+            "id": "id_magrin_top",
+            "min": 0,
+            "max": 50,
+            "step": 10,
+            "unit": "px",
+            "label": "Margin Top",
+            "default": 20
+        },
+        {
+            "type": "text",
+            "id": "id_heading_collection",
+            "label": "Section Heading",
+            "default": "Your Heading"
+        },
+        {
+            "type": "range",
+            "id": "id_limit_collection",
+            "min": 3,
+            "max": 12,
+            "step": 1,
+            "label": "Collections Limit",
+            "default": 3
+        },
+        {
+            "type": "range",
+            "id": "id_limit_product",
+            "min": 2,
+            "max": 12,
+            "step": 1,
+            "label": "Products Limit",
+            "default": 3
+        },
+        {
+            "type": "text",
+            "id": "image_width",
+            "label": "Image Width",
+            "default": "200"
+        },
+        {
+            "type": "text",
+            "id": "image_height",
+            "label": "Image Height",
+            "default": "200"
+        },
+        {
+            "type": "header",
+            "content": "Slider"
+        },
+        {
+            "type": "checkbox",
+            "id": "id_autoplay_collection",
+            "label": "Autoplay",
+            "default": false
+        },
+        {
+            "type": "text",
+            "id": "id_speed_collection",
+            "label": "Speed",
+            "default": "5000"
+        },
+		{
+			"type" :"header",
+			"content": "Styling"
+		},
+		{
+			"type" :"header",
+			"content": "- Heading"
+		},
+		{
+            "type": "color",
+            "id": "heading_color",
+            "label": "Color"
+        },
+		{
+            "type": "color",
+            "id": "heading_border_color",
+            "label": "Border Color"
+        },
+        {
+          "type": "range",
+          "id": "heading_fontsize",
+          "min": 10,
+          "max": 70,
+          "step": 1,
+          "unit": "px",
+          "label": "FontSize",
+          "default": 25
+        },
+        {
+          "type": "range",
+          "id": "heading_fontweight",
+          "min": 100,
+          "max": 900,
+          "step": 100,
+          "label": "FontWeight",
+          "default": 400
+        },
+        {
+            "type": "header",
+            "content": "Items"
+        },
+        {
+            "type": "range",
+            "id": "id_fw_item_collection",
+            "min": 100,
+            "max": 700,
+            "step": 100,
+            "label": "Title Font Weight",
+            "default": 500
+        },
+        {
+            "type": "color",
+            "id": "id_cl_heading_item_collection",
+            "label": "Title Color",
+            "default": "#000"
+        },
+        {
+            "type": "range",
+            "id": "id_size_item",
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "Title Font Size ",
+            "default": 20
+        }
+    ],
+    "blocks": [
+        {
+            "type": "collection",
+            "name": "Collection",
+            "settings": [
+                {
+                    "type": "header",
+                    "content": "Content"
+                },
+                {
+                    "type": "collection",
+                    "id": "id_collection_list",
+                    "label": "Collection"
+                },
+                {
+                    "type": "text",
+                    "id": "id_heading_item",
+                    "label": "Collection Heading",
+                    "default": "Collection Title"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Collection List",
+            "category": "Content",
+            "blocks": [
+                {
+                    "type": "collection"
+                },
+                {
+                    "type": "collection"
+                },
+                {
+                    "type": "collection"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
+

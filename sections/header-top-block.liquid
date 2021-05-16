@@ -1,0 +1,59 @@
+{%- if section.blocks.size > 0 -%}
+<div class="{%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}" data-section-id="{{ section.id }}" data-section-type="topblock-section">
+  <div class="top-block-wrapper" id="top-block-wrapper-{{section.id}}">
+  <div class="top-block_container" id="top-block-{{section.id}}">
+  	{%- for block in section.blocks -%}
+  		{%- if block.type == 'custom_html' -%}
+          <div class="html_wrapper" {{ block.shopify_attributes }}>
+            {{block.settings.html_content}}
+          </div>
+  		{%- else -%}
+  			<div class="box" {{ block.shopify_attributes }}>
+              <div class="box-content">
+                {{pages[block.settings.page_content].content}}
+              </div>
+            </div>
+  		{%- endif -%}
+    {%- endfor -%}
+  </div>  
+  </div> 
+</div>
+{%- endif -%}
+{% schema %}
+  {
+    "name": "Top Block",
+	"class": "index-section section-wrapper",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "visible_on_mobile",
+        "label": "Show on Mobile"
+      }
+	],
+	"blocks": [
+      {
+		"type": "custom_html",
+        "name": "Custom HTML",
+        "settings": [
+          {
+			"type": "textarea",
+            "id": "html_content",
+            "label": "HTML Content",
+            "info": "[How to use?](https:\/\/youtu.be\/s7s8hWXVxGE)"
+		  }
+		]	
+      },
+	  {
+		"type": "content_page",
+        "name": "Page Content",
+        "settings": [
+          {
+            "type": "page",
+            "id": "page_content",
+            "label": "Choose a Page"
+          }
+		]	
+      }
+	]
+  }
+{% endschema %}

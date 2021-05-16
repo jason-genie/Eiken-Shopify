@@ -1,0 +1,38 @@
+{%- if paginate.items > 0 -%}
+<div class="row pagination-results pagination advanced-pagination">
+  <div class="pagination-action">
+    {%- if paginate.previous -%}
+    <a href="{{paginate.previous.url}}" class="button previous">{{- "general.pagination.previous" | t -}}</a>
+    {%- endif -%}
+    {%- if paginate.next -%}
+    <a href="{{paginate.next.url}}" class="button next">{{- "general.pagination.next" | t -}}</a>
+    {%- endif -%}
+  </div>
+  <div class="pagination-number col-sm-6 text-left">
+    {%- if paginate.pages > 1 -%}
+    <ul class="pagination">
+      {%- if paginate.previous -%}
+      <li class="previous-page"><a href="{{paginate.previous.url}}">|&lt;</a></li>
+      {%- endif -%}
+      {%- for part in paginate.parts -%}
+      {%- if part.is_link -%}
+      <li><a href="{{part.url}}">{{part.title}}</a></li>
+      {%- else -%}
+      {%- if part.title == '&hellip;' -%}
+      <li class="ellipsis"><span>{{part.title}}</span></li>
+      {%- else -%}
+      <li class="active"><span>{{part.title}}</span></li>
+      {%- endif -%}
+      {%- endif -%}
+      {%- endfor -%}
+      {%- if paginate.next -%}
+      <li class="next-page"><a href="{{paginate.next.url}}">&gt;|</a></li>
+      {%- endif -%}
+    </ul>
+    {%- endif -%}
+  </div>
+  <div class="col-sm-6 text-right pagination-result">
+    {{'general.pagination.showing' | t}}: {{paginate.current_offset | plus:1}} - {%- if paginate.next -%}{{paginate.current_offset | plus:paginate.page_size}}{%- else -%}{{paginate.items}}{%- endif -%}{{' '}}{{'general.pagination.of' | t}}{{' '}}{{paginate.items}}
+  </div>
+</div>
+{%- endif -%}

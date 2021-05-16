@@ -1,0 +1,58 @@
+
+  {%- assign _mmenu_sub_ct_animate_time = '300'-%}
+  {%- assign _animation_time = section.setting.mmenu_animation_time | plus: 0 -%}
+  {%- if _animation_time > 0 and _animation_time < 5000 -%}
+  {%- assign mmenu_sub_ct_animate_time = _animation_time -%}
+  {%- endif -%}
+
+  {%- assign mmenu_class = '' -%}
+  {%- capture mmenu_class -%}{{' vertical'}}{%- if section.settings.mmenu_mobile == false -%}{{' mobile-disabled'}}{%- endif -%}{%- endcapture -%}
+<div id="{{ megamenu-slider }}" 
+     class="section-megamenu-content container-megamenu{{mmenu_class}}"
+     data-_megamenu_id="{{megamenu-slider}}"
+     data-_mmenu_sub_ct_animate_time ="{{_mmenu_sub_ct_animate_time}}"
+     >
+  <div  id="megamenu-{{ section.id }}">
+    
+    <div id="menuHeading" style="margin-top:0px;">
+      <div class="megamenuToogle-wrapper">
+        <div class="megamenuToogle-pattern">
+          <div class="mega-menu-container container">
+            {{ section.settings.mmenu_navigation_text }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="megaMenuToggle">
+      <div class="megamenuToogle-wrapper">
+        <div class="megamenuToogle-pattern">
+          <div class="mega-menu-container container">
+            {{ section.settings.mmenu_navigation_text }}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="megamenu-wrapper">
+      <div class="megamenu-pattern">
+        <div class="mega-menu-container container">
+          <ul class="megamenu{{' '}}{%- if section.settings.mmenu_animation_type != 'none' -%}{{ section.settings.mmenu_animation_type }}{%- endif -%}">
+            {%- if settings.page_direction == 'LTR'-%}
+            {%- include 'slider-mega-menu-content-linklist' -%}
+            {%- else -%}
+            {%- include 'slider-mega-menu-content-linklist-rtl' -%}
+            {%- endif -%}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style type="text/css"> 
+  #{{megamenu-slider}} ul.megamenu > li > .sub-menu > .content {
+    -webkit-transition: 	all {{_mmenu_sub_ct_animate_time}}ms ease-out !important;
+    -moz-transition: 		all {{_mmenu_sub_ct_animate_time}}ms ease-out !important;
+    -o-transition: 			all {{_mmenu_sub_ct_animate_time}}ms ease-out !important;
+    -ms-transition: 		all {{_mmenu_sub_ct_animate_time}}ms ease-out !important;
+    transition: 			all {{_mmenu_sub_ct_animate_time}}ms ease-out !important;}
+</style>

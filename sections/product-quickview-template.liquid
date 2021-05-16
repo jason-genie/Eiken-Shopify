@@ -1,0 +1,90 @@
+{%- assign current_variant = product.selected_or_first_available_variant | default:product.variants.first -%}
+{%- assign featured_image = current_variant.image | default: product.featured_image -%}
+{%- assign featured_image_alt = current_variant.image.alt | default: product.featured_image.alt -%}
+{%- assign instructions = product.metafields.info -%}
+{%- assign roar360 = product.metafields.roar360 -%}
+{%- assign pwrapper_class = 'fastor-product-gallery__wrapper' -%}
+{%- assign pwrapper_item_class = '' -%}
+{%- assign zoom_class = '' -%}
+{%- assign modal_class = '' -%}
+{%- if settings.product_gallery_zoom != '' -%}
+{%- assign zoom_class = 'easyzoom el_zoom' -%}
+{%- endif -%}
+{%- if settings.product_lightbox != '' -%}
+{%- assign pwrapper_class = 'photoswipe-wrapper' -%}
+{%- assign pwrapper_item_class = 'photoswipe-item' -%}
+{%- assign modal_class = 'zoom_enabled' -%}
+{%- endif -%}
+<div id="ProductSection-{{ section.id }}"
+     class="quickform{%- if settings.product_focus == "1" -%}{{- " product-focus-wrapper" -}}{%- endif -%}"
+     data-product_swatch_color="{%- if settings.product_swatch_color -%}1{%- endif -%}"
+     data-product_swatch_size="{%- if settings.product_swatch_size -%}1{%- endif -%}"
+     data-variant_image_grouped="{%- if settings.variant_image_grouped -%}1{%- endif -%}"
+     data-product_swatch_color_advanced="{%- if settings.product_swatch_color_advanced  -%}1{%- endif -%}"
+     data-product_design="bottom"
+     data-product_image_count="{{- product.images.size -}}"
+     data-section-id="{{ section.id }}" data-section-type="product-quickview-template" data-enable-history-state="true">
+  <div class="product-info{%- if instructions.grouped != blank -%}{{- "product-type-grouped" -}}{%- else -%}{{" product-type-variable"}}{%- endif -%}" >
+    <div class="product_wrapper fastor-single-product-detail">
+      <div class="row" id="quickview_product">
+        {%- comment -%} MAIN CONTENT {%- endcomment -%}
+        <div class="col-md-{{- settings.product_img_width -}}{{- " " -}}col-sm-12 col-xs-12 product-images-wrapper">
+          <div id="product-images-content-{{section.id}}" class="product-images-content design-thumbnail-bottom">
+            <div class="rt-fastor-product-gallery rt-fastor-product-gallery--with-images images fastor-images" >
+              {%- include "product-images-slide" -%}
+            </div>
+            {%- if instructions.video != blank or roar360.roar360view_enabled == '1' -%}
+            {%- include "product-feature" -%}
+            {%- endif -%}
+            <div class="{% if product.images.size <= 6 %}product-thumbnails-no-slick {% endif %} product-thumbnails-bottom" id="product-thumbnails-{{section.id}}" data-vertical="0">
+              <div class="thumbnails">
+                {%- assign _f_image_alt = featured_image_alt -%}
+                {%- if featured_image_alt contains 'iframe' -%}
+                {%- assign _a_image_alt = featured_image_alt |  split: "<iframe" -%}
+                {%- assign  _f_image_alt = _a_image_alt[0] | trim -%}
+                {%- endif -%}
+                <div data-href="{{featured_image | img_url:"master"}}"
+                     data-color="{{_f_image_alt}}"
+                     class="thumbnails-item current {% if current_variant.image.alt contains 'iframe' %}video-thumb{% endif %}">
+                  <img src="{{ featured_image | img_url: '70x70' }}" 
+                       class="attachment-shop_thumbnail size-shop_thumbnail" alt="{{ featured_image_alt | escape }}" 
+                       srcset="{{ featured_image | img_url: '70x70' }} 70w, {{ featured_image | img_url: '150x' }} 150w, {{ featured_image | img_url: '235x' }} 235w, {{ featured_image | img_url: '768x' }} 768w" sizes="(max-width: 70px) 100vw, 70px" />
+                </div>
+                {%- for image in product.images -%}
+                {%- unless image == featured_image -%}
+                {%- assign _image_alt = image.alt -%}
+                {%- if image.alt contains 'iframe' -%}
+                {%- assign _a_image_alt = image.alt |  split: "<iframe" -%}
+                {%- endif -%}
+                <div data-href="{{image.src | img_url:"master"}}"
+                     data-color="{{_image_alt}}"
+                     class="thumbnails-item{% if image.alt contains 'iframe' %}video-thumb{% endif %}">
+                  <img src="{{ image.src | img_url: '70x70' }}" 
+                       class="attachment-shop_thumbnail size-shop_thumbnail" 
+                       alt="{{ image | escape }}" 
+                       srcset="{{ image.src | img_url: '70x70' }} 70w, {{ image.src | img_url: '150x' }} 150w, {{ image.src | img_url: '235x' }} 235w, {{ image.src | img_url: '768x' }} 768w" sizes="(max-width: 70px) 100vw, 70px" />
+                </div>
+                {%- endunless -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-{{- 12 | minus: settings.product_img_width -}}{{- " " -}}col-sm-12 col-xs-12 product-summary">
+          <div class="summary entry-summary">
+            {%- include "product-quickview-page-info" -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- unless product == empty -%}
+  <script type="application/json" id="ProductJson-{{ section.id }}">
+    {{- product | json -}}
+  </script>
+
+<script type="application/json" id="ProductSwatchJson-{{ section.id }}">
+    {{- product.metafields.texture | json -}}
+</script>
+{%- endunless -%}

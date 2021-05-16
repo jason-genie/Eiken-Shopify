@@ -1,0 +1,20 @@
+<div class="standard-body{%- if settings.hn_desktop == false -%}{{' '}}hidden-lg hidden-md{%- endif -%}{%- if settings.hn_mobile == false -%}{{' '}}hidden-sm hidden-xs{%- endif -%}" id="header-notice">
+  <div class="header-notice full-width clearfix">
+    {%- if settings.hn_use -%}
+    <a href="#" class="close-notice"></a>
+    <div class="container">
+      <div class="hn-content-wrapper">
+        {%-if settings.hn_emphasized_text != blank-%}
+        <span class="emphasized texting">{{settings.hn_emphasized_text}}</span> 
+        {%-endif-%}
+        {%-if settings.hn_text != blank-%}
+        <span class="normal texting">{{settings.hn_text}}</span> 
+        {%-endif-%}
+        {%-if settings.hn_cta != blank-%}
+        <a class="cta btn" href="{{settings.hn_cta_url}}">{{settings.hn_cta}}</a>
+        {%-endif-%}
+      </div>
+    </div>
+    {%- endif -%}
+  </div>
+</div>

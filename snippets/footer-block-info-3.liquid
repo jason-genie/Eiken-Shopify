@@ -1,0 +1,64 @@
+<div id="footer-blocks-bottom-{{block.id}}" class="row footer-blocks-wrapper footer-blocks-bottom" {{ block.shopify_attributes }}>
+  <div class="col-sm-3 cell1 text-{{block.settings.footer_info_cell1_align}}">
+    <div class="footer-block{%- if block.settings.footer_info_cell1_inline -%}{{' '}}footer-inline{%- endif -%}">
+      {%- if block.settings.footer_info_cell1_icon != "" -%}
+        {%- if block.settings.footer_info_cell1_icon == "icon" -%}
+          {%- if block.settings.footer_info_cell1 != blank -%}
+          <img src="{{block.settings.footer_info_cell1 | img_url:"master"}}" alt="" />
+          {%- else -%}
+          <img src="{{ 'footer_info1_cell1.png' | asset_img_url:"60x60", crop:"center"}}" alt="" />
+          {%- endif -%} 
+        {%- else -%}
+        	{{block.settings.footer_info_svg_cell1 }}
+        {%- endif -%} 
+      {%- endif -%}
+      {%- if block.settings.footer_info_cell1_inline == false -%}<div class="footer-block-content">{%- endif -%}
+      {%- if block.settings.footer_info_cell1_caption != '' -%}<h6 class="caption">{{block.settings.footer_info_cell1_caption}}</h6>{%- endif -%}
+      {%- if block.settings.footer_info_cell1_content != '' -%}<p class="content">{{block.settings.footer_info_cell1_content}}</p>{%- endif -%}
+      {%- if block.settings.footer_info_cell1_inline == false -%}</div>{%- endif -%}
+    </div>
+  </div>
+  <div class="col-sm-3 cell2 text-{{block.settings.footer_info_cell2_align}}">
+    <div class="footer-block{%- if block.settings.footer_info_cell2_inline -%}{{' '}}footer-inline{%- endif -%}">
+      {%- if block.settings.footer_info_cell2_icon != "" -%}
+        {%- if block.settings.footer_info_cell2_icon == "icon" -%}
+          {%- if block.settings.footer_info_cell2 != blank -%}
+          <img src="{{block.settings.footer_info_cell2 | img_url:"master"}}" alt="" />
+          {%- else -%}
+          <img src="{{ 'footer_info1_cell2.png' | asset_img_url:"60x60", crop:"center"}}" alt="" />
+          {%- endif -%} 
+        {%- else -%}
+        	{{block.settings.footer_info_svg_cell2 }}
+        {%- endif -%} 
+      {%- endif -%}
+
+      {%- if block.settings.footer_info_cell2_inline == false -%}<div class="footer-block-content">{%- endif -%}
+      {%- if block.settings.footer_info_cell2_caption != '' -%}<h6 class="caption">{{block.settings.footer_info_cell2_caption}}</h6>{%- endif -%}
+      {%- if block.settings.footer_info_cell2_content != '' -%}<p class="content">{{block.settings.footer_info_cell2_content}}</p>{%- endif -%}
+      {%- if block.settings.footer_info_cell2_inline == false -%}</div>{%- endif -%}
+    </div>
+  </div>
+  <div class="col-sm-3 cell3 text-{{block.settings.footer_info_cell3_align}}">
+    <div class="footer-block{%- if block.settings.footer_info_cell3_inline -%}{{' '}}footer-inline{%- endif -%}">
+     {%- if block.settings.footer_info_cell3_icon != "" -%}
+        {%- if block.settings.footer_info_cell3_icon == "icon" -%}
+          {%- if block.settings.footer_info_cell3 != blank -%}
+          <img src="{{block.settings.footer_info_cell3 | img_url:"master"}}" alt="" />
+          {%- else -%}
+          <img src="{{ 'footer_info1_cell3.png' | asset_img_url:"60x60", crop:"center"}}" alt="" />
+          {%- endif -%} 
+        {%- else -%}
+        	{{block.settings.footer_info_svg_cell3 }}
+        {%- endif -%} 
+      {%- endif -%}
+      {%- if block.settings.footer_info_cell3_inline == false -%}<div class="footer-block-content">{%- endif -%}
+      {%- if block.settings.footer_info_cell3_caption != '' -%}<h6 class="caption">{{block.settings.footer_info_cell3_caption}}</h6>{%- endif -%}
+      {%- if block.settings.footer_info_cell3_content != '' -%}<p class="content">{{block.settings.footer_info_cell3_content}}</p>{%- endif -%}
+      {%- if block.settings.footer_info_cell3_inline == false -%}</div>{%- endif -%}
+    </div>
+  </div>
+  
+  <div class="col-sm-3 cell3 text-{{block.settings.footer_info_cell4_align}}">
+    {%- if block.settings.footer_info_cell4_button != '' -%}<a href="{{block.settings.footer_info_cell4_link}}" class="{%- if footer-info1 == 'custom' -%}button{%- else -%}footer-button{%- endif -%}">{{block.settings.footer_info_cell4_button}}</a>{%- endif -%}
+  </div>
+</div>

@@ -1,0 +1,95 @@
+{%- if cartblock == 'header' -%}
+<div id="cart_block" class="dropdown {% if settings.shopping_cart_type == "sidebar" %}cart-block-click{% endif %}">
+{% if request.locale.iso_code == 'fr' %}
+	<div class="cart-heading dropdown-toogle" data-hover="dropdown" data-toggle="dropdown" {% if settings.shopping_cart_type != "sidebar" %}onclick="window.location.href = '/fr/cart'"{% endif %}>
+{% else %}
+	<div class="cart-heading dropdown-toogle" data-hover="dropdown" data-toggle="dropdown" {% if settings.shopping_cart_type != "sidebar" %}onclick="window.location.href = '/cart'"{% endif %}>
+{% endif %}
+<i class="cart-count"><span class="total_count_ajax">{{ cart.item_count }}</span></i>
+    <i class="cart-icon">
+      {%- if settings.icon_cart != blank and settings.icon_cart_hover != blank -%}
+      <img src="{{ settings.icon_cart_hover | img_url }}" class="cart-icon-hover" alt="" />
+      <img src="{{ settings.icon_cart | img_url }}" class="cart-icon-standard" alt="" />
+      {%- else -%}
+      {%- include "cart-icon" -%}
+      {%- endif -%}
+    </i>
+    <p>
+      <strong id="total_price_ajax">
+        <span class="total_price"><span class="money">{{ cart.total_price | money }}</span></span>
+      </strong>
+    </p>
+  </div>
+  <div class="dropdown-menu" id="cart_content">
+    <div class="cart_content_ajax">
+      {%- if cart.items == empty -%}
+      <div class="empty">{{ 'general.cart_info.cart_empty_html' | t }}</div>
+      {%- else -%}
+      <div class="mini-cart-info">
+        <table>
+          <tbody>
+            {%- for item in cart.items -%}
+            <tr>
+              <td class="image">		        
+                <a href="{{item.url }}">
+                  <img src="{{ item | img_url: 'small' }}" alt="{{ item.title | escape }}" /></a>
+              </td>
+              <td class="name">
+                <a href="{{item.url}}">
+                {{item.product.title}}
+                {%- if item.product.variants.size > 1 -%}
+                <span class="variant_title"> - {{item.variant.title}}<br><br></span>
+                {%- endif -%}
+              </a>
+              {%- for p in item.properties -%}
+              {%- unless p.last == blank -%}
+              {{ p.first }}:
+              {%- if p.last contains '/uploads/' -%}
+              <a class="lightbox" href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+              {%- else -%}
+              {{ p.last }}
+              {%- endif -%}
+              <br />
+              {%- endunless -%}
+              {%- endfor -%}  
+                <p><span class="quantity">{{ item.quantity }} × </span><span class="total"><span class="money"><div class="pn-price-item" data-id="{{ item.key }}">{{ item.price | money }}</div></span></span></p>
+              </td>
+              <td class="remove"><a href="javascript:void(0)" data-id="{{item.variant_id}}" title="{{'general.cart_info.remove_this_item' | t  | escape}}">×</a></td>
+            </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+      <div class="mini-cart-total">
+        <table>
+          <tbody>
+            <tr>
+              <td><b>{{ 'general.cart_info.sub_total' | t }}</b></td>
+              <td class="right"><span class="money">{{ cart.total_price | money }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="checkout cart__condition__wrapper">
+          {%- if settings.cart_terms_enable -%}
+          {%- if settings.cart_terms_page != blank -%}
+          {% if request.locale.iso_code == 'fr' %}
+          {%- assign terms_conditions_url = 'https://eikenshop.com/fr/pages/general-terms-and-conditions-of-sale' -%}
+          {% else %}
+          {%- assign terms_conditions_url = 'https://eikenshop.com/pages/general-terms-and-conditions-of-sale' -%}
+          {%- endif -%}          
+          {%- endif -%}
+          <div class="product-cart__condition">
+          <input type="checkbox" class="product-cart__agree" data-message="{{ 'cart.general.terms_conditions_message' | t | escape }}" />
+          <label for="product-cart__agree">{{ 'cart.general.terms_conditions_html' | t : terms_conditions_url: terms_conditions_url }}</label>
+          </div>
+          {%- endif -%}
+        <a href="{% unless request.locale.primary %}{{ request.locale.root_url }}{% endunless %}/cart" class="button btn-default">{{ 'general.cart_info.view_shopping_bag' | t }}</a>
+        <a href="{% unless request.locale.primary %}{{ request.locale.root_url }}{% endunless %}/checkout" class="button checkout-button {% if settings.cart_terms_enable %}btn-disabled{% endif %}">{{ 'general.cart_info.checkout' | t }}</a>
+      </div>
+      {%- endif -%}
+    </div>
+    <div class="loading-overlay"><i class="button-loader"></i></div>
+  </div>
+</div>
+{%- endif -%}

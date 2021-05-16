@@ -1,0 +1,33 @@
+{%- if settings.notify_product -%}
+{%- assign my_collection = collections[settings.notify_product_collection] -%}
+{%- if my_collection.products.size > 0 -%}
+<script>
+  var productsProIO = [];
+  {%- for my_product in my_collection.products limit: settings.notify_product_limit -%}
+  var productProIO = {
+    "id": 		"{{my_product.id}}",
+    "title": 	"{{my_product.title | escape}}",
+    "url": 		"{{my_product.url}}",
+    "price": 	"{{my_product.price}}",
+    "image": 	"{{my_product.featured_image | product_img_url: '80x80'}}"
+  }
+  productsProIO.push(productProIO); 
+  {%- endfor -%}
+</script>
+<script>
+  $(document).ready(function(){
+    notifyProIO.settings = {};
+    notifyProIO.settings.message = "{{settings.notify_product_title}} {product_with_link} {money}";
+    notifyProIO.settings.hideMobile = true;
+    notifyProIO.settings.initialDelay = 1000;
+    notifyProIO.settings.displayInterval = {{settings.notify_product_delay | plus:0}};
+    notifyProIO.settings.displayHold = {{settings.notify_product_display | plus:0}};
+    notifyProIO.settings.totalPerPage = 30;
+    notifyProIO.settings.totalDisplayed = 0;
+    notifyProIO.settings.loop = true;
+    notifyProIO.settings.money_format = window.money_format;
+    notifyProIO.setup(productsProIO)
+  });
+</script>
+{%- endif -%}
+{%- endif -%}

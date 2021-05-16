@@ -1,0 +1,132 @@
+<div class="box today-deals-toys2 box-no-advanced">
+  <div class="box-heading">
+	{{_acm_title}}
+  </div>
+  <div class="strip-line"></div>
+  <div class="box-content">
+    <div class="clearfix" style="clear: both">
+      <div class="today-deals-toys2-products">
+        {%- assign _i = 0 -%}
+        {%- for _product in _acm_prods -%}
+
+        {%- if _i == _acm_limit -%}
+        {%- break -%}
+        {%- endif -%}
+
+        {%- assign current_variant = _product.selected_or_first_available_variant | default: _product.variants.first -%}
+        {%- assign featured_image = current_variant.featured_image | default: _product.featured_image -%}
+
+        {%- assign _can_have_swap_fx = false -%}
+        {%- if _product.images.size > 1 -%}
+        {%- assign _can_have_swap_fx = true -%}
+        {%- endif -%}
+        
+        {%- assign _instructions = _product.metafields.info -%}
+        {%- if _instructions.countdown != blank -%}
+        {%- assign my_date = _instructions.countdown | split: '-' -%}
+        {%- assign _countdown = _id | append: _i -%}
+        
+        <div
+             data-offer_date_year="{{my_date[2]}}"
+             data-offer_date_month="{{my_date[0]}}"
+             data-offer_date_day ="{{my_date[1]}}"
+             id="countdown{{_countdown}}" class="ag_product_countdown clearfix"></div>
+        {%- endif -%}
+        
+        <!-- Product -->
+        <div class="product clearfix product-hover">
+          <div class="left">
+            {%-if settings.product_sale_badge != '' and current_variant.compare_at_price > current_variant.price -%}
+            {%- if settings.product_sale_badge == '1' -%}
+            <div class="sale">-{{ current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | money_without_currency | times: 100 | remove: '.0'}}%</div>
+            {%- else -%}
+            <div class="sale">{{'products.product.sale' | t}}</div>
+            {%- endif -%}
+            {%- elsif settings.product_new_badge and _product.tags contains 'latest' -%}
+            <div class="new">{{'products.product.new' | t}}</div>
+            {%- endif -%}
+
+            <div class="image{% if settings.product_img_fx == '1' and _can_have_swap_fx == true %} image-swap-effect{% endif %}">
+              <a href="{{_product.url}}">
+                {%- if settings.product_img_fx == '1' and _can_have_swap_fx == true -%}
+                <img src="{{ _product.images[1] | product_img_url: _acm_url_imgdim }}" alt="{{_product.title | escape}}" class="swap-image"/>
+                {%- endif -%}
+                {%- if settings.product_lazy_loading_image -%}
+                <img src="{{'blank.gif' | asset_url}}" data-echo="{{featured_image | product_img_url:_acm_url_imgdim}}" alt="{{_product.title | escape}}" class="{%- if settings.product_img_fx == '2' -%}{{' '}}zoom-image-effect{%- endif -%}"/>
+                {%- else -%}
+                <img src="{{featured_image | product_img_url:_acm_url_imgdim}}" alt="{{_product.title | escape}}" class="{%- if settings.product_img_fx == '2' -%}{{' '}}zoom-image-effect{%- endif -%}" />
+                {%- endif -%}
+              </a>
+            </div>
+          </div>
+          <div class="right">
+            <div class="name">
+              <a href="{{_product.url}}">{{_product.title}}</a>
+            </div>
+            <div class="price">
+              {%- if _product.available -%}
+              {%- if current_variant.compare_at_price > current_variant.price -%}
+              <span class="price-old money">{{current_variant.compare_at_price | money}}</span>
+              {%- endif -%}
+              <span class="price-new money">{{current_variant.price | money}}</span>
+              {%- else -%}
+              <span class="price-old">{{'products.product.sold_out' | t}}</span>
+              {%- endif -%}
+            </div>
+            
+            <div class="only-hover">
+              <ul>
+                {%- if settings.product_addtocart_show and _product.available -%}
+                <li>
+                  {%- if _product.variants.size > 1 -%}
+                  <a href="{{_product.url}}" class="button-add-to-cart btn-action" title="{{'products.product.select_options' | t | escape}}">{{'products.product.select_options' | t}}</a>
+                  {%- else -%}
+                  <form action="/cart/add" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="quantity" value="1" />
+                    <a href="javascript:void(0);" class="button-add-to-cart add-to-cart btn-action" title="{{'products.product.add_to_cart' | t | escape}}">{{'products.product.add_to_cart' | t}}</a>
+                    <select class="hide" name="id">
+                      {%- for variant in _product.variants -%}
+                      <option value="{{variant.id}}">{{variant.title | escape}} - {{variant.price | money}}</option>
+                      {%- endfor -%}
+                    </select>
+                  </form>
+                  {%- endif -%}
+                </li>
+                {%- endif -%}
+
+                {%- assign product = _product -%}
+               {%- assign roar360 = product.metafields.roar360 -%}
+                {%- if settings.product_quickview_show -%}
+                <li class="quickview">
+                  <a href="{{- product.url -}}?view=quickview" id="quickview-btn-{{- product.id -}}" class="btn-action quick_view btooltip" title="{{'products.product.quick_shop' | t | escape}}"><i class="fa fa-search"></i></a>
+                </li>
+                {%- if roar360.roar360view_enabled == '1' -%}
+                <div id="product-360-view-{{- section.id -}}" class="product-360-view-wrapper mfp-hide">
+                  <div class="fastor-threed-view threed-id-{{- section.id -}}" 
+                       data-_script_id="threed-id-{{- section.id -}}">
+                    <ul class="threed-view-images"></ul>
+                    <div class="spinner"><span>0%</span></div>
+                  </div>
+                  {%- unless roar360.roar360view_json == blank -%}
+                  <script type="application/json" id="threed-id-{{- section.id -}}">
+  			{{- roar360.roar360view_json -}}
+                  </script>
+                  {%- endunless -%}
+                </div>
+                {%- endif -%}
+                {%- endif -%}
+
+                {%- if settings.wishlist_enable and settings.product_wishlist_show -%}
+                <li class="wishlist">{% assign my_product = _product %}{%- include 'wishlist' with true -%}</li>
+                {%- endif -%}
+              </ul>
+            </div>
+            
+          </div>
+        </div>
+        {%- assign _i = _i | plus: 1 -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,76 @@
+<div class="box box-with-products today-deals-computer6">
+  <div class="box-heading">
+    {%- if _acm_title != "" -%}
+    {{_acm_title}}   
+    {%- endif -%}
+  </div>
+  <div class="clear"></div>
+  <div class="box-content">
+    <div class="clearfix" style="clear: both">
+      <div class="today-deals-computer6-products">
+        {%- assign _i = 0 -%}
+        {%- assign _product = _acm_product -%}
+        {%- assign current_variant = _product.selected_or_first_available_variant | default: _product.variants.first -%}
+        {%- assign featured_image = current_variant.featured_image | default: _product.featured_image -%}
+
+        {%- assign _can_have_swap_fx = false -%}
+        {%- if _product.images.size > 1 -%}
+        {%- assign _can_have_swap_fx = true -%}
+        {%- endif -%}
+
+        {%- assign _instructions = _product.metafields.info -%}
+        {%- if _instructions.countdown != blank -%}
+        {%- assign my_date = _instructions.countdown | split: '-' -%}
+        {%- assign _countdown = _id | append: _i -%}
+        <div
+             data-offer_date_year="{{my_date[2]}}"
+             data-offer_date_month="{{my_date[0]}}"
+             data-offer_date_day ="{{my_date[1]}}"
+             id="countdown{{_countdown}}" class="ag_product_countdown clearfix"></div>
+        {%- endif -%}
+        
+        <div class="product clearfix product-hover">
+          <div class="left">
+            {%-if settings.product_sale_badge != '' and current_variant.compare_at_price > current_variant.price -%}
+            {%- if settings.product_sale_badge == '1' -%}
+            <div class="sale">-{{ current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | money_without_currency | times: 100 | remove: '.0'}}%</div>
+            {%- else -%}
+            <div class="sale">{{'products.product.sale' | t}}</div>
+            {%- endif -%}
+            {%- elsif settings.product_new_badge and _product.tags contains 'latest' -%}
+            <div class="new">{{'products.product.new' | t}}</div>
+            {%- endif -%}
+
+            <div class="image{% if settings.product_img_fx == '1' and _can_have_swap_fx == true %} image-swap-effect{% endif %}">
+              <a href="{{_product.url}}">
+                {%- if settings.product_img_fx == '1' and _can_have_swap_fx == true -%}
+                <img src="{{ _product.images[1] | product_img_url: _acm_url_imgdim }}" alt="{{_product.title | escape}}" class="swap-image"/>
+                {%- endif -%}
+                {%- if settings.product_lazy_loading_image -%}
+                <img src="{{'blank.gif' | asset_url}}" data-echo="{{featured_image | product_img_url:_acm_url_imgdim}}" alt="{{_product.title | escape}}" class="{%- if settings.product_img_fx == '2' -%}{{' '}}zoom-image-effect{%- endif -%}"/>
+                {%- else -%}
+                <img src="{{featured_image | product_img_url:_acm_url_imgdim}}" alt="{{_product.title | escape}}" class="{%- if settings.product_img_fx == '2' -%}{{' '}}zoom-image-effect{%- endif -%}"/>
+                {%- endif -%}
+              </a>
+            </div>
+          </div>
+          <div class="right">
+            <div class="name">
+              <a href="{{_product.url}}">{{_product.title}}</a>
+            </div>
+            <div class="price">
+              {%- if _product.available -%}
+              {%- if current_variant.compare_at_price > current_variant.price -%}
+              <span class="price-old money">{{current_variant.compare_at_price | money}}</span>
+              {%- endif -%}
+              <span class="price-new money">{{current_variant.price | money}}</span>
+              {%- else -%}
+              <span class="price-old">{{'products.product.sold_out' | t}}</span>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

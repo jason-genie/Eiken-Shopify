@@ -1,0 +1,41 @@
+<script>
+   if(navigator.userAgent.indexOf("Chrome-Lighthouse") == -1) { 
+	var SPOParams = {
+		"id" : "6227b13a511480decbc4478a247fe948",
+        "s3Root" : "//s3.amazonaws.com/shopify-apps/pre-order",
+		"apiScript" : "{{ 'api.jquery.js' | shopify_asset_url }}",
+        "product" : {% capture product_output %}{
+            "id":{{product.id}},
+            "handle":"{{product.handle}}",
+            "title":{{product.title | json}},
+            "variants":[{% for variant in product.variants %}{"id":{{variant.id}},"title":{{variant.title | json}},"inventory_quantity":"{{variant.inventory_quantity}}","inventory_management":"{{variant.inventory_management}}","inventory_policy":"{{variant.inventory_policy}}"}{% unless forloop.last %},{% endunless %}{% endfor %}]
+        }{% endcapture %}{{ product_output | strip_newlines }},
+		"hideAddToCartButton" : {% if shop.metafields.spurit_po['preorder_hide_button'] == '1' %}true{% else %}false{% endif %},
+		"addToCartButtonSelector" : "{{ shop.metafields.spurit_po['addtocart_selector']  | replace: '"',"'"}}"
+	};
+  }
+</script>
+<script data-src="//s3.amazonaws.com/shopify-apps/pre-order/js/common.js" {% if shop.metafields.spurit_po['fast_load'] != '1' %}defer{% endif %}></script>
+{% if shop.metafields.spurit_po['preorder_hide_button'] == '1' %}
+    {% if product.selected_variant %}
+    {% assign poVariant = product.selected_variant %}
+    {% else %}
+    {% assign poVariant = product.variants[0] %}
+    {% endif %}
+    {% if poVariant.inventory_quantity <= 0 and poVariant.inventory_management == 'shopify' %}
+    <style>{{shop.metafields.spurit_po['addtocart_selector']  | replace: '"',"'"}}{ display: none; }</style>
+    <script>
+        // timeout neccessary for ATC element to be rendered
+        setTimeout(function(){
+            try{
+                if(typeof isPoAppInstalled !== 'undefined' && isPoAppInstalled !== true){
+                    var button = document.querySelector("{{shop.metafields.spurit_po['addtocart_selector']  | replace: '"',"'"}}");
+                    if(button !== null){
+                        button.style.display = "block";
+                    }
+                }
+            }catch(e){}
+        }, 50);
+    </script>
+    {% endif %}
+{% endif %}

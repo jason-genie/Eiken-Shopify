@@ -1,0 +1,169 @@
+<div class="row">
+  {%- assign _cl_row_fluid = 12 -%}
+
+  {%- assign sub_item_ct_links 				= 'mi_ct_links_' 				| append: i | append: '_' | append: k -%}
+  {%- assign sub_item_ct_links_col 			= 'mi_ct_links_col_' 			| append: i | append: '_' | append: k -%}
+  {%- assign sub_item_ct_links_sub_visible 	= 'mi_ct_links_sub_visible_' 	| append: i | append: '_' | append: k -%}
+  {%- assign sub_item_ct_links_img_pos 		= 'mi_ct_links_img_pos_' 		| append: i | append: '_' | append: k -%}
+  {%- assign sub_item_ct_links_img_width		= 'mi_ct_links_imgw_'			| append: i | append: '_' | append: k -%}
+  {%- assign sub_item_ct_links_img_height	= 'mi_ct_links_imgh_'			| append: i | append: '_' | append: k -%}
+
+  {%- assign _items = linklists[settings[sub_item_ct_links]].links -%}
+  {%- assign _columns = settings[sub_item_ct_links_col] -%}
+  {%- assign _sub_visible = settings[sub_item_ct_links_sub_visible] -%}
+  {%- assign _img_pos = settings[sub_item_ct_links_img_pos] -%}
+  {%- assign _img_width = settings[sub_item_ct_links_img_width] -%}
+  {%- assign _img_height = settings[sub_item_ct_links_img_height] -%}
+
+  {%- assign _img_style = '' -%}
+
+  {%- if _img_width == '' -%}
+  {%- assign _img_width = '0' -%}
+  {%- endif -%}
+  {%- if _img_height == '' -%}
+  {%- assign _img_height = '0' -%}
+  {%- endif -%}
+
+  {%- assign _img_style = 'width:' | append: _img_width | append: 'px;'-%}
+  {%- assign _img_style = _img_style | append: 'height:' | append: _img_height | append: 'px;'-%}
+  {%- assign _img_style = ' style="' | append: _img_style | append: '" ' -%}
+
+  {%- if _columns == '2' -%}{%- assign _cl_row_fluid =  6 -%}{%- endif -%}
+  {%- if _columns == '3' -%}{%- assign _cl_row_fluid =  4 -%}{%- endif -%}
+  {%- if _columns == '4' -%}{%- assign _cl_row_fluid =  3 -%}{%- endif -%}
+  {%- if _columns == '5' -%}{%- assign _cl_row_fluid = 25 -%}{%- endif -%}
+  {%- if _columns == '6' -%}{%- assign _cl_row_fluid =  2 -%}{%- endif -%}
+
+  {%- assign _columns = _columns | plus: 0 -%}
+  {%- if _columns <= 0 or _columns >= 7 -%}
+  {%- assign _columns = 1 -%}
+  {%- endif -%}
+
+  {%- assign _menu_class = 'hover-menu' -%}
+
+  {%- if _sub_visible == true -%}
+  {%- assign _menu_class = 'static-menu' -%}
+  {%- endif -%}
+
+  {%- assign _items_length = _items | size -%}
+  {%- assign _min_index = 0 -%}
+  {%- for _i in (1.._items_length) -%}
+  {%- if _i <= _min_index -%}{%- continue -%}{%- endif -%}
+
+  <div class="col-sm-{{_cl_row_fluid}} {{_menu_class}}">
+    <div class="menu">
+      <ul>
+        {%- assign _j = _items_length | divided_by: _columns -%}
+
+        {%- assign _remainder = _items_length | modulo: _columns -%}
+
+        {%- if _remainder > 0 -%}
+        {%- assign _j = _j | plus: 1 -%}
+        {%- endif -%}
+        {%- assign _j = _j | plus: _i | minus: 1 -%}
+
+        {%- for _k in (_i.._j) -%}
+        {%- assign _real_index = _k | minus: 1 -%}
+        
+        {%- if _real_index >= _items_length -%}
+        {%- continue -%}
+        {%- endif -%}
+        
+        {%- assign _item = _items[_real_index] -%}
+        {%- assign _object = _item.object -%}
+
+        {%- assign _mixed_text = _item.title | strip -%}
+        {%- assign _f_letter = _mixed_text | slice: 0 -%}
+        {%- assign _l_letter = _mixed_text | slice: -1, 1 -%}
+        {%- if _f_letter != '{' -%}
+        {%- assign _mixed_text = _mixed_text | prepend: '{ }' -%}
+        {%- endif -%}
+        {%- if _l_letter != '}' -%}
+        {%- assign _mixed_text = _mixed_text | append: '{ }' -%}
+        {%- endif -%}
+        {%- assign _texts = _mixed_text | split: '}' -%}
+        {%- assign _label = _texts[0] | remove: '{' | strip -%}
+        {%- assign _texts = _texts[1] | split: '{' -%}
+        {%- assign _name = _texts[0] | strip -%}
+        {%- assign _desc = _texts[1] | strip -%}
+        
+        {%- assign _img_url = '' -%}
+
+        {%- if _item.type == 'collection_link' -%}
+        {%- if _object.image -%}
+        {%- assign _img_url = _object.image | img_url: 'medium' -%}
+        {%- endif -%}
+        {%- endif -%}
+
+        {%- assign _class_link = '' -%}
+        {%- assign _has_children = false -%}
+        {%- assign _handle = _item.title | handle -%}
+        {%- if linklists[_handle] != empty -%}
+        {%- assign _class_link = 'with-submenu' -%}
+        {%- assign _has_children = true -%}
+        {%- endif -%}
+
+        {%- assign _link = _item.url -%}
+
+        {%- assign _html_name = _name -%}
+        {%- if _label != '' -%}
+        {%- assign _html_name = _html_name | append: '<span class="megamenu-label" style="background:' | append: _label_bg_color | append: '!important;color: ' | append: _label_color | append: '"><span style="background:' | append: _label_bg_color | append: '!important;border-color:' | append: _label_bg_color | append: '"></span>' | append: _label | append: '</span>' -%}
+        {%- endif -%}
+        
+        <li>
+          {%- if _sub_visible == true and _img_pos == 'top' and _img_url != '' -%}
+          <div class="categories-image-top">
+            <a href="{{_link}}"><img src="{{_img_url}}" alt="{{_name}}" {{_img_style}} /></a>
+          </div>
+          {%- endif -%}
+
+          <a href="{{_link}}" class="main-menu {{_class_link}}">{{_html_name}}</a>
+
+          {%- if _has_children == true -%}
+          {%- assign _children = linklists[_handle].links -%}
+          {%- assign _width = _img_width | plus: 0 -%}
+          {%- assign _height = _img_height | plus: 0 -%}
+          {%- assign _is_submenu = false -%}
+          
+          {%- assign sub_item_ct_links_subcol = 'mi_ct_links_sub_col_' | append: i | append: '_' | append: k -%}
+          {%- assign _sub_columns = settings[sub_item_ct_links_subcol] | plus: 0 -%}
+          
+          {%- if _sub_visible == true and _img_pos == 'right' and _img_url != '' -%}
+          <div class="open-categories"></div>
+          <div class="close-categories"></div>
+          <div class="clearfix categories-image-right" data-image="{{_img_url}}">
+            <div class="left-categories-image-right">
+              {%- include 'mega-menu-content-links-children' -%}
+            </div>
+            <div class="right-categories-image-right">
+              <a href="{{_link}}">
+                <img src="{{_img_url}} " class="image-right" alt="{{_name}}" {{_img_style}} />
+              </a>
+            </div>
+          </div>
+          {%- elsif _sub_visible == true and _img_pos == 'left' and _img_url != '' -%}
+          <div class="open-categories"></div>
+          <div class="close-categories"></div>
+          <div class="clearfix categories-image-right" data-image="{{_img_url}}">
+            <div class="left-categories-image-left">
+              <a href="{{_link}}">
+                <img src="{{_img_url}}" class="image-right" alt="{{_name}}" {{_img_style}} />
+              </a>
+            </div>
+            <div class="right-categories-image-left">
+              {%- include 'mega-menu-content-links-children' -%}
+            </div>
+          </div>
+          {%- else -%}
+          {%- include 'mega-menu-content-links-children' -%}
+          {%- endif -%}
+          {%- endif -%}
+          
+        </li>
+        {%- endfor -%}
+        {%- assign _min_index = _j -%}
+      </ul>
+    </div>
+  </div>
+  {%- endfor -%}
+</div>

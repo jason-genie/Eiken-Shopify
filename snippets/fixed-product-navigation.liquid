@@ -1,0 +1,34 @@
+<div class="fixed-product-navigation">
+  {%- if collection.previous_product != blank -%}
+  {%- assign product_handle = collection.previous_product | split: '/' | last -%}
+  {%- assign previous_product = all_products[product_handle] -%}
+  <div class="next-product clearfix">
+    <div class="info">
+      <div class="name">
+        <a href="{{collection.previous_product}}">{{previous_product.title}}</a>
+        <div class="price"><span class="money">{{previous_product.price | money}}</span></div>
+      </div>
+    </div>
+    <div class="image">
+      <a href="{{collection.previous_product}}">
+      	<img src="{{previous_product.featured_image.src | img_url:'100x'}}" alt="{{previous_product.title | escape}}" />
+      </a>
+    </div>
+  </div>
+  {%- endif -%}
+  {%- if collection.next_product != blank -%}
+  {%- assign product_handle = collection.next_product | split: '/' | last -%}
+  {%- assign next_product = all_products[product_handle] -%}
+  <div class="next-product right clearfix">
+    <div class="image">
+      <a href="{{collection.next_product}}"><img src="{{next_product.featured_image.src | img_url:'100x'}}" alt="{{next_product.title | escape}}" /></a>
+    </div>
+    <div class="info">
+      <div class="name">
+        <a href="{{collection.next_product}}">{{next_product.title}}</a>
+        <div class="price"><span class="money">{{next_product.price | money}}</span></div>
+      </div>
+    </div>
+  </div>
+  {%- endif -%}
+</div>

@@ -1,0 +1,201 @@
+{%- capture breadcrumb_class -%}{%- if settings.breadcrumb_layout == '1' -%}{{'full-width'}}{%- elsif settings.breadcrumb_layout == '4' -%}{{'fixed2 fixed3'}}{%- elsif settings.breadcrumb_layout == '3' -%}{{'fixed2'}}{%- else -%}{{'fixed'}}{%- endif -%}{%- endcapture -%}
+{%- if template contains "collection" and settings.ctemplate_type == "promo" -%}
+  {%- include "mini-breadcrumb" -%}
+{%- elsif template contains "product" and settings.product_hide_breadcrumb -%}
+  {%- include "mini-breadcrumb" -%}
+{%- else -%}
+<div class="breadcrumb {{breadcrumb_class}}">
+  <div class="background-breadcrumb"></div>
+  <div class="background">
+    <div class="shadow"></div>
+    <div class="pattern">
+      <div class="container">
+        <div class="breadcrumb-content clearfix">
+          {%- if template == 'product' and settings.product_breadcrumb != '2' -%}
+          <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+              {%- if collection.previous_product != blank -%}
+              {%- assign product_handle = collection.previous_product | split: '/' | last -%}
+              {%- assign previous_product = all_products[product_handle] -%}
+              {%- if settings.product_breadcrumb == '1' -%}
+              <div class="next-product-2 clearfix">
+                <a href="{{collection.previous_product}}" title="{{previous_product.title | escape}}" class="btooltip button-previous-next">{{'products.general.previous_product' | t}}</a>
+              </div>
+              {%- else -%}
+              <div class="next-product clearfix">
+                <div class="image"><a href="{{collection.previous_product}}"><img class="b-lazy" data-src="{{previous_product.featured_image.src | img_url:'83x83'}}" alt="{{previous_product.title | escape}}" /></a></div>
+                <div class="name">
+                  <a href="{{collection.previous_product}}">{{previous_product.title}}</a>
+                  <div class="price"><span class="money">{{previous_product.price | money}}</span></div>
+                </div>
+              </div>
+              {%- endif -%}
+              {%- endif -%}
+            </div>
+            <div class="col-md-6">
+              <h1 id="title-page">{{product.title }}</h1>
+              <ul itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                <li itemprop="itemListElement" itemscope
+                    itemtype="http://schema.org/ListItem">
+                  <a itemprop="item" href="{{shop.url}}">
+                    <span itemprop="name">{{ 'general.breadcrumbs.home' | t }}</span></a>
+                  <meta itemprop="position" content="2" />
+                </li>
+                {%- if collection != blank -%}
+                <li itemprop="itemListElement" itemscope
+                    itemtype="http://schema.org/ListItem">
+                  <a itemprop="item" href="{{collection.url}}">
+                    <span itemprop="name">{{collection.title}}</span></a>
+                  <meta itemprop="position" content="2" />
+                </li>
+                {%- else -%}
+                <li itemprop="itemListElement" itemscope
+                    itemtype="http://schema.org/ListItem">
+                  <a itemprop="item" href="#">
+                    <span itemprop="name">{{product.vendor}}</span></a>
+                  <meta itemprop="position" content="2" />
+                </li>
+                {%- endif -%}
+                <li itemprop="itemListElement" itemscope
+                    itemtype="http://schema.org/ListItem">
+                  <a itemprop="item" href="{{product.url}}">
+                    <span itemprop="name">{{product.title}}</span></a>
+                  <meta itemprop="position" content="3" />
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-3 hidden-xs hidden-sm">
+              {%- if collection.next_product != blank -%}
+              {%- assign product_handle = collection.next_product | split: '/' | last -%}
+              {%- assign next_product = all_products[product_handle] -%}
+              {%- if settings.product_breadcrumb == '1' -%}
+              <div class="next-product-2 right clearfix">
+                <a href="{{collection.next_product}}" title="{{next_product.title | escape}}" class="btooltip button-previous-next">{{'products.general.next_product' | t}}</a>
+              </div>
+              {%- else -%}
+              <div class="next-product right clearfix">
+                <div class="name">
+                  <a href="{{collection.next_product}}">{{next_product.title}}</a>
+                  <div class="price"><span class="money">{{next_product.price | money}}</span></div>
+                </div>
+                <div class="image"><a href="{{collection.next_product}}"><img class="b-lazy" data-src="{{next_product.featured_image.src | img_url:'83x83'}}" alt="{{next_product.title | escape}}" /></a></div>
+              </div>
+              {%- endif -%}
+              {%- endif -%}
+            </div>
+          </div>
+          {%- else -%}
+          <h1 id="title-page">{{page_title }}</h1>
+           <ul itemscope="" itemtype="http://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope
+                itemtype="http://schema.org/ListItem">
+              <a itemprop="item" href="{{shop.url }}">
+                <span itemprop="name">{{ 'general.breadcrumbs.home' | t }}</span></a>
+              <meta itemprop="position" content="1" />
+            </li>
+            {%- assign custom_template = template | split:'.' -%}
+            {%- case custom_template[0] -%}
+            {%- when 'blog' -%}
+            {%- if current_tags.size > 0 -%}
+            <li itemprop="itemListElement" itemscope
+                itemtype="http://schema.org/ListItem">
+              <a itemprop="item" href="{{blog.url}}">
+                <span itemprop="name">{{blog.title}}</span></a>
+              <meta itemprop="position" content="2" />
+            </li>
+            <li itemprop="itemListElement" itemscope
+                itemtype="http://schema.org/ListItem">
+              <a itemprop="item" href="#">
+                <span itemprop="name">{%- for tag in current_tags -%}{%- if forloop.index > 1 -%}{{' '}}+{{' '}}{%- endif -%}{{tag}}{%- endfor -%}</span>
+              </a>
+              <meta itemprop="position" content="3" />
+            </li>
+            {%- else -%}
+            <li itemprop="itemListElement" itemscope
+                itemtype="http://schema.org/ListItem">
+              <a itemprop="item" href="{{blog.url}}">
+                <span itemprop="name">{{blog.title}}</span></a>
+              <meta itemprop="position" content="2" />
+            </li>
+            {%- endif -%}
+            {%- when 'article' -%}
+             <li itemprop="itemListElement" itemscope
+                itemtype="http://schema.org/ListItem">
+              <a itemprop="item" href="{{blog.url}}">
+                <span itemprop="name">{{blog.title}}</span></a>
+              <meta itemprop="position" content="2" />
+            </li>
+             <li itemprop="itemListElement" itemscope
+                itemtype="http://schema.org/ListItem">
+              <a itemprop="item" href="{{article.url}}">
+                <span itemprop="name">{{article.title}}</span></a>
+              <meta itemprop="position" content="3" />
+            </li>
+            {%- when 'product' -%}
+            {%- if collection != blank -%}
+            <li itemprop="itemListElement" itemscope
+                itemtype="http://schema.org/ListItem">
+              <a itemprop="item" href="{{collection.url}}">
+                <span itemprop="name">{{collection.title}}</span></a>
+              <meta itemprop="position" content="2" />
+            </li>
+            {%- else -%}
+            <li itemprop="itemListElement" itemscope
+                itemtype="http://schema.org/ListItem">
+              <a itemprop="item" href="#">
+                <span itemprop="name">{{product.vendor}}</span></a>
+              <meta itemprop="position" content="2" />
+            </li>
+            {%- endif -%}
+            <li itemprop="itemListElement" itemscope
+                itemtype="http://schema.org/ListItem">
+              <a itemprop="item" href="{{product.url}}">
+                <span itemprop="name">{{product.title}}</span></a>
+              <meta itemprop="position" content="3" />
+            </li>
+            {%- when 'collection' -%}
+            {%- if current_tags.size > 0 -%}
+            <li itemprop="itemListElement" itemscope
+                itemtype="http://schema.org/ListItem">
+              <a itemprop="item" href="{{collection.url}}">
+                <span itemprop="name">{{collection.title}}</span></a>
+              <meta itemprop="position" content="2" />
+            </li>
+            <li itemprop="itemListElement" itemscope
+                itemtype="http://schema.org/ListItem">
+              <a itemprop="item" href="#">
+                <span itemprop="name">{%- for tag in current_tags -%}{%- if forloop.index > 1 -%}{{' '}}+{{' '}}{%- endif -%}{{tag}}{%- endfor -%}</span></a>
+              <meta itemprop="position" content="3" />
+            </li>
+            {%- else -%}
+            <li itemprop="itemListElement" itemscope
+                itemtype="http://schema.org/ListItem">
+              <a itemprop="item" href="{{collection.url}}">
+                <span itemprop="name">{{collection.title}}</span></a>
+              <meta itemprop="position" content="2" />
+            </li>
+            {%- endif -%}
+            {%- when 'page' -%}
+            <li itemprop="itemListElement" itemscope
+                itemtype="http://schema.org/ListItem">
+              <a itemprop="item" href="{{page.url}}">
+                <span itemprop="name">{{page.title}}</span></a>
+              <meta itemprop="position" content="2" />
+            </li>
+            {%- else -%}
+            <li itemprop="itemListElement" itemscope
+                itemtype="http://schema.org/ListItem">
+              <a itemprop="item" href="#">
+                <span itemprop="name">{{page_title}}</span>
+              </a>
+              <meta itemprop="position" content="2" />
+            </li>
+            {%- endcase -%}
+          </ul>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endif -%}

@@ -1,0 +1,94 @@
+<div class="megamenu-background">
+  <div>
+    <div class="overflow-megamenu container">
+      <div class="container-megamenu horizontal">
+        <div class="megaMenuToggle">
+          <div class="megamenuToogle-wrapper">
+            <div class="megamenuToogle-pattern">
+              <div class="container">
+                <div><span></span><span></span><span></span></div>
+                {{'general.header.navigation' | t}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="megamenu-wrapper">
+          <div class="megamenu-pattern">
+            <div class="container">
+              <ul class="megamenu shift-up">
+                {%- for _collection in collections -%}
+                {%- if _collection.handle != 'all' -%}
+                {%- if _collection.products_count > 0 -%}
+                <li class="with-sub-menu hover"><p class="close-menu"></p><p class="open-menu"></p>
+                  <a href="{{_collection.url}}"><span><strong>{{_collection.title}}</strong></span></a>
+                  {%- else -%}
+                <li>
+                  <a href="{{_collection.url}}"><span><strong>{{_collection.title}}</strong></span></a>
+                  {%- endif -%}
+                  {%- if _collection.products_count > 0 -%}
+                  {%- assign _column = 4 -%}
+                  {%- assign _width = '100%' -%}
+                  {%- assign _row_fluid = 3 -%}
+
+                  {%- if _column == 1 -%}
+                  {%- assign _width = '220px' -%}
+                  {%- assign _row_fluid = 12 -%}
+                  {%- endif -%}
+                  {%- if _column == 2 -%}
+                  {%- assign _width = '500px' -%}
+                  {%- assign _row_fluid = 6 -%}
+                  {%- endif -%}
+                  {%- if _column == 3 -%}
+                  {%- assign _width = '700px' -%}
+                  {%- assign _row_fluid = 4 -%}
+                  {%- endif -%}
+
+                  <div class="sub-menu" style="width:{{_width}}">
+                    <div class="content">
+                      <p class="arrow"></p>
+                      <div class="row hover-menu">
+                        {%- assign _min_index = 0 -%}
+                        {%- for _i in (1.._collection.products_count) -%}
+                        {%- if _i <= _min_index -%}{%- continue -%}{%- endif -%}
+                        <div class="col-sm-{{_row_fluid}} mobile-enabled">
+                          <div class="menu">
+                            <ul>
+                              {%- assign _j = _collection.products_count | divided_by: _column -%}
+                              {%- assign _remainder = _collection.products_count | modulo: _column -%}
+
+                              {%- if _remainder > 0 -%}
+                              {%- assign _j = _j | plus: 1 -%}
+                              {%- endif -%}
+                              {%- assign _j = _j | plus: _i | minus: 1 -%}
+
+                              {%- for _k in (_i.._j) -%}
+                              {%- assign _real_index = _k | minus: 1 -%}
+
+                              {%- if _real_index >= _collection.products_count -%}
+                              {%- continue -%}
+                              {%- endif -%}
+
+                              {%- assign _prod = _collection.products[_real_index] -%}
+
+                              <li><a href="{{_prod.url}}" class="main-menu">{{_prod.title}}</a></li>
+                              {%- endfor -%}
+                              {%- assign _min_index = _j -%}
+                            </ul>
+                          </div>
+                        </div>
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                  </div>
+                  {%- endif -%}
+                </li>
+                {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

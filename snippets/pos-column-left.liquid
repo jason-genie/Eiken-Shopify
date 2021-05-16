@@ -1,0 +1,38 @@
+{%- if settings.pos_column_left_use -%}
+
+{%- comment -%}--- MENU ---{%- endcomment -%}
+{%- assign _active_count = 0 -%}
+{%- for i in (1..MAX_MENU) -%}
+{%- assign m_use 		= 'mmenu_use_' 		| append: i -%}
+{%- assign m_pos 		= 'mmenu_pos_' 		| append: i -%}
+{%- assign m_layout 		= 'mmenu_layout_' 	| append: i -%}
+{%- assign _layout		= settings[m_layout] -%}
+{%- assign _layout		= '0' -%}
+
+{%- if _layout == '0' or _layout == CURRENT_LAYOUT -%}
+{%- if settings[m_use] and settings[m_pos] == 'column_left' -%}
+{%- assign _active_count = _active_count | plus: 1 -%}
+{%- endif -%}
+{%- endif -%}
+{%- endfor -%}
+
+{%- if _active_count > 0 -%}
+<div class="overflow-menu2">
+  {%- include 'mega-menus' with 'column_left' -%}
+</div>
+{%- endif -%}
+
+{%- comment -%}--- HOME SLIDER ---{%- endcomment -%}
+{%- include 'home-slider' with 'column_left' -%}
+{%- comment -%}--- ADVANCED GRID ---{%- endcomment -%}
+{%- include 'advanced-grid' with 'column_left' -%}
+{%- comment -%}--- LATEST BLOG ---{%- endcomment -%}
+{%- include 'latest-blogs' with 'column_left' -%}
+{%- comment -%}--- CUSTOM WIDGET ---{%- endcomment -%}
+{%- include 'custom-widgets' with 'column_left' -%}
+{%- comment -%}--- PRODUCTS TABS ---{%- endcomment -%}
+{%- include 'products-tabs' with 'column_left' -%}
+{%- comment -%}--- TESTIMONIALS ---{%- endcomment -%}
+{%- include 'testimonials' with 'column_left' -%}
+
+{%- endif -%}

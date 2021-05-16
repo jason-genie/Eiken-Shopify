@@ -1,0 +1,1466 @@
+{%- if section.settings.mmenu_use -%}
+  {%- include 'section-mega-menus' with 'megamenu_1' -%}
+{%- endif -%}
+
+{%- schema -%}
+{
+  "name": "Mega Menu #1",
+  "class": "index-section section-wrapper hidden",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "checkbox",
+      "id": "mmenu_use",
+      "label": "Enabled",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mmenu_mobile",
+      "label": "Show on Mobile"
+    },
+	{
+      "type": "select",
+      "id": "mmenu_width",
+      "label": "Width",
+      "options": [ 
+        {
+          "value": "col-md-3",
+          "label": "25%"
+        },
+        {
+          "value": "col-md-4",
+          "label": "33%"
+        },
+        {
+          "value": "col-md-5",
+          "label": "42%"
+        },
+        {
+          "value": "col-md-6",
+          "label": "50%"
+        },
+        {
+          "value": "col-md-7",
+          "label": "58%"
+        },
+        {
+          "value": "col-md-8",
+          "label": "66%"
+        },
+        {
+          "value": "col-md-9",
+          "label": "75%"
+        },
+        {
+          "value": "col-md-12",
+          "label": "100%"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Design"
+    },
+	{
+      "type": "select",
+      "id": "mmenu_orientation",
+      "label": "Orientation",
+      "options": [
+          {
+            "value": "0",
+            "label": "Horizontal"
+          },
+          {
+            "value": "1",
+            "label": "Vertical"
+          },
+          {
+            "value": "2",
+            "label": "Horizontal Type 2 (Flowers)"
+          },
+          {
+            "value": "3",
+            "label": "Horizontal Type 3 (Audio)"
+          }
+		]
+    },
+	{
+      "type": "checkbox",
+      "id": "mmenu_static_vertical",
+      "label": "Static Vertical",
+	  "default": false
+    },
+	{
+      "type": "text",
+      "id": "mmenu_static_vertical_height",
+      "label": "Static Vertical Height (in pixels)",
+	  "default": "250"
+    },
+    {
+      "type": "checkbox",
+      "id": "mmenu_center",
+      "label": "Center Horizontal Menu"
+    },
+	{
+      "type": "select",
+      "id": "mmenu_submenu_appear",
+      "label": "Sub Menu Trigger",
+      "options": [
+        {
+          "value": "0",
+          "label": "Hover"
+        },
+        {
+          "value": "1",
+          "label": "Click"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "mmenu_navigation_text",
+      "label": "Vertical Heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "mmenu_new_window",
+      "label": "Link Opened in New Tab"
+    },
+    {
+      "type": "checkbox",
+      "id": "mmenu_searchbar",
+      "label": "Show Search"
+    },
+	
+    {
+      "type": "checkbox",
+      "id": "mmenu_home_icon",
+      "label": "Add 'Home Page' Icon"
+    },
+    
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "select",
+      "id": "mmenu_content",
+      "label": "Type",
+      "options": [
+        {
+          "value": "0",
+          "label": "Custom Items"
+        },
+        {
+          "value": "1",
+          "label": "Link List"
+        }
+      ],
+      "info": "If Link List is chosen, all Menu Items settings will be void"
+    },
+    {
+      "type": "header",
+      "content": "Link List Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "mmenu_links",
+      "label": "Choose a Link List"
+    },
+    {
+      "type": "text",
+      "id": "mmenu_links_w",
+      "label": "Sub Menu Width"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+    	
+      "type": "select",
+      "id": "mmenu_animation_type",
+      "label": "Type",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "slide",
+          "label": "Slide"
+        },
+        {
+          "value": "fade",
+          "label": "Fade"
+        },
+    	{
+          "value": "shift-up",
+          "label": "Shift Up"
+        },
+        {
+          "value": "shift-down",
+          "label": "Shift Down"
+        },
+        {
+          "value": "shift-left",
+          "label": "Shift Left"
+        },
+        {
+          "value": "shift-right",
+          "label": "Shift Right"
+        },
+        {
+          "value": "flipping",
+          "label": "Flipping"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "mmenu_animation_time",
+      "label": "Duration (in milliseconds)",
+      "default": "200"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu_parent",
+      "name": "Parent Item",
+      "settings": [
+	 	{
+          "type": "header",
+          "content": "General"
+        },
+        {
+          "type": "text",
+          "id": "mi_text",
+          "label": "Title",
+		  "default": "{Label}Give a Title"
+        },
+        {
+          "type": "url",
+          "id": "mi_url",
+          "label": "URL",
+		  "default": "/collections/all"
+        },
+        {
+          "type": "text",
+          "id": "mi_class",
+          "label": "Custom Class"
+        },
+        {
+          "type": "checkbox",
+          "id": "mi_mobile",
+          "label": "Show on Mobile",
+		  "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "mi_pos_right",
+          "label": "Right Position"
+        },
+        {
+          "type": "checkbox",
+          "id": "mi_icon_enabled",
+          "label": "Use Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "mi_icon",
+          "label": "Pick an Icon"
+        },
+		{
+          "type": "header",
+          "content": "Design"
+        },
+        {
+          "type": "color",
+          "id": "mmenu_label_text_color",
+          "label": "Label Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "mmenu_label_bg_color",
+          "label": "Label Background Color",
+          "default": "#CA302C"
+        },
+		{
+          "type": "header",
+          "content": "Children Container"
+        },
+        {
+          "type": "select",
+          "id": "mi_submenu_w",
+          "label": "Width",
+          "options": [
+              {
+                "value": "100px",
+                "label": "100 pixels"
+              },
+			  {
+                "value": "200px",
+                "label": "200 pixels"
+              },
+			  {
+                "value": "300px",
+                "label": "300 pixels"
+              },
+			  {
+                "value": "400px",
+                "label": "400 pixels"
+              },
+			  {
+                "value": "500px",
+                "label": "500 pixels"
+              },
+			  {
+                "value": "600px",
+                "label": "600 pixels"
+              },
+			  {
+                "value": "700px",
+                "label": "700 pixels"
+              },
+			  {
+                "value": "800px",
+                "label": "800 pixels"
+              },
+			  {
+                "value": "900px",
+                "label": "900 pixels"
+              },
+			  {
+                "value": "100%",
+                "label": "100%"
+              }
+		   ],
+		   "default":"900px"
+        },
+		{
+            "type": "range",
+            "id": "mi_submenu_padding",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "Content Padding",
+            "default": 30
+		},
+		{
+          "type": "color",
+          "id": "mi_submenu_bg_c",
+          "label": "Background Color",
+		  "default": "#ffffff"
+        },
+        {
+          "type": "image_picker",
+          "id": "mi_submenu_bg",
+          "label": "Background Image"
+        },
+        {
+          "type": "select",
+          "id": "mi_submenu_bg_pos",
+          "label": "Background Image Position To Star",
+          "options": [
+              {
+                "value": "top_left",
+                "label": "Top Left"
+              },
+    		  {
+                "value": "top_right",
+                "label": "Top Right"
+              },
+              {
+                "value": "top_center",
+                "label": "Top Center"
+              },
+    		  {
+                "value": "bottom_left",
+                "label": "Bottom Left"
+              },
+    		  {
+                "value": "bottom_right",
+                "label": "Bottom Right"
+              },
+              {
+                "value": "bottom_center",
+                "label": "Bottom Center"
+              }
+            ],
+          "default": "top_left"
+        },
+        {
+    		"type": "select",
+            "id": "mi_submenu_bg_repeat",
+            "label": "Background Image Repeat",
+            "options": [
+              {
+                "value": "no-repeat",
+                "label": "None"
+              },
+              {
+                "value": "repeat-x",
+                "label": "Horizontally"
+              },
+              {
+                "value": "repeat-y",
+                "label": "Vertically"
+              },
+              {
+                "value": "repeat",
+                "label": "Vertically & Horizontally"
+              }
+           ]
+        }
+      ]
+    },
+	{
+        "type": "submenu_banner",
+        "name": "Child Item with Banner",
+        "settings": [
+		  {
+			"type": "header",
+			"content": "*** General"
+		  },
+		  {
+            "type": "range",
+            "id": "mi_ct_w",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width",
+            "default": 25
+          },
+          {
+            "type": "range",
+            "id": "mi_ct_w_mobile",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width on Mobile",
+            "default": 50
+          },
+          {
+            "type": "range",
+            "id": "mi_submenu_padding",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "Padding",
+            "default": 5
+          },
+          {
+              "type": "color",
+              "id": "mi_submenu_bg_c",
+              "label": "Background Color",
+			  "default": "#ffffff"
+          },
+		  {
+            "type": "header",
+            "content": "*** Banner Height"
+          },
+          {
+            "type": "range",
+            "id": "mi_ct_height",
+            "min": 20,
+            "max": 1000,
+            "step": 10,
+            "unit": "px",
+            "label": "Height",
+            "default": 250
+          },
+          {
+            "type": "range",
+            "id": "mi_ct_mobile_height",
+            "min": 10,
+            "max": 500,
+            "step": 10,
+            "unit": "px",
+            "label": "Height on Mobile",
+            "default": 100
+          },
+		  {
+            "type": "header",
+            "content": "*** Banner Background"
+          },
+          {
+            "type": "color",
+            "id": "mi_ct_banner_bg_color",
+            "label": "Color",
+            "default": "#FFC107"
+          },
+          {
+            "type": "image_picker",
+            "id": "mi_ct_banner_image",
+            "label": "Pick an Image"
+          },
+          {
+            "type": "select",
+            "id": "mi_ct_banner_image_quality",
+            "label": "Image Quality",
+            "options": [
+              {
+                "value": "500x",
+                "label": "Low"
+              },
+              {
+                "value": "1000x",
+                "label": "Normal"
+              },
+              {
+                "value": "1920x",
+                "label": "High"
+              }
+            ],
+            "default": "1000x"
+          },
+          {
+            "type": "header",
+            "content": "*** Banner Content"
+          },
+          {
+            "type": "text",
+            "id": "mi_ct_banner_head",
+            "label": "Heading",
+            "default": "This is Heading"
+          },
+          {
+            "type": "textarea",
+            "id": "mi_ct_banner_cap",
+            "label": "Caption",
+            "default": "Your caption goes here"
+          },
+		  {
+			"type": "link_list",
+			"id": "mi_ct_banner_linklist",
+			"label": "Add a Linklist"
+		  },
+          {
+            "type": "text",
+            "id": "mi_ct_banner_cta",
+            "label": "CTA Button",
+            "default": "Button Text"
+          },
+          {
+            "type": "url",
+            "id": "mi_ct_banner_link",
+            "label": "URL",
+            "default": "/collections/all"
+          },
+          {
+            "type": "header",
+            "content": "*** Styling"
+          },
+		  {
+            "type": "header",
+            "content": "- Position:"
+          },
+          {
+            "type": "select",
+            "id": "mi_ct_banner_text_pos",
+            "label": "Horizontal Position",
+            "options": [
+              {
+                "value": "text-pos-left",
+                "label": "Left"
+              },
+              {
+                "value": "text-pos-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-pos-right",
+                "label": "Right"
+              }
+            ],
+            "default": "text-pos-center"
+          },
+          {
+            "type": "select",
+            "id": "mi_ct_banner_text_vpos",
+            "label": "Vertical Position",
+            "options": [
+              {
+                "value": "text-vpos-top",
+                "label": "Top"
+              },
+              {
+                "value": "text-vpos-middle",
+                "label": "Middle"
+              },
+              {
+                "value": "text-vpos-bottom",
+                "label": "Bottom"
+              }
+            ],
+            "default": "text-vpos-middle"
+          },
+          {
+            "type": "select",
+            "id": "mi_ct_banner_text_align",
+            "label": "Texting align",
+            "options": [
+              {
+                "value": "text-align-left",
+                "label": "Left"
+              },
+              {
+                "value": "text-align-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-align-right",
+                "label": "Right"
+              }
+            ],
+            "default": "text-align-center"
+          },
+		  {
+            "type": "range",
+            "id": "mi_ct_banner_side_padding_hori",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "%",
+            "label": "Horizontal Side Padding",
+            "default": 5
+          },
+		  {
+            "type": "range",
+            "id": "mi_ct_banner_side_padding_vert",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "%",
+            "label": "Vertical Side Padding",
+            "default": 5
+          },
+		  {
+            "type": "header",
+            "content": "- Heading:"
+          },
+          {
+            "type": "color",
+            "id": "mi_ct_banner_head_color",
+            "label": "Heading color",
+            "default": "#000000"
+          },
+          {
+            "type": "range",
+            "id": "mi_ct_banner_head_size",
+            "min": 15,
+            "max": 115,
+            "step": 1,
+            "unit": "px",
+            "label": "Heading Font Size",
+            "default": 20
+          },
+		  {
+            "type": "range",
+            "id": "mi_ct_banner_head_weight",
+            "min": 100,
+            "max": 700,
+            "step": 100,
+            "label": "Heading Font Weight",
+            "default": 700
+          },
+		  {
+            "type": "checkbox",
+            "id": "mi_ct_banner_head_shadow",
+            "label": "Shadow",
+            "default": false
+          },
+		  {
+            "type": "header",
+            "content": "- Caption:"
+          },
+          {
+            "type": "color",
+            "id": "mi_ct_banner_cap_color",
+            "label": "Caption color",
+            "default": "#000000"
+          },
+          {
+            "type": "range",
+            "id": "mi_ct_banner_cap_size",
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "Caption Font Size",
+            "default": 14
+          },
+		  {
+            "type": "range",
+            "id": "mi_ct_banner_cap_weight",
+            "min": 100,
+            "max": 700,
+            "step": 100,
+            "label": "Caption Font Weight",
+            "default": 400
+          },
+		  {
+            "type": "checkbox",
+            "id": "mi_ct_banner_cap_shadow",
+            "label": "Shadow",
+            "default": false
+          },
+		  {
+            "type": "header",
+            "content": "- Linklist:"
+          },
+		  {
+            "type": "color",
+            "id": "mi_ct_banner_linklist_color",
+            "label": "Color",
+            "default": "#000000"
+          },
+          {
+            "type": "color",
+            "id": "mi_ct_banner_linklist_color_hover",
+            "label": "Hover Color",
+            "default": "#ffffff"
+          },
+          {
+            "type": "range",
+            "id": "mi_ct_banner_linklist_size",
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "Linklist Font Size",
+            "default": 13
+          },
+		  {
+            "type": "range",
+            "id": "mi_ct_banner_linklist_weight",
+            "min": 100,
+            "max": 700,
+            "step": 100,
+            "label": "Linklist Font Weight",
+            "default": 400
+          },
+          {
+            "type": "range",
+            "id": "mi_ct_banner_linklist_width",
+            "min": 200,
+            "max": 1000,
+            "step": 50,
+            "unit": "px",
+            "label": "Linklist Width",
+            "default": 350
+          },
+          {
+            "type": "range",
+            "id": "mi_ct_banner_linklist_col",
+            "min": 1,
+            "max": 5,
+            "step": 1,
+            "label": "Linklist Columns",
+            "default": 2
+          },
+		  {
+            "type": "header",
+            "content": "- CTA Button:"
+          },
+          {
+            "type": "color",
+            "id": "mi_ct_banner_cta_color",
+            "label": "CTA color",
+            "default": "#ffffff"
+          },
+          {
+            "type": "color",
+            "id": "mi_ct_banner_cta_bgcolor",
+            "label": "CTA background color",
+            "default": "#000000"
+          },
+          {
+            "type": "range",
+            "id": "mi_ct_banner_cta_size",
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "CTA Font Size",
+            "default": 11
+          },
+		  {
+            "type": "range",
+            "id": "mi_ct_banner_cta_weight",
+            "min": 100,
+            "max": 700,
+            "step": 100,
+            "label": "CTA Font Weight",
+            "default": 400
+          }
+        ]
+    },
+	{
+        "type": "submenu_image",
+        "name": "Child Item with Image",
+        "settings": [
+		  {
+			"type": "header",
+			"content": "General"
+		  },
+		  {
+            "type": "range",
+            "id": "mi_ct_w",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width",
+            "default": 25
+          },
+          {
+            "type": "range",
+            "id": "mi_ct_w_mobile",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width on Mobile",
+            "default": 50
+          },
+          {
+            "type": "range",
+            "id": "mi_submenu_padding",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "Padding",
+            "default": 5
+          },
+          {
+              "type": "color",
+              "id": "mi_submenu_bg_c",
+              "label": "Background Color",
+			  "default": "#ffffff"
+          },
+		  {
+			"type": "header",
+			"content": "Content"
+		  },
+          {
+            "type": "image_picker",
+            "id": "mi_ct_image",
+            "label": "Pick an Image"
+          },
+          {
+            "type": "select",
+            "id": "mi_ct_image_quality",
+            "label": "Image Quality",
+            "options": [
+              {
+                "value": "500x",
+                "label": "Low"
+              },
+              {
+                "value": "1000x",
+                "label": "Normal"
+              },
+              {
+                "value": "1920x",
+                "label": "High"
+              }
+            ],
+            "default": "1000x"
+          },
+          {
+            "type": "textarea",
+            "id": "mi_text",
+            "label": "Heading",
+            "default": "Give Some Text"
+          },
+          {
+            "type": "url",
+            "id": "mi_url",
+            "label": "URL",
+            "default": "/collections/all"
+          },
+		  {
+            "type": "header",
+            "content": "Styling"
+          },
+          {
+            "type": "select",
+            "id": "mi_ct_image_pos",
+            "label": "Image Position",
+            "options": [ 
+			  {
+                "value": "",
+                "label": "Hidden"
+              },
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              },
+              {
+                "value": "top",
+                "label": "Top"
+              },
+              {
+                "value": "bottom",
+                "label": "Bottom"
+              }
+            ],
+            "default": "top"
+          },
+          {
+            "type": "select",
+            "id": "mi_text_align",
+            "label": "Heading align",
+            "options": [
+              {
+                "value": "text-align-left",
+                "label": "Left"
+              },
+              {
+                "value": "text-align-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-align-right",
+                "label": "Right"
+              }
+            ],
+            "default": "text-align-center"
+          },
+          {
+            "type": "color",
+            "id": "mi_text_color",
+            "label": "Heading color",
+            "default": "#000000"
+          },
+          {
+            "type": "range",
+            "id": "mi_text_size",
+            "min": 15,
+            "max": 115,
+            "step": 1,
+            "unit": "px",
+            "label": "Heading Font Size",
+            "default": 40
+          },
+		  {
+            "type": "range",
+            "id": "mi_text_weight",
+            "min": 100,
+            "max": 700,
+            "step": 100,
+            "label": "Heading Font Weight",
+            "default": 700
+          }
+        ]
+    },
+    {
+        "type": "submenu_html",
+        "name": "Child Item with HTML",
+        "settings": [
+		  {
+			"type": "header",
+			"content": "General"
+		  },
+		  {
+            "type": "range",
+            "id": "mi_ct_w",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width",
+            "default": 25
+          },
+          {
+            "type": "range",
+            "id": "mi_ct_w_mobile",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width on Mobile",
+            "default": 50
+          },
+          {
+            "type": "range",
+            "id": "mi_submenu_padding",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "Padding",
+            "default": 5
+          },
+          {
+              "type": "color",
+              "id": "mi_submenu_bg_c",
+              "label": "Background Color",
+			  "default": "#ffffff"
+          },
+		  {
+			"type": "header",
+			"content": "Content"
+		  },
+          {
+            "type": "textarea",
+            "id": "mi_ct_html",
+            "label": "HTML Content [( ? )](https:\/\/youtu.be\/s7s8hWXVxGE)"
+          }
+        ]
+    },
+  	{
+        "type": "submenu_linklist",
+        "name": "Child Item with Linklist",
+        "settings": [
+		  {
+			"type": "header",
+			"content": "General"
+		  },
+		  {
+            "type": "range",
+            "id": "mi_ct_w",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width",
+            "default": 25
+          },
+          {
+            "type": "range",
+            "id": "mi_ct_w_mobile",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width on Mobile",
+            "default": 50
+          },
+          {
+            "type": "range",
+            "id": "mi_submenu_padding",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "Padding",
+            "default": 5
+          },
+          {
+              "type": "color",
+              "id": "mi_submenu_bg_c",
+              "label": "Background Color",
+			  "default": "#ffffff"
+          },
+		  {
+			"type": "header",
+			"content": "Content"
+		  },
+          {
+            "type": "link_list",
+            "id": "mi_ct_links",
+            "label": "Choose a Link List"
+          },
+		  {
+			"type": "header",
+			"content": "Linklist Behavior"
+		  },
+          {
+            "type": "select",
+            "id": "mi_ct_links_col",
+            "label": "Items Level 1",
+    		"options": [
+                {
+                  "value": "1",
+                  "label": "1 Column"
+                },
+                {
+                  "value": "2",
+                  "label": "2 Columns"
+                },
+                {
+                  "value": "3",
+                  "label": "3 Columns"
+                },
+                {
+                  "value": "4",
+                  "label": "4 Columns"
+                },
+                {
+                  "value": "5",
+                  "label": "5 Columns"
+                },
+                {
+                  "value": "6",
+                  "label": "6 Columns"
+                }
+    		],
+			"default": "1"
+          },
+  		  {
+            "type": "checkbox",
+            "id": "mi_ct_links_sub_visible",
+            "label": "Visible Items Level 2",
+			"default": false
+          },
+          {
+            "type": "select",
+            "id": "mi_ct_links_sub_col",
+            "label": "Items Level 2",
+            "options": [
+                {
+                  "value": "1",
+                  "label": "1 Column"
+                },
+                {
+                  "value": "2",
+                  "label": "2 Columns"
+                },
+                {
+                  "value": "3",
+                  "label": "3 Columns"
+                },
+                {
+                  "value": "4",
+                  "label": "4 Columns"
+                },
+                {
+                  "value": "5",
+                  "label": "5 Columns"
+                },
+                {
+                  "value": "6",
+                  "label": "6 Columns"
+                }
+              ]
+          }
+        ]
+    },
+  	{
+        "type": "submenu_product",
+        "name": "Child Item with Product",
+        "settings": [
+		  {
+			"type": "header",
+			"content": "General"
+		  },
+		  {
+            "type": "range",
+            "id": "mi_ct_w",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width",
+            "default": 25
+          },
+          {
+            "type": "range",
+            "id": "mi_ct_w_mobile",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width on Mobile",
+            "default": 50
+          },
+          {
+            "type": "range",
+            "id": "mi_submenu_padding",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "Padding",
+            "default": 5
+          },
+          {
+              "type": "color",
+              "id": "mi_submenu_bg_c",
+              "label": "Background Color",
+			  "default": "#ffffff"
+          },
+		  {
+			"type": "header",
+			"content": "Content"
+		  },
+          {
+            "type": "product",
+            "id": "mi_ct_prod",
+            "label": "Choose a Product"
+          },
+		  {
+			"type": "header",
+			"content": "Product Image"
+		  },
+          {
+            "type": "text",
+            "id": "mi_ct_prod_w",
+            "label": "Width (in pixels)",
+			"default": "500"
+          },
+          {
+            "type": "text",
+            "id": "mi_ct_prod_h",
+            "label": "Height (in pixels)",
+			"default": "500"
+          }
+        ]
+    },
+  	{
+        "type": "submenu_products",
+        "name": "Child Item with Products",
+        "settings": [
+		  {
+			"type": "header",
+			"content": "General"
+		  },
+		  {
+            "type": "range",
+            "id": "mi_ct_w",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width",
+            "default": 25
+          },
+          {
+            "type": "range",
+            "id": "mi_ct_w_mobile",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width on Mobile",
+            "default": 50
+          },
+          {
+            "type": "range",
+            "id": "mi_submenu_padding",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "Padding",
+            "default": 5
+          },
+          {
+              "type": "color",
+              "id": "mi_submenu_bg_c",
+              "label": "Background Color",
+			  "default": "#ffffff"
+          },
+		  {
+			"type": "header",
+			"content": "Content"
+		  },
+          {
+            "type": "collection",
+            "id": "mi_ct_prods",
+            "label": "Choose a Collection"
+          },
+		  {
+            "type": "text",
+            "id": "mi_ct_prods_limit",
+            "label": "Limit",
+			"default": "6"
+          },
+          {
+            "type": "text",
+            "id": "mi_ct_prods_head",
+            "label": "Heading",
+			"default": "Your Heading"
+          },
+          {
+    		"type": "select",
+            "id": "mi_ct_prods_inrow",
+            "label": "Products Per Scroll",
+            "options": [
+                {
+                  "value": "1",
+                  "label": "1"
+                },
+                {
+                  "value": "2",
+                  "label": "2"
+                },
+                {
+                  "value": "3",
+                  "label": "3"
+                },
+                {
+                  "value": "4",
+                  "label": "4"
+                },
+                {
+                  "value": "5",
+                  "label": "5"
+                },
+                {
+                  "value": "6",
+                  "label": "6"
+                }
+              ]
+          },
+		  {
+			"type": "header",
+			"content": "Product Image"
+		  },
+          {
+            "type": "text",
+            "id": "mi_ct_prods_imgw",
+            "label": "Width (in pixels)",
+			"default": "500"
+          },
+          {
+            "type": "text",
+            "id": "mi_ct_prods_imgh",
+            "label": "Height (in pixels)",
+			"default": "500"
+          }
+        ]
+    },
+	{
+        "type": "submenu_blank",
+        "name": "Child Item with Blank",
+        "settings": [
+		  {
+			"type": "header",
+			"content": "General"
+		  },
+		  {
+            "type": "range",
+            "id": "mi_ct_w",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width",
+            "default": 25
+          },
+          {
+            "type": "range",
+            "id": "mi_ct_w_mobile",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Width on Mobile",
+            "default": 0
+          }, 
+          {
+              "type": "color",
+              "id": "mi_submenu_bg_c",
+              "label": "Background Color",
+			  "default": "#E5E5E5"
+          },
+		  {
+			"type": "header",
+			"content": "Blank Space Height"
+		  },
+		  {
+            "type": "range",
+            "id": "mi_ct_height",
+            "min": 10,
+            "max": 1000,
+            "step": 10,
+            "unit": "px",
+            "label": "Height",
+            "default": 100
+          },
+          {
+            "type": "range",
+            "id": "mi_ct_mobile_height",
+            "min": 10,
+            "max": 500,
+            "step": 10,
+            "unit": "px",
+            "label": "Height on Mobile",
+            "default": 50
+          }
+        ]
+    }
+  ],
+  "default": {
+     "settings": {
+    	"mmenu_use": true,
+    	"mmenu_mobile": true,
+        "mmenu_new_window": false,
+        "mmenu_submenu_appear": "0",
+        "mmenu_orientation": "1",
+        "mmenu_searchbar": false,
+        "mmenu_navigation_text": "Navigation",
+        "mmenu_home_icon": false,
+        "mmenu_content": "0",
+        "mmenu_links": "",
+        "mmenu_links_w": "",
+        "mmenu_animation_type": "shift-up",
+        "mmenu_animation_time": "200",
+    	"mmenu_width": "col-md-3"
+      },
+      "blocks": [
+        {
+          "type": "menu_parent",
+  		  "settings": 
+  		  {
+            "mi_text": "Men",
+            "mmenu_label_text_color": "#191919",
+            "mmenu_label_bg_color": "#dfd4c6",
+            "mi_class": "",
+            "mi_icon_enabled": false,
+            "mi_url": "\/collections\/all",
+            "mi_pos_right": false,
+            "mi_submenu_w": "190px"
+  		  }
+        },
+  		{
+          "type": "menu_parent",
+  		  "settings": 
+  		  {
+  			"mi_text": "Women",
+            "mmenu_label_text_color": "#191919",
+            "mmenu_label_bg_color": "#dfd4c6",
+            "mi_class": "",
+            "mi_icon_enabled": false,
+            "mi_url": "\/collections\/all",
+            "mi_pos_right": false,
+            "mi_submenu_w": "190px"
+  		  }
+        },
+        {
+          "type": "menu_parent",
+          "settings": 
+          {
+  			"mi_text": "{HOT}Accessories",
+            "mmenu_label_text_color": "#191919",
+            "mmenu_label_bg_color": "#dfd4c6",
+            "mi_class": "",
+            "mi_icon_enabled": false,
+            "mi_url": "\/collections\/all",
+            "mi_pos_right": false,
+            "mi_submenu_w": "795px",
+            "mi_submenu_bg_pos": "top_right",
+            "mi_submenu_bg_repeat": "no-repeat"
+          }
+        }
+      ]
+  }
+}
+{% endschema %}

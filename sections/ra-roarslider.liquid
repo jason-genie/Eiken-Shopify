@@ -1,0 +1,21 @@
+<div data-section-id="{{ section.id }}" data-section-type="roarslider-section">
+  {% if section.settings.shortcode != blank and section.settings.shortcode != "" %}
+    {% include 'ra-shortcode' load: section.settings.shortcode %}
+  {% endif %}
+</div>
+{% schema %}
+  {
+    "name": "Express Slider",
+    "settings": [
+      {
+        "type": "text",
+        "id": "shortcode",
+        "label": "Shortcode"
+      }
+    ],
+    "presets": [{
+      "name": "Express Slider",
+      "category": "Image"
+    }]
+  }
+{% endschema %}

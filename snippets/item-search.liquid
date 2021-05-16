@@ -1,0 +1,34 @@
+{%- assign featured_image = product.image.src -%}
+{%- assign _dim = product-item -%}
+{%- if _dim == empty or _dim == blank -%}
+{%- if settings.collection_product_size == "custom" and settings.collection_product_img_width != blank and settings.collection_product_img_height != blank -%}
+{%- assign _dim = settings.collection_product_img_width | append: "x" | append : settings.collection_product_img_height -%}
+{%- else -%}
+{%- assign _dim = settings.collection_product_size -%}
+{%- endif -%}
+{%- endif -%}
+<div class="product clearfix product-hover {% if settings.image_layout != "" %}aspect-ratio-{{ settings.image_layout }}{% endif %}" data-_dim="_{{_dim}}">
+  <div class="left">
+    <div class="image{%- if settings.product_img_fx == '1' -%}{{' '}}image-swap-effect{%- endif -%}">
+      {%- if settings.image_layout != "" -%}
+      <a href="{{product.url | within: collection}}" class="aspect-product__wrapper">
+        <div class="aspect-product__spacer"><div class="aspect-product__spacer-inner"></div></div>
+        <div class="aspect-product__images">
+          <div class="main-images-wrapper">
+            <img class="mpt-image {% if settings.product_img_fx == '2' %} zoom-image-effect{% endif %}" src="{{featured_image | img_url: _dim}}" alt="{{product.title | escape}}" alt="image" srcset="{{featured_image | img_url: _dim, scale: 2}} 500w, {{featured_image | img_url: _dim}} 166w" sizes="(max-width: 500px) 100vw, 500px"/>
+          </div>
+        </div>
+      </a>
+      {%- else -%}
+      <a href="{{product.url | within: collection}}">
+        <div data-class="reveal" class="main-images-wrapper">
+          <img class="mpt-image {% if settings.product_img_fx == '2' %} zoom-image-effect{% endif %}" src="{{featured_image | img_url: _dim}}" alt="{{product.title | escape}}" alt="image" srcset="{{featured_image | img_url: _dim, scale: 2}} 500w, {{featured_image | img_url: _dim}} 166w" sizes="(max-width: 500px) 100vw, 500px"/>
+        </div>
+      </a>
+      {%- endif -%}
+    </div>
+  </div>
+  <div class="right">
+    <div class="name"><a href="{{product.url}}">{{product.title}}</a></div>
+  </div>
+</div>

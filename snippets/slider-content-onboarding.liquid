@@ -1,0 +1,141 @@
+<div class="row-fluid{%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}"{%- if section.settings.slider_placement != 'within-container'-%}{{' '}}data-section-id="{{ section.id }}" data-section-type="slideshow"{%- endif -%}>
+    {%- if section.settings.slider_absolute_bg_enabled -%}
+    <img class="asolute-bg visible-lg visible-md" src="{{ section.settings.slider_absolute_bg | img_url:"master" }}" alt=""/>
+    {%- endif -%}
+    {%- assign afx_heading = section.settings.slider_afx_head | default: 'fadeIn' -%}
+    {%- assign afx_caption = section.settings.slider_afx_cap | default: 'fadeIn' -%}
+    {%- assign afx_cta = section.settings.slider_afx_cta | default: 'fadeIn' -%}
+    {%- assign afx_sticker = section.settings.slider_afx_sticker | default: 'fadeIn' -%}
+    {%- assign dfx_heading = section.settings.slider_dfx_head | default: 'fadeOut' -%}
+    {%- assign dfx_caption = section.settings.slider_dfx_cap | default: 'fadeOut' -%}
+    {%- assign dfx_cta = section.settings.slider_dfx_cta | default: 'fadeOut' -%}
+    {%- assign dfx_sticker = section.settings.slider_dfx_sticker | default: 'fadeOut' -%}
+
+    {%- assign valid_afxs = 'bounce,bounceIn,bounceInDown,bounceInLeft,bounceInRight,bounceInUp,fadeIn,fadeInDown,fadeInDownBig,fadeInLeft,fadeInLeftBig,fadeInRight,fadeInRightBig,fadeInUp,fadeInUpBig,flash,flipInX,flipInY,headShake,jello,lightSpeedIn,pulse,rotateIn,rotateInDownLeft,rotateInDownRight,rotateInUpLeft,rotateInUpRight,rollIn,rubberBand,shake,slideInDown,slideInLeft,slideInRight,slideInUp,swing,tada,wobble,zoomIn,zoomInDown,zoomInLeft,zoomInRight,zoomInUp' | split: ',' -%}
+    {%- unless valid_afxs contains afx_heading -%}
+    {%- assign afx_heading = 'fadeIn' -%}
+    {%- endunless -%}
+    {%- unless valid_afxs contains afx_caption -%}
+    {%- assign afx_caption = 'fadeIn' -%}
+    {%- endunless -%}
+    {%- unless valid_afxs contains afx_cta -%}
+    {%- assign afx_cta = 'fadeIn' -%}
+    {%- endunless -%}
+    {%- unless valid_afxs contains afx_sticker -%}
+    {%- assign afx_sticker = 'fadeIn' -%}
+    {%- endunless -%}
+    
+    {%- assign valid_dfxs = 'bounceOut,bounceOutDown,bounceOutLeft,bounceOutRight,bounceOutUp,fadeOut,fadeOutDown,fadeOutDownBig,fadeOutLeft,fadeOutLeftBig,fadeOutRight,fadeOutRightBig,fadeOutUp,fadeOutUpBig,flipOutX,flipOutY,hinge,lightSpeedOut,rotateOut,rotateOutDownLeft,rotateOutDownRight,rotateOutUpLeft,rotateOutUpRight,rollOut,slideOutDown,slideOutLeft,slideOutRight,slideOutUp,zoomOut,zoomOutDown,zoomOutLeft,zoomOutRight,zoomOutUp' | split: ',' -%}
+    {%- unless valid_dfxs contains dfx_heading -%}
+    {%- assign dfx_heading = 'fadeOut' -%}
+    {%- endunless -%}
+    {%- unless valid_dfxs contains dfx_caption -%}
+    {%- assign dfx_caption = 'fadeOut' -%}
+    {%- endunless -%}
+    {%- unless valid_dfxs contains dfx_cta -%}
+    {%- assign dfx_cta = 'fadeOut' -%}
+    {%- endunless -%}
+    {%- unless valid_dfxs contains dfx_sticker -%}
+    {%- assign dfx_sticker = 'fadeOut' -%}
+    {%- endunless -%}
+    <div id="home-slider-{{section.id}}"
+         data-afx-head="{{afx_heading}}" 
+         data-afx-cap="{{afx_caption}}" 
+         data-afx-cta="{{afx_cta}}" 
+         data-afx-sticker="{{afx_sticker}}" 
+         data-dfx-head="{{dfx_heading}}" 
+         data-dfx-cap="{{dfx_caption}}" 
+         data-dfx-cta="{{dfx_cta}}" 
+         data-dfx-sticker="{{dfx_sticker}}"
+         data-slider_auto="{{section.settings.slider_auto}}"
+         data-slider_interval="{%- if section.settings.slider_interval == '' or section.settings.slider_interval == '' -%}500{%- else -%}{{section.settings.slider_interval}}{%- endif -%}"
+         data-slider_scale="{{section.settings.slider_scale}}"
+         data-slider_auto_height="{{section.settings.slider_auto_height}}"
+         data-slider_height="{{section.settings.slider_height}}"
+         data-slider_align_top= "{%- if section.settings.slider_align_top -%}1{%- else -%}0{%- endif -%}"
+         data-full_width = "{%- if section.settings.slider_placement == 'full-width' -%}1{%- else -%}0{%- endif -%}"
+         data-is_megamenu = "{%- if section.settings.mmenu_width != "" and section.settings.mmenu_links != blank -%}1{%- else -%}0{%- endif -%}"
+         class="home-slider-content {{section.settings.slider_placement}}{{" flexslider"}}{%- if section.settings.slider_scale -%}{{' scale'}}{%- endif -%}"
+         >
+      <div class="container"><div class="container-slider"></div></div>
+      <ul class="slides">
+        {%- for block in section.blocks limit: section.blocks.size -%}        
+        <li id="slide-item-{{block.id}}" {{ block.shopify_attributes }}>
+          <div class="slide-body"{%- if section.settings.slider_auto_height == false -%}{{' '}}data-height="{{section.settings.slider_height | default:500 | plus:0}}"{%- endif -%}>
+            <div class="slide-banner"{{' '}}{%- if block.settings.slide_img_use -%}style="background-image:url({{ block.settings.slide_img | img_url:"master" }});"{%- endif -%}>
+              {%- if block.settings.slide_cta == empty -%}
+              <a href="{{block.settings.slide_url}}">
+                {%- endif -%}
+                {%- if section.settings.slider_mask -%}
+                <span class="slider-mask"></span>
+                {%- endif -%}
+                {%- if block.settings.slide_img_use -%}<img class="slide-img" src="{{ block.settings.slide_img | img_url:"master" }}" alt="{{block.settings.slide_head | strip_html}}" />{%- endif -%}
+                {%- if section.settings.slide_vid != blank -%}
+                <video class="slide-video" poster="{{ block.settings.slide_img | img_url:"master" }}" preload="auto" autoplay="" loop="loop" muted="muted">
+                  <source src="{{block.settings.slide_vid}}" type="video/mp4">
+                </video>
+                {%- endif -%}
+                {%- if block.settings.slide_cta == empty -%}
+              </a>
+              {%- endif -%}
+
+              {%- if block.settings.slide_pos -%}
+              {%- assign pos_vertical = block.settings.slide_posver -%}
+              {%- assign pos_vertical_type = block.settings.slide_posver_type -%}
+              {%- assign pos_horizon = block.settings.slide_poshor -%}
+              {%- assign pos_horizon_type = block.settings.slide_poshor_type -%}
+              {%- assign pos_align = block.settings.slide_align -%}
+              {%- endif -%}
+              {%- assign pos_width = block.settings.slide_width -%}
+              
+              <div class="slide-caption caption header"{%- if block.settings.slide_pos -%}{{' '}}data-position="1" data-{{pos_vertical_type}}="{% if pos_vertical contains '%' %}{{pos_vertical}}{% else %}{{pos_vertical | plus:0}}{% endif %}" data-{{pos_horizon_type}}="{% if pos_horizon contains '%' %}{{pos_horizon}}{% else %}{{pos_horizon | plus:0}}{% endif %}" data-width="{{pos_width | plus:0}}" data-align="{{pos_align}}"{%- endif -%}>
+                {%- if block.settings.slide_sticker_enabled -%}
+                <div class="slide-sticker-wrapper">
+                  <a href="{{block.settings.slide_url}}">
+                    <img src="{{ block.settings.slide_sticker | img_url:"master" }}" alt="" />
+                  </a>
+                </div>
+                {%- else -%}                
+                {%- if block.settings.slide_cta != '' or block.settings.slide_head != '' or block.settings.slide_capt != '' -%}
+                <div class="caption sub"{%- if block.settings.slide_pos == false and pos_width != '' -%}{{' '}}style="max-width:{{pos_width}}px"{%- endif -%}>
+                  {%- if block.settings.slide_swap == true and block.settings.slide_head != empty -%}
+                  <h2 class="caption-content" data-min="13" data-max="{{block.settings.slide_head_size | plus:0}}" style="color:{{block.settings.slide_head_color}};font-size:{{block.settings.slide_head_size | plus:0}}px">
+                    {{ block.settings.slide_head }}
+                  </h2>
+                  {%- if block.settings.slide_cta != empty and block.settings.slide_cta_btw == true -%}
+                  <div class="caption-link">
+                    <a class="btn" href="{{block.settings.slide_url}}">{{block.settings.slide_cta}}</a>
+                  </div>
+                  {%- endif -%}
+                  {%- endif -%}
+                  {%- if block.settings.slide_capt != '' -%}
+                  <div class="caption-content real-caption" data-min="13" data-max="{{block.settings.slide_capt_size | plus:0}}" style="color:{{block.settings.slide_capt_color}};font-size:{{block.settings.slide_capt_size | plus:0}}px;">
+                    {{ block.settings.slide_capt }}
+                  </div>
+                  {%- endif -%}
+                  {%- if block.settings.slide_swap == false and block.settings.slide_head != '' -%}
+                  {%- if block.settings.slide_cta != '' and block.settings.slide_cta_btw == true -%}
+                  <div class="caption-link">
+                    <a class="btn" href="{{block.settings.slide_url}}">{{block.settings.slide_cta}}</a>
+                  </div>
+                  {%- endif -%}
+                  <h2 class="caption-content" data-min="13" data-max="{{block.settings.slide_head_size | plus:0}}" style="color:{{block.settings.slide_head_color}};font-size:{{block.settings.slide_head_size | plus:0}}px;">
+                    {{ block.settings.slide_head }}
+                  </h2>
+                  {%- endif -%}
+                  {%- if block.settings.slide_cta != '' and block.settings.slide_cta_btw == false -%}
+                  <div class="caption-link">
+                    <a class="btn" href="{{block.settings.slide_url}}">{{block.settings.slide_cta}}</a>
+                  </div>
+                  {%- endif -%}
+                </div>
+                {%- endif -%}
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>

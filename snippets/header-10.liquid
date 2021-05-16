@@ -1,0 +1,60 @@
+<header class="header-type-3 header-type-10">
+  <div class="background-header"></div>
+  <div class="slider-header">
+    <!-- Top of pages -->
+    <div id="top" class="{%- if settings.header_layout == '1' -%}full-width{%- elsif settings.header_layout == '4' -%}fixed3 fixed2{%- elsif settings.header_layout == '3' -%}fixed2{%- else -%}fixed{%- endif -%}">
+      <div class="background-top"></div>
+      <div class="background">
+        <div class="shadow"></div>
+        <div class="pattern">
+          <div class="container">
+            <div class="row">
+              <!-- Header Left -->
+              <div class="col-sm-4" id="header-left">		
+                <!-- Logo -->
+                {%- include "header-logo" -%}
+              </div>
+              <!-- Header Center -->
+              <div class="col-sm-4 orderable" id="header-center">	
+                <!-- Menu -->
+                <div  class="megamenu-background">
+                  <div class="">
+                    <div class="overflow-megamenu container menu-one-only">
+                      {%- section 'header-menu1' -%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Header Right -->
+              <div class="col-sm-4 orderable" id="header-right">
+                {%- comment -%}{%- include 'pos-top-block' -%}{%- endcomment -%}
+                {% section 'header-top-block' %}
+                <!-- Currency & Language -->
+                {%- include 'currencies-switcher' -%}
+                <!-- Search -->
+                <a href="/search" class="search_form">{%- include "search-icon" -%}</a>
+                {%- if shop.customer_accounts_enabled -%}
+                <a href="/account" class="my-account">{%- include "account-icon" -%}</a>
+                {%- endif -%}
+                {%- include 'cartblock' with 'header' -%}
+              </div>
+            </div>
+          </div>
+          <div class="overflow-menu2">
+            {%- section 'header-menu2' -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Slider -->
+  <div id="slider" class="{%- if settings.slideshow_layout == '1' -%}full-width{%- elsif settings.slideshow_layout == '4' -%}fixed3 fixed2{%- elsif settings.slideshow_layout == '3' -%}fixed2{%- else -%}fixed{%- endif -%}">
+    <div class="background-slider"></div>
+    <div class="background">
+      <div class="shadow"></div>
+      <div class="pattern orderable">
+        {%- include 'header-slideshow' -%}
+      </div>
+    </div>
+  </div>
+</header>

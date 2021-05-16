@@ -1,0 +1,235 @@
+<link href="//fonts.googleapis.com/css?family=Raleway%3A600%2C900" rel="stylesheet" property="stylesheet" type="text/css" media="all" />
+
+<div data-placement_fullwidth="{%- if section.settings.placement_fullwidth -%}1{%- else -%}0{%- endif -%}" data-section-id="{{section.id}}"
+   data-section-type="rvsvideo" id="rvsvideo-{{section.id}}_wrapper" 
+     class="roarvslider rev_slider_wrapper fullwidthbanner-container {%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}" data-alias="highlight-showcase{{section.id}}" data-source="gallery" style="margin:0px auto;background-color:transparent;padding:0px;margin-top:0px;margin-bottom:0px;">
+  <div id="rvsvideo-{{section.id}}" class="rev_slider fullwidthabanner" style="display:none;" data-version="5.4.1">
+    <ul>	
+      <!-- SLIDE  -->
+      {%-for block in section.blocks limit: section.blocks.size-%}
+      {%-assign img_url = 'https://via.placeholder.com/640x480/ECB39F/ffffff?text=Your%20Preview%20Image.'-%}
+      {%- assign thumb_img_url = 'https://via.placeholder.com/250x100/ECB39F/ffffff?text=Image.' -%}
+      {%- if block.settings.slide_image != blank -%}
+      {%-capture image_size-%}{{block.settings.slide_image_quality}}{%- endcapture -%}
+      {%- assign img_url = block.settings.slide_image | img_url: image_size, crop: 'center' -%}
+      {%- assign thumb_img_url = block.settings.slide_image | img_url: '250x100', crop: 'center' -%}
+      {%- endif -%}
+      <li data-index="rs-{{section.id}}{{block.id}}" data-transition="fade" data-slotamount="7" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="Power3.easeInOut" data-easeout="Power3.easeInOut" data-masterspeed="1500"  
+          data-thumb="{{thumb_img_url}}"  data-rotate="0"  data-saveperformance="off"  
+          data-title="{{block.settings.slide_caption}}" data-param1="{{block.settings.slide_heading}}" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
+        <!-- MAIN IMAGE -->
+        <img src="{{img_url}}"  alt=""  data-bgposition="center center" data-bgfit="cover" class="rev-slidebg" data-no-retina>
+        <!-- LAYERS -->
+
+        <!-- BACKGROUND VIDEO LAYER -->
+        <div class="rs-background-video-layer" 
+             data-forcerewind="on" 
+             data-volume="100" 
+             {% if block.settings.slide_video_type == 'youtube' %}
+             data-ytid="{{block.settings.slide_video_id}}" 
+             data-videoattributes="version=3&amp;enablejsapi=1&amp;html5=1&amp;volume=100&amp;hd=1&amp;wmode=opaque&amp;showinfo=0&amp;rel=0;;origin={{shop.secure_url}};" 
+             data-videorate="1" 
+             {% else %}
+             data-vimeoid="{{block.settings.slide_video_id}}" 
+             data-videoattributes="background=1&title=0&amp;byline=0&amp;portrait=0&amp;api=1"
+             {% endif %}
+             data-videowidth="100%" 
+             data-videoheight="100%" 
+             data-videocontrols="none" 
+             data-videoloop="none" 
+             data-forceCover="0" 
+             data-aspectratio="16:9" 
+             data-autoplay="true" 
+             data-autoplayonlyfirsttime="false" 
+             data-nextslideatend="true" 
+             ></div>
+        <!-- LAYER NR. 3 -->
+        <div class="tp-caption Video-SubTitle   tp-resizeme" 
+             id="slide-{{section.id}}{{block.id}}-layer-1" 
+             data-x="10" 
+             data-y="bottom" data-voffset="50" 
+             data-width="['auto']"
+             data-height="['auto']"
+
+             data-type="text" 
+             data-responsive_offset="on" 
+
+             data-frames='[{"from":"y:bottom;rZ:90deg;sX:2;sY:2;","speed":1500,"to":"o:1;tO:-20% 50%;","delay":500,"ease":"Power3.easeInOut"},{"delay":3000,"speed":1000,"to":"y:50px;opacity:0;","ease":"Power3.easeInOut"}]'
+             data-textAlign="['left','left','left','left']"
+             data-paddingtop="[5,5,5,5]"
+             data-paddingright="[5,5,5,5]"
+             data-paddingbottom="[5,5,5,5]"
+             data-paddingleft="[5,5,5,5]"
+
+             style="z-index:{{forloop.index | plus:3}}; white-space: nowrap;text-transform:left;">{{section.settings.now_playing_text}}</div>
+
+        <!-- LAYER NR. 4 -->
+        <div class="tp-caption Video-Title   tp-resizeme" 
+             id="slide-{{section.id}}{{block.id}}-layer-2" 
+             data-x="10" 
+             data-y="bottom" data-voffset="10" 
+             data-width="['auto']"
+             data-height="['auto']"
+
+             data-type="text" 
+             data-responsive_offset="on" 
+
+             data-frames='[{"from":"y:bottom;rZ:90deg;sX:2;sY:2;","speed":1500,"to":"o:1;tO:-20% 50%;","delay":750,"ease":"Power3.easeInOut"},{"delay":2500,"speed":1000,"to":"y:50px;opacity:0;","ease":"Power3.easeInOut"}]'
+             data-textAlign="['left','left','left','left']"
+             data-paddingtop="[5,5,5,5]"
+             data-paddingright="[5,5,5,5]"
+             data-paddingbottom="[5,5,5,5]"
+             data-paddingleft="[5,5,5,5]"
+
+             style="z-index: {{forloop.index | plus:4}}; white-space: nowrap;text-transform:left;">{{block.settings.slide_caption}}</div>
+      </li>
+      {%-endfor-%}
+    </ul>
+    <div class="tp-bannertimer tp-bottom" style="visibility: hidden !important;"></div>	
+  </div>
+</div>
+<style>
+  @media (min-width: 768px) {
+    .templateIndex #rvsvideo-{{section.id}}_wrapper {
+      margin-top:{{section.settings.margin_top}}px!important;
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "Video Slider",
+  "class": "rvsvideo section-wrapper",
+  "max_blocks": 5,
+  "settings": [
+	{
+	  "type": "paragraph",
+	  "content": "(!!!)WARNING: To use this slider, you must turn on the Revolution Slider in general settings tab: Theme Settings > Revolution Slider > Enabled"
+	},
+    {
+      "type": "checkbox",
+      "id": "placement_fullwidth",
+      "label": "Force Full Width",
+      "default": false
+    },
+	{
+      "type": "checkbox",
+      "id": "visible_on_mobile",
+      "label": "Show on Mobile",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Margin",
+      "default": 0
+    },
+	{
+	  "type": "text",
+	  "id": "now_playing_text",
+	  "label": "Video begins playing Text",
+	  "default": "NOW PLAYING"
+	}
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "header",
+          "content": "General"
+        },
+		{
+          "type": "image_picker",
+          "id": "slide_image",
+          "label": "Pick a Preview Image"
+		},
+		{
+          "type": "select",
+          "id": "slide_image_quality",
+          "label": "Image Quality",
+          "options": [
+            {
+              "value": "500x",
+              "label": "Low"
+            },
+            {
+              "value": "1200x",
+              "label": "Normal"
+            },
+            {
+              "value": "1920x",
+              "label": "High"
+            }
+          ],
+          "default": "1920x"
+        },
+		{
+          "type": "text",
+          "id": "slide_heading",
+          "label": "Give a Heading",
+		  "default": "Your Heading"
+        },
+		{
+          "type": "text",
+          "id": "slide_caption",
+          "label": "Give some texts",
+		  "default": "Even some texts can smile with you."
+        },
+		{
+          "type": "header",
+          "content": "Video"
+        },
+		{
+          "type": "select",
+          "id": "slide_video_type",
+          "label": "Video Source",
+          "options": [
+            {
+              "value": "youtube",
+              "label": "YouTube"
+            },
+            {
+              "value": "vimeo",
+              "label": "Vimeo"
+            }
+          ],
+          "default": "vimeo"
+        },
+		{
+          "type": "text",
+          "id": "slide_video_id",
+          "label": "Video (YouTube/Vimeo) ID",
+		  "default": "130622230"
+        }
+      ]
+	}
+  ],
+  "presets": [
+	{
+      "name": "Video Slider",
+      "category": "Revolution Sliders",
+      "settings": {
+      },
+  	  "blocks": [
+		{
+          "type": "slide"
+        },
+		{
+          "type": "slide"
+        }
+  	  ]
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

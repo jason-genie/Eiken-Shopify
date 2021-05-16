@@ -1,0 +1,74 @@
+<header>
+  <div class="background-header"></div>
+  <div class="slider-header">
+    <!-- Top of pages -->
+    <div id="top" class="{%- if settings.header_layout == '1' -%}full-width{%- elsif settings.header_layout == '4' -%}fixed3 fixed2{%- elsif settings.header_layout == '3' -%}fixed2{%- else -%}fixed{%- endif -%}">
+      <div class="background-top"></div>
+      <div class="background">
+        <div class="shadow"></div>
+        <div class="pattern">
+          <div class="container">
+            <div class="row">
+              <!-- Header Left -->
+              <div class="col-sm-4" id="header-left">
+                <!-- Search -->
+                <form action="/search" method="get" role="search" class="search_form">
+                  <div class="button-search">{%- include "search-icon" with form -%}</div>
+                  <input type="search" name="q"  class="input-block-level search-query" id="search_query" placeholder="{{ 'search.general.placeholder' | t }}" />
+                  <div id="autocomplete-results" class="autocomplete-results"></div>
+                  <input type="hidden" name="type" value="product" />
+                </form>
+                <!-- Currency & Language -->
+                {%- include 'currencies-switcher' -%}
+              </div>
+              <!-- Header Center -->
+              <div class="col-sm-4" id="header-center">		
+                <!-- Logo -->
+                {%- include "header-logo" -%}
+              </div>
+              <!-- Header Right -->
+              <div class="col-sm-4 orderable" id="header-right">
+                {%- section 'header-top-block' -%}
+                {%- if shop.customer_accounts_enabled -%}
+                <a href="/account" class="my-account">{%- include "account-icon" -%}</a>
+                {%- endif -%}
+                {%- include 'cartblock' with 'header' -%}
+              </div>
+            </div>
+          </div>
+          {%- assign megamenu_type_having_2ndMenu = '4,5,6,9,14,19,29' | split: ',' -%}
+          {%- if megamenu_type_having_2ndMenu contains settings.advanced_megamenu_type -%}
+          <div class="container container-megamenu2 orderable">
+            {%- endif -%}
+            <!-- Menu -->
+            
+            <div  class="megamenu-background">
+              <div class="">
+                <div class="overflow-megamenu container">
+                  <div class="row mega-menu-modules">
+                    {%- section 'header-menu1' -%}
+                    {%- section 'header-menu2' -%}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {%- if megamenu_type_having_2ndMenu contains settings.advanced_megamenu_type -%}
+          </div>
+          {%- endif -%}
+          {%- comment -%}MEGAMENU2{%- endcomment -%}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Slider -->
+  <div id="slider" class="{%- if settings.slideshow_layout == '1' -%}full-width{%- elsif settings.slideshow_layout == '4' -%}fixed3 fixed2{%- elsif settings.slideshow_layout == '3' -%}fixed2{%- else -%}fixed{%- endif -%}">
+    <div class="background-slider"></div>
+    <div class="background">
+      <div class="shadow"></div>
+      <div class="pattern orderable">
+        {%- include 'header-slideshow' -%}
+      </div>
+    </div>
+  </div>
+</header>

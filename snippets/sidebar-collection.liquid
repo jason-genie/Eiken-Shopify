@@ -1,0 +1,152 @@
+{%- if settings.header_always_show_vermenu_cat -%}
+<div id="vermenu_cat_gap" class="hidden-xs hidden-sm"></div>
+{%- endif -%}
+{%- comment -%}----- All Collections -----{%- endcomment -%}
+{%- if settings.sb_collection_all -%}
+{%- capture category_box_class -%}{%- if settings.advanced_category_box == '4' -%}{{' category-box-type-4 category-box-type-2'}}{%- elsif settings.advanced_category_box == '3' -%}{{' category-box-type-3 category-box-type-2'}}{%- elsif settings.advanced_category_box == '2' -%}{{' category-box-type-2'}}{%- endif -%}{%- endcapture -%}
+<div class="box box-with-categories{{category_box_class}}">
+  {%- if settings.sb_collection_all_heading != '' -%}
+  <h3 class="box-heading">{{settings.sb_collection_all_heading}}</h3>
+  <div class="strip-line"></div>
+  {%- endif -%}
+  <div class="box-content box-category">
+    <ul class="accordion advanced-collection">
+      {%- if settings.sb_collection_all_linklist != blank and linklists[settings.sb_collection_all_linklist].links.size > 0 -%}
+      {%- for link in linklists[settings.sb_collection_all_linklist].links -%}
+      {%- assign submenu = link.title | handleize -%}
+      <li class="{% if linklists[submenu].links.size > 0 %}ver-dropdown-parent-submenu{% endif %} ee panel">
+        <a href="{{- link.url -}}" class="dropdown-link" data-toggle="dropdown">
+          <span>{{- link.title -}}</span>
+          {%- if linklists[submenu].links.size > 0 -%}
+          <i class="fa fa-plus-svg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="width: 12px;"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"  style="width: 12px;"><path d="M0 10h24v4h-24z"/></svg>
+          </i>
+          {%- endif -%}
+        </a>
+        {%- if linklists[submenu].links.size > 0 -%}
+        <ul class="ver-dropdown-menu list-styled">
+          {%- for _link in linklists[submenu].links -%}
+          <li class="panel">
+            <a href="{{- _link.url -}}" class="">
+              {{- _link.title -}}
+            </a>
+          </li>
+          {%- endfor -%}
+        </ul>
+        {%- endif -%}
+      </li>
+      {%- endfor -%}
+      {%- endif -%}
+      {% comment %}
+      {%- for my_collection in collections -%}
+      {%- unless my_collection.handle == 'all' -%}
+      <li class="panel"><a class="field{% if collection.handle == my_collection.handle %} active{% endif %}" href="{{my_collection.url}}">{{my_collection.title}}</a></li>
+      {%- endunless -%}
+      {%- endfor -%}
+      {% endcomment %}
+    </ul>
+  </div>
+</div>
+{%- endif -%}
+{%- comment -%}----- Filtering -----{%- endcomment -%}
+{%- if settings.collection_filtering -%}
+<div class="box mfilter-box box-no-advanced">
+  {%- if settings.collection_filtering_heading != '' -%}
+  <h3 class="box-heading">{{settings.collection_filtering_heading}}</h3>
+  <div class="strip-line"></div>
+  {%- endif -%}
+  <div class="box-content mfilter-content">
+    {%- for i in (1..10) -%}
+    {%- assign tmp = 'filtering_' | append:i -%}
+    {%- assign multi_choice = 'multi_choice_' | append:i -%}
+    {%- if settings[tmp] -%}
+    <div class="column" data-multi_choice="{{ settings[multi_choice] }}">
+      {%- assign tmp = 'filtering_heading_' | append:i -%}
+      {%- assign cat_item = settings[tmp] -%}
+      {%- assign cat_item_down = cat_item | downcase  | replace: ' ', '_' -%}
+      {%- assign tmp = 'filtering_filters_' | append:i -%}
+      {%- assign filters = settings[tmp] | strip_newlines | split: ',' -%}
+      <div class="filter_title active">
+        <span>{{ cat_item }}</span>
+        {%- for custom_tag in filters -%}
+        {%- if current_tags contains custom_tag -%}
+        <span class="clear"></span>
+        {%- break -%}
+        {%- endif -%}
+        {%- endfor -%}
+        <span class="arrow"></span>
+      </div>
+      <div class="advanced-filter filter_container {{cat_item_down}}">
+        <ul class="fields">
+          {%- if cat_item_down contains 'color' or cat_item_down contains 'colour' -%}
+          {%- assign file_extension = '.png' -%}
+          {%- for custom_tag in filters -%}
+          <li class="filter-image{% unless collection.tags contains custom_tag %} hide{% endunless %}">
+            <div class="field{% if current_tags contains custom_tag %} active{% endif %}">
+              <input id="{{cat_item_down}}_{{custom_tag | handleize}}" type="checkbox" value="{{custom_tag | handleize}}" class="filter hide"{% if current_tags contains custom_tag %} checked="checked"{% endif %} />
+              <label for="{{cat_item_down}}_{{custom_tag | handleize}}" class="img btooltip" title="{{custom_tag | remove_first: cat_item | remove: '_'}}"><i style="background-color: {{custom_tag | remove_first: cat_item | remove: '_' | handle}}; background-image: url({{custom_tag | remove_first: cat_item | remove: '_' | handle | append: file_extension | asset_url}})"></i></label>
+            </div>
+          </li>
+          {%- endfor -%}
+          {%- else -%}
+          {%- for custom_tag in filters -%}
+          <li{% unless collection.tags contains custom_tag %} class="hide"{% endunless %}>
+            <div class="field label-checkbox{% if current_tags contains custom_tag %} active{% endif %}">
+              <input id="{{cat_item_down}}_{{custom_tag | handleize}}" type="checkbox" value="{{custom_tag | handleize}}" class="filter checkbox"{% if current_tags contains custom_tag %} checked="checked"{% endif %} />
+              <label for="{{cat_item_down}}_{{custom_tag | handleize}}" class="name">{{custom_tag | remove_first: cat_item | remove: '_'}}</label>
+            </div>
+          </li>
+          {%- endfor -%}
+          {%- endif -%}
+        </ul>
+      </div>
+    </div>
+    {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+{%- endif -%}
+{%- comment -%}----- Featured Products -----{%- endcomment -%}
+{%- if settings.sb_collection_product and collections[settings.sb_collection_product_collection].products != empty -%}
+<div class="box featured hidden-xs hidden-sm">
+  {%- if settings.sb_collection_product_heading != '' -%}
+  <h3 class="box-heading">{{settings.sb_collection_product_heading}}</h3>
+  <div class="strip-line"></div>
+  {%- endif -%}
+  {%- assign my_collection = collections[settings.sb_collection_product_collection] -%}
+  <div class="box-content box-featured product-grid">
+    {%- for product in my_collection.products limit:settings.sb_collection_product_limit -%}
+    {%- include 'product-item' -%}
+    {%- endfor -%}
+  </div>
+</div>
+{%- endif -%}
+{%- comment -%}----- Link List -----{%- endcomment -%}
+{%- if settings.sb_collection_linklist -%}
+{%- assign list_temp = settings.sb_collection_linklist_list -%}
+{%- if linklists[list_temp] != empty -%}
+{%- assign list = linklists[list_temp] -%}
+<div class="box box-no-advanced hidden-xs hidden-sm">
+  <h3 class="box-heading">{{settings.sb_collection_linklist_heading | default:list.title}}</h3>
+  <div class="strip-line"></div>
+  <div class="box-content mfilter-content">
+    <ul>
+      {%- for my_link in list.links -%}
+      <li><a href="{{my_link.url}}" title="{{my_link.title | escape}}">{{my_link.title}}</a></li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+{%- endif -%}
+{%- endif -%}
+{%- comment -%}----- Custom HTML -----{%- endcomment -%}
+{%- if settings.sb_collection_html -%}
+<div class="box box-html banners hidden-xs hidden-sm">
+  {%- if settings.sb_collection_html_heading != '' -%}
+  <h3 class="box-heading">{{settings.sb_collection_html_heading}}</h3>
+  <div class="strip-line"></div>
+  {%- endif -%}
+  <div class="box-content">{{settings.sb_collection_html_content}}</div>
+</div>
+{%- endif -%}

@@ -1,0 +1,28 @@
+{%-if settings.home_instafeed_use -%}
+<div id="home-instagram-widget" class="box" data-order="100">
+  <div class="container">
+    <div class="title">
+      {{settings.home_instafeed_head}}
+      <div class="caption">{{settings.home_instafeed_text}}</div>
+    </div>
+    <div id="instagram_home" class="home-instafeed list-inline"></div>
+    <a target="_blank" class="btn" href="https://instagram.com/{{settings.social_instagram_username}}">{{settings.home_instafeed_button}}</a>
+    {%- assign my_instagram = settings.social_instagram_token | split: '.' -%}
+    <script type="text/javascript">
+      $(document).ready(function(){
+        var feed = new Instafeed({
+          get: "user",
+          target: "instagram_home",
+          accessToken: "{{settings.social_instagram_token}}",
+          userId: {{my_instagram.first}},
+          limit: {{settings.home_instafeed_limit}},
+          resolution: "thumbnail",
+          resolution2: "standard_resolution",
+          template: '<div class="wrap animated"><a target="_blank" href="\{\{link\}\}"><img src="\{\{image\}\}" alt="\{\{caption\}\}" width="150" height="150" /><span class="hover_border"></span></a></div>'
+        });
+        feed.run();
+      });
+    </script>
+  </div>
+</div>
+{%- endif -%}

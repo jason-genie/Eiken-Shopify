@@ -1,0 +1,21 @@
+{%- assign my_product = product -%}
+{%- for opt in my_product.options -%}
+  {%- assign option = opt | downcase -%}
+  {%- if option == 'color' or option == 'colour' or option == 'Couleur' -%}
+  <div class="swatch-list">
+    {%- assign index = forloop.index0 -%}
+    {%- assign colorlist = '' -%}
+    {%- assign color = '' -%}
+    {%- assign color_down = '' -%}
+    {%- for variant in my_product.variants -%}
+      {%- capture color -%}{{ variant.options[index] }}{%- endcapture -%}
+      {%- assign color_down = color | handleize -%}
+      {%- unless colorlist contains color_down -%}
+        <span variant-id="{{variant.id}}" variant-img="{{ variant.image.src | img_url:'' }}" class="swatch-item" data-title="{{ color | escape }}" style="background-color:{% render 'color_define' with color_name: color_down %};background-image:url({{ color_down | append:'.png' | asset_url }});"></span>        
+        {%- capture tempList -%}{{ colorlist | append: color_down | append: ' ' }}{%- endcapture -%}
+        {%- assign colorlist = tempList -%}
+      {%- endunless -%}
+    {%- endfor -%}
+  </div>
+  {%- endif -%}
+{%- endfor -%}

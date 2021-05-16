@@ -1,0 +1,371 @@
+{%-assign borders_class = ' '-%}
+{%-if section.settings.banner_borders == '1'-%}
+{%-assign borders_class = borders_class | append: ' has-borders' -%}
+{%-if section.settings.banner_borders_top == true-%}
+{%-assign borders_class = borders_class | append: ' border-top' -%}
+{%-endif-%}
+{%-if section.settings.banner_borders_bottom == true-%}
+{%-assign borders_class = borders_class | append: ' border-bottom' -%}
+{%-endif-%}
+{%-if section.settings.banner_borders_left == true-%}
+{%-assign borders_class = borders_class | append: ' border-left' -%}
+{%-endif-%}
+{%-if section.settings.banner_borders_right == true-%}
+{%-assign borders_class = borders_class | append: ' border-right' -%}
+{%-endif-%}
+{%-assign borders_class = borders_class | append: ' ' -%}
+{%-endif-%}
+{%-assign borders_mobile_class = ' '-%}
+{%-if section.settings.banner_mobile_borders == '1'-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' has-mobile-borders' -%}
+{%-if section.settings.banner_mobile_borders_top == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-top' -%}
+{%-endif-%}
+{%-if section.settings.banner_mobile_borders_bottom == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-bottom' -%}
+{%-endif-%}
+{%-if section.settings.banner_mobile_borders_left == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-left' -%}
+{%-endif-%}
+{%-if section.settings.banner_mobile_borders_right == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-right' -%}
+{%-endif-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' ' -%}
+{%-endif-%}
+{%- assign _linklist = "" -%}
+{%- if page.metafields.info.collection_linklist !=  blank and linklists[page.metafields.info.collection_linklist].links.size > 0 -%}
+{%- assign _linklist = linklists[page.metafields.info.collection_linklist] -%}
+{%- elsif section.settings.linklist !=  blank and linklists[section.settings.linklist].links.size > 0 -%}
+{%- assign _linklist = linklists[section.settings.linklist] -%}
+{%- endif -%}
+{%- if page.metafields.info.collection_image !=  blank -%}
+{%- assign _image = page.metafields.info.collection_image | file_img_url: "master" -%}
+{%- elsif section.settings.image != blank -%}
+{%- assign _image = section.settings.image | img_url: "master" -%}
+{%- endif -%}
+{%- if _linklist != "" -%}
+<div class="collection-brands">
+  <div class="row rich-banners" id="rich-banners-{{section.id}}">
+    <div class="rich-banner-wrapper col-rb-100 col-rbm-100 {{borders_class}}{{borders_mobile_class}}">
+      <div class="rich-banner {{section.settings.banner_text_pos}} {% if _image != blank and settings.image_lazy_loading_used %}{{' b-lazy '}}{% endif %}"
+           style="background-color:{{section.settings.bg_color}};
+                  {%- if _image != blank -%}
+                  {%-if settings.image_lazy_loading_used-%}
+                  "{{' '}}data-src="{{_image}}"
+           {%-else-%}
+           background-image:url({{_image}})"
+                                            {%-endif-%}
+                                            {%-else-%}"{%- endif -%}>
+        <div class="banner-content-wrapper {{ section.settings.banner_text_vpos }}">
+          <div class="banner-texting {{ section.settings.banner_text_align }}">
+
+            <div class="collection-linklist row">
+              {%- for link in _linklist.links -%}
+              {%- if link.links.size > 0 -%}
+              <div class="collection-linklist-column {% if link.title != "#" %}has-heading{% endif %} col-sm-3 col-xs-6 ">
+                <div class="b-heading">
+                  {% if link.title != "#" %}
+                  {{link.title}}
+                  {% endif %}
+                </div>
+                <ul class="richbanner-linklist">
+                  {%- for _link in link.links -%}
+                  <li>
+                    <a href="{{- _link.url -}}">{{- _link.title -}}</a>
+                  </li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+              {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endif -%}
+<style>
+  @media (max-width: 767px) {
+    .rich-banners#rich-banners-{{section.id}} .rich-banner .banner-content-wrapper {
+      min-height:{{section.settings.banner_mobile_height | append: 'px'}}
+    }
+  }
+  @media (min-width: 768px) {
+    .rich-banners#rich-banners-{{section.id}} .rich-banner .banner-content-wrapper {
+      min-height:{{section.settings.banner_height | append: 'px'}}
+    }
+    .rich-banners#rich-banners-{{section.id}} .rich-banner .banner-content-wrapper .b-heading{
+      color:{{- section.settings.heading_color -}};
+      font-size:{{- section.settings.heading_fontsize | append: "px" -}};
+      height: {{- section.settings.heading_fontsize | append: "px" -}};
+      font-weight:{{- section.settings.heading_fontweight -}};
+    }
+    .rich-banners#rich-banners-{{section.id}} .rich-banner .banner-content-wrapper ul.richbanner-linklist li a{
+      color:{{- section.settings.content_color -}};
+      font-size:{{- section.settings.content_fontsize | append: "px" -}};
+      font-weight:{{- section.settings.content_fontweight -}};
+    }
+    .rich-banners#rich-banners-{{section.id}} .rich-banner .banner-content-wrapper{
+      max-width: {{section.settings.content_width | append: "px"}}
+    }
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Collection Brands",
+    "settings": [
+		{
+			"type":"image_picker",
+			"id": "image",
+			"label": "Background Image"
+		},
+		{
+			"type":"color",
+			"id": "bg_color",
+			"label": "Background Color"
+		},
+		{
+			"type": "link_list",
+			"id": "linklist",
+			"label": "Choose a linklist"
+		},
+		{
+          "type": "range",
+          "id": "banner_height",
+          "min": 10,
+          "max": 1000,
+          "step": 10,
+          "unit": "px",
+          "label": "Height",
+          "default": 300
+        },
+        {
+          "type": "range",
+          "id": "banner_mobile_height",
+          "min": 10,
+          "max": 500,
+          "step": 10,
+          "unit": "px",
+          "label": "Height on Mobile",
+          "default": 300
+		},
+		{
+          "type": "range",
+          "id": "content_width",
+          "min": 10,
+          "max": 1000,
+          "step": 10,
+          "unit": "px",
+          "label": "Content Max Width",
+          "default": 650
+        },
+		{
+            "type": "header",
+            "content": "*** Borders"
+          },
+          {
+            "type": "select",
+            "id": "banner_borders",
+            "label": "Enabled",
+            "options": [
+              {
+                "value": "0",
+                "label": "No"
+              },
+              {
+                "value": "1",
+                "label": "Yes"
+              }
+            ],
+            "default": "0"
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_borders_top",
+            "label": "Top Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_borders_bottom",
+            "label": "Bottom Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_borders_left",
+            "label": "Left Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_borders_right",
+            "label": "Right Border",
+            "default": false
+          },
+          {
+            "type": "header",
+            "content": "*** Borders on Mobile"
+          },
+          {
+            "type": "select",
+            "id": "banner_mobile_borders",
+            "label": "Enabled",
+            "options": [
+              {
+                "value": "0",
+                "label": "No"
+              },
+              {
+                "value": "1",
+                "label": "Yes"
+              }
+            ],
+            "default": "0"
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_mobile_borders_top",
+            "label": "Top Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_mobile_borders_bottom",
+            "label": "Bottom Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_mobile_borders_left",
+            "label": "Left Border",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_mobile_borders_right",
+            "label": "Right Border",
+            "default": false
+          },
+		{
+            "type": "header",
+            "content": "*** Styling"
+          },
+		  {
+            "type": "header",
+            "content": "- Position:"
+          },
+          {
+            "type": "select",
+            "id": "banner_text_pos",
+            "label": "Horizontal Position",
+            "options": [
+              {
+                "value": "text-pos-left",
+                "label": "Left"
+              },
+              {
+                "value": "text-pos-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-pos-right",
+                "label": "Right"
+              }
+            ],
+            "default": "text-pos-center"
+          },
+          {
+            "type": "select",
+            "id": "banner_text_vpos",
+            "label": "Vertical Position",
+            "options": [
+              {
+                "value": "text-vpos-top",
+                "label": "Top"
+              },
+              {
+                "value": "text-vpos-middle",
+                "label": "Middle"
+              },
+              {
+                "value": "text-vpos-bottom",
+                "label": "Bottom"
+              }
+            ],
+            "default": "text-vpos-middle"
+          },
+          {
+            "type": "select",
+            "id": "banner_text_align",
+            "label": "Texting align",
+            "options": [
+              {
+                "value": "text-align-left",
+                "label": "Left"
+              },
+              {
+                "value": "text-align-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-align-right",
+                "label": "Right"
+              }
+            ],
+            "default": "text-align-center"
+          },
+		  {
+            "type": "color",
+            "id": "heading_color",
+            "label": "Heading Color"
+          },
+          {
+            "type": "range",
+            "id": "heading_fontsize",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Heading Fontsize",
+            "default": 25
+          },
+          {
+            "type": "range",
+            "id": "heading_fontweight",
+            "min": 100,
+            "max": 900,
+            "step": 100,
+            "label": "Heading FontWeight",
+            "default": 400
+          },
+		  {
+            "type": "color",
+            "id": "content_color",
+            "label": "Content Color"
+          },
+          {
+            "type": "range",
+            "id": "content_fontsize",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Content Fontsize",
+            "default": 16
+          },
+          {
+            "type": "range",
+            "id": "content_fontweight",
+            "min": 100,
+            "max": 900,
+            "step": 100,
+            "label": "Content FontWeight",
+            "default": 300
+          }
+	]
+  }
+{% endschema %}

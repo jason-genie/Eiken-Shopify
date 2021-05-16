@@ -1,0 +1,87 @@
+<header class="header-type-14">
+  <div class="background-header"></div>
+  <div class="slider-header">
+    <!-- Top of pages -->
+    <div id="top" class="{%- if settings.header_layout == '1' -%}full-width{%- elsif settings.header_layout == '4' -%}fixed3 fixed2{%- elsif settings.header_layout == '3' -%}fixed2{%- else -%}fixed{%- endif -%}">
+      <!-- Top Bar -->
+      <div class="top-bar">
+        <div class="container">
+          <div class="row">
+            <!-- Welcome text -->
+            <div class="col-sm-6 welcome-text">
+              {%- if customer -%}
+              <a href="/account/logout"><b>{{ 'general.top.logout' | t }}</b></a>
+              {%- else -%}
+              {{ 'general.top.welcome_visitor' | t }}
+              <a href="/account/login"><b>{{ 'general.top.login' | t }}</b></a> 
+              or 
+              <a href="/account/register"><b>{{ 'general.top.register' | t }}</b></a>
+              {%- endif -%}
+            </div>
+
+            <div class="col-sm-6 text-right overflow-currency-language">
+              <!-- Currency & Language -->
+              {%- include 'currencies-switcher' -%}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="background-top"></div>
+      <div class="background">
+        <div class="shadow"></div>
+        <div class="pattern">
+          <div class="container">
+            <div class="row">
+              <!-- Header Left -->
+              <div class="col-sm-3" id="header-left">
+                <!-- Logo -->
+                {%- include "header-logo" -%}
+              </div>
+              <!-- Header Right -->
+              <div class="col-sm-9 orderable" id="header-right">
+                {%- section 'header-top-block' -%}
+                <!-- Search -->
+                <form action="/search" method="get" role="search" class="search_form">
+                  <div class="button-search">{%- include "search-icon" with "form" -%}</div>
+                  <input type="search" name="q"  class="input-block-level search-query" id="search_query" placeholder="{{ 'search.general.placeholder' | t }}" />
+                  <div id="autocomplete-results" class="autocomplete-results"></div>
+                  <input type="hidden" name="type" value="product" />
+                </form>
+                {%- include 'cartblock' with 'header' -%}
+              </div>
+            </div>
+          </div>
+          {%- assign megamenu_type_having_2ndMenu = '4,5,6,9,14,19,29' | split: ',' -%}
+          {%- if megamenu_type_having_2ndMenu contains settings.advanced_megamenu_type -%}
+          <div class="container container-megamenu2 orderable">
+            {%- endif -%}
+            <!-- Menu -->
+            <div  class="megamenu-background">
+              <div class="">
+                <div class="overflow-megamenu container">
+                  <div class="row mega-menu-modules">
+                    {%- section 'header-menu1' -%}
+                    {%- section 'header-menu2' -%}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {%- if megamenu_type_having_2ndMenu contains settings.advanced_megamenu_type -%}
+          </div>
+          {%- endif -%}
+          {%- comment -%}MEGAMENU2{%- endcomment -%}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Slider -->
+  <div id="slider" class="{%- if settings.slideshow_layout == '1' -%}full-width{%- elsif settings.slideshow_layout == '4' -%}fixed3 fixed2{%- elsif settings.slideshow_layout == '3' -%}fixed2{%- else -%}fixed{%- endif -%}">
+    <div class="background-slider"></div>
+    <div class="background">
+      <div class="shadow"></div>
+      <div class="pattern orderable">
+        {%- include 'header-slideshow' -%}
+      </div>
+    </div>
+  </div>
+</header>

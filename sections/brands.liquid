@@ -1,0 +1,123 @@
+<div id="brands-{{section.id}}"
+     class="brands-wrapper product-tab-arrow-beside {%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}"
+     data-section-id="{{section.id}}"
+     data-section-type="brands">
+  {%- if section.settings.heading != blank -%}
+  <h3 class="box-heading">{{- section.settings.heading -}}</h3>
+  {%- endif -%}
+  <div 
+       data-perview="{{- section.settings.per_view -}}"
+       data-speed="{{- section.settings.auto_play -}}" 
+       data-autoplay="{%- if section.settings.auto_play != "0" -%}1{%- else -%}0{%- endif -%}"
+       class="featured-brands-{{section.id}}">
+    {%- assign image_size = 'master' -%}
+    {%- if section.settings.image_width !=  blank and section.settings.image_width !=  blank -%}
+    {%- assign image_width = section.settings.image_width -%}
+    {%- assign image_height = section.settings.image_height -%}
+    {%- capture image_size -%}{{ image_width }}x{{ image_height }}{%- endcapture -%}
+    {%- endif -%}
+    {%- for block in section.blocks limit: section.blocks.limit -%}
+    <div class="item" {{ block.shopify_attributes }}>
+      <a href="{{- block.settings.caption_link -}}">
+        {%- if block.settings.image != blank -%}
+        <img src="{{- block.settings.image | img_url: image_size -}}">
+        {%- else -%}
+        {{- 'image' | placeholder_svg_tag: 'brand-image' -}}
+        {%- endif -%}
+      </a>
+    </div>
+    {%- endfor -%}
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Brands",
+	"class": "promo-brands",
+    "settings": [
+		{
+            "type": "header",
+            "content": "General"
+        },
+        {
+            "type": "checkbox",
+            "id": "visible_on_mobile",
+            "label": "Visible on Mobile",
+            "default": true
+        },
+        {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+			"default": "Our brands"
+        },
+        {
+          "type": "text",
+          "id": "image_width",
+          "label": "Image Width"
+        },
+        {
+          "type": "text",
+          "id": "image_height",
+          "label": "Image Height"
+        },
+		{
+			"type": "text",
+			"id": "per_view",
+			"label": "Item per slide",
+			"default": "6"
+		},
+        {
+          "type": "text",
+          "id": "auto_play",
+          "label": "Sliders Autoplay",
+          "info": "Duration of animation between slides (in ms). Enter the value is 0 or empty if you want the slider is not autoplay",
+          "default": "0"
+        }
+	],
+	"blocks": [
+        {
+            "type": "brand",
+            "name": "Brand",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                },
+                {
+                    "type": "url",
+                    "id": "caption_link",
+                    "label": "Call to Action"
+                }
+            ]
+        }
+	],
+	"presets": [
+        {
+            "category": "Content",
+            "name": "Brands",
+            "settings": {},
+            "blocks": [
+                {
+                    "type": "brand"
+                },
+                {
+                    "type": "brand"
+                },
+                {
+                    "type": "brand"
+                },
+                {
+                    "type": "brand"
+                },
+                {
+                    "type": "brand"
+                },
+                {
+                    "type": "brand"
+                }
+            ]
+        }
+    ]
+  }
+{% endschema %}

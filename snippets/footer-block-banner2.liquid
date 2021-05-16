@@ -1,0 +1,46 @@
+{%- if block.settings.icon_hover_color != blank or block.settings.hover_color != blank -%}
+<style>
+  {%- if block.settings.icon_hover_color != blank -%}
+  div#{{section.id}}-banner-2 a.banner-content-wrapper:hover .b-icon{
+    color: {{block.settings.icon_hover_color}}!important
+  }
+  {%- endif -%}
+  {%- if block.settings.hover_color != blank -%}
+  div#{{section.id}}-banner-2 a.banner-content-wrapper:hover .b-text{
+    color: {{block.settings.hover_color}}!important
+  }
+  {%- endif -%}
+</style>
+{%- endif -%}
+<div id="{{section.id}}-banner-2" class="footer-banner-2 row" style="background-color:{{block.settings.bg_color}}" {{ block.shopify_attributes }} >
+  {%- for _i in(1..3) -%}
+  {%- assign icon_type = "icon_type_" | append: _i  -%}
+  {%- assign icon_class = "icon_class_" | append: _i -%}
+  {%- assign svg_content = "svg_content_" | append: _i -%}
+  {%- assign icon_type = "icon_type_" | append:_i -%}
+  {%- assign content = "content_" | append: _i -%}
+  {%- assign content_link = "content_link_" | append: _i -%}
+  {%- assign line = "line_" | append: _i -%}
+  <div class="col-sm-25 col-xs-12">
+    <a href="{{- block.settings[content_link] -}}" class="banner-content-wrapper" style="font-size:{{ block.settings.content_fontsize | append: "px"}};font-weight:{{block.settings.content_fontweight}}">
+      <div class="b-icon" style="color:{{block.settings.icon_color}}">
+        {%- if block.settings[icon_type] == ""-%}
+        <i class="fa {{block.settings[icon_class]}}" aria-hidden="true"></i>
+        {%- else -%}
+        {{- block.settings.svg_content -}}
+        {%- endif -%}
+      </div>
+      <div class="b-text" style="color:{{block.settings.color}}">
+        {{- block.settings[content] -}}
+      </div>
+    </a>
+  </div>
+  {%- if forloop.last == false -%}
+  <div class="col-sm-25 hidden-xs">
+    {%- if block.settings[line] -%}
+    <div class="line-wrapper"><span class="line-content" style="background-color:{{block.settings.line_color}}"></span></div>
+    {%- endif -%}
+  </div>
+  {%- endif -%}
+  {%- endfor -%}
+</div>  

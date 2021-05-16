@@ -1,0 +1,57 @@
+<figure id="product-image-design-scroll-{{- section.id -}}" class="product-image-design-scroll shopify-product-gallery__wrapper photoswipe-wrapper">
+  <figure 
+          id="FeaturedImageZoom-{{ section.id }}"
+          data-thumb="{{ featured_image.src | img_url: '70x70' }}" 
+          class="{%- if featured_image_alt contains 'iframe' -%}{{"feature-video "}}{%- endif -%}shopify-product-gallery__image rt-unero-product-gallery__image {{ zoom_class }} {{ pwrapper_item_class }}" 
+          >
+    <a class="{%- if current_variant.image.alt contains 'iframe' -%}{{"video "}}{%- endif -%}photoswipe {{ modal_class }} zoom FeaturedImage-{{ section.id }}" href="{{ featured_image.src | img_url: 'master' }}" tabindex="-1" 
+       data-id="#product-video-template-{{featured_image.id}}"
+       data-type="{%- if featured_image_alt contains 'iframe' -%}{{"video"}}{%- endif -%}"    
+       data-size="{{featured_image.width}}x{{featured_image.height}}" >
+      <img src="{{ featured_image.src | img_url: '600x' }}" src="{{ featured_image.src | img_url: '600x' }}" 
+           class="lazy attachment-shop_single size-shop_single" 
+           data-src="{{ featured_image.src | img_url: 'master' }}"
+           alt="{%- if featured_image_alt contains 'iframe' -%}{{product.title}}{%- else -%}{{featured_image_alt | escape }}{%- endif -%}"
+           data-large_image="{{ featured_image.src | img_url: 'master' }}" 
+           data-large_image_width="{{featured_image.width}}" 
+           data-large_image_height="{{featured_image.height}}"  
+           srcset="{{ featured_image.src | img_url: '600x' }} 600w, {{ featured_image.src | img_url: '150x' }} 150w, {{ featured_image.src | img_url: '300x' }} 300w, {{ featured_image.src | img_url: '768x' }} 768w, {{ featured_image.src | img_url: '70x' }} 70w, {{ featured_image.src | img_url: '480x' }} 480w, {{ featured_image.src | img_url: '370x' }} 370w,{{ featured_image.src | img_url: '540x' }} 540w, {{ featured_image.src | img_url: '1000x' }} 1000w" sizes="(max-width: 600px) 100vw, 600px">
+    </a>
+    {%- if featured_image_alt contains 'iframe' -%}
+    <script id="product-video-template-{{featured_image.id}}" type="text/template">
+                              <div class="video-wrapper">
+                              {{- featured_image_alt -}}
+      </div>
+    </script>
+    {%- endif -%}
+  </figure>
+  {%- for image in product.images -%}
+  {%- unless image == featured_image -%}
+  <figure id="FeaturedImageZoom-{{ section.id }}-{{- forloop.index -}}"
+          data-thumb="{{ image.src | img_url: '70x70' }}" 
+          class="{%- if image.alt contains 'iframe' -%}{{"feature-video "}}{%- endif -%}shopify-product-gallery__image rt-unero-product-gallery__image {{ zoom_class }} {{ pwrapper_item_class }}" 
+          >
+    <a class="{%- if image.alt contains 'iframe' -%}{{"video "}}{%- endif -%}photoswipe {{ modal_class }} zoom FeaturedImage-{{ section.id }}" href="{{ image.src | img_url: 'master' }}" tabindex="-1" 
+       data-id="#product-video-template-{{image.id}}"
+       data-type="{%- if image.alt contains 'iframe' -%}{{"video"}}{%- endif -%}"    
+       data-size="{{image.width}}x{{image.height}}" >
+      <img src="{{ image.src | img_url: '600x' }}" src="{{ image.src | img_url: '600x' }}" 
+           class="lazy attachment-shop_single size-shop_single" 
+           data-src="{{ image.src | img_url: 'master' }}"
+           alt="{%- if image.alt contains 'iframe' -%}{{product.title}}{%- else -%}{{image.alt | escape }}{%- endif -%}"
+           data-large_image="{{ image.src | img_url: 'master' }}" 
+           data-large_image_width="{{image.width}}" 
+           data-large_image_height="{{image.height}}"  
+           srcset="{{ image.src | img_url: '600x' }} 600w, {{ image.src | img_url: '150x' }} 150w, {{ image.src | img_url: '300x' }} 300w, {{ image.src | img_url: '768x' }} 768w, {{ image.src | img_url: '70x' }} 70w, {{ image.src | img_url: '480x' }} 480w, {{ image.src | img_url: '370x' }} 370w,{{ image.src | img_url: '540x' }} 540w, {{ image.src | img_url: '1000x' }} 1000w" sizes="(max-width: 600px) 100vw, 600px">
+    </a>
+    {%- if image.alt contains 'iframe' -%}
+    <script id="product-video-template-{{image.id}}" type="text/template">
+                              <div class="video-wrapper">
+                              {{- image.alt -}}
+      </div>
+    </script>
+    {%- endif -%}
+  </figure>
+  {%- endunless -%}
+  {%- endfor -%}
+</figure>

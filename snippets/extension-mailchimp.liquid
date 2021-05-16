@@ -1,0 +1,25 @@
+{%- if settings.popup_mailchimp_show -%}
+<div id="popup-mailchimp" style="background-color:{{settings.popup_mailchimp_bgc}}!important" class="{{settings.popup_mailchimp_style}} popup mfp-hide{%- if settings.popup_mailchimp_sb -%}{{' '}}hidden-xs{%- endif -%}">
+  {%- capture mailchimpHeading -%}{{'general.mailchimp_popup.heading_html' | t}}{%- endcapture -%}
+  {%- if mailchimpHeading != '' -%}
+  <h4>{{mailchimpHeading}}</h4>
+  {%- endif -%}
+  {%- capture mailchimpContent -%}{{'general.mailchimp_popup.content_html' | t}}{%- endcapture -%}
+  {%- if mailchimpContent != '' -%}
+  <div class="content">{{mailchimpContent}}</div>
+  {%- endif -%}
+  <form id="mc-form" class="newsletter" action="{{settings.popup_mailchimp_action}}" method="post" name="mc-embedded-subscribe-form" target="_blank">
+    <input id="mc-email" class="email {%if settings.popup_mailchimp_bg == false%}more-white{%endif%}" type="email" name="EMAIL" placeholder="{{'general.mailchimp_popup.enter_your_email' | t}}" required="required" />
+    <button id="mc-submit" class="btn subscribe" type="submit">{{'general.mailchimp_popup.join_us' | t}}</button>
+    <label for="mc-email"></label>
+  </form>
+  {%- if settings.popup_mailchimp_expire == '0' -%}
+  <div class="dont-show-label">
+    <label>
+      <input type="checkbox" class="dont-show-me" />
+      <span>{{'general.mailchimp_popup.dont_show_again' | t}}</span>
+    </label>
+  </div>
+  {%- endif -%}
+</div>
+{%- endif -%}

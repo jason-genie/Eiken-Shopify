@@ -1,0 +1,73 @@
+{%- comment -%}----- Link List -----{%- endcomment -%}
+{%- if settings.sb_blog_linklist -%}
+{%- assign list_temp = settings.sb_blog_linklist_list -%}
+{%- if linklists[list_temp] != empty -%}
+{%- assign list = linklists[list_temp] -%}
+<div class="box box-with-categories category-box-type-2 blog-module{% if settings.advanced_category_box == '3' %} category-box-type-3{% endif %}">
+  <div class="box-heading">{{settings.sb_blog_linklist_heading | default:list.title}}</div>
+  <div class="strip-line"></div>
+  <div class="box-content box-category">
+    <ul class="accordion" id="accordion-category">
+      {%- for my_link in list.links -%}
+      <li class="panel"><a href="{{my_link.url}}" title="{{my_link.title}}">{{my_link.title}}</a></li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+{%- endif -%}
+{%- endif -%}
+{%- comment -%}----- Recent Articles -----{%- endcomment -%}
+{%- if settings.sb_blog_recent and blog.articles.size > 0 -%}
+<div class="box blog-module blog-popular-posts box-no-advanced">
+  {%- if settings.sb_blog_recent_heading != '' -%}
+  <div class="box-heading">{{settings.sb_blog_recent_heading}}</div>
+  <div class="strip-line"></div>
+  {%- endif -%}
+  <div class="box-content box-popular-posts">
+    <ul class="blog-list-default">
+      {%- for article in blog.articles limit:settings.sb_blog_recent_limit -%}
+      <li>
+        <div class="media">
+          <a href="{{article.url}}">
+            <div class="media-body">
+              <div class="date-published">{{article.published_at | date: "%b %d, %Y"}}</div>
+              <h3>{{article.title}}</h3>
+            </div>
+          </a>
+        </div>
+      </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+{%- endif -%}
+{%- comment -%}----- Blog Tags -----{%- endcomment -%}
+{%- if settings.sb_blog_tag and blog.all_tags.size > 0 -%}
+<div class="box blog-module blog-tags">
+  {%- if settings.sb_blog_tag_heading != '' -%}
+  <div class="box-heading">{{settings.sb_blog_tag_heading}}</div>
+  <div class="strip-line"></div>
+  {%- endif -%}
+  <div class="box-content box-tags">
+    <div class="tagcloud">
+      {%- for tag in blog.all_tags -%}
+      {%- if current_tags contains tag -%}
+      {{tag | link_to_remove_tag: tag | replace: 'title=', 'class="active" title='}}
+      {%- else -%}
+      {{tag | link_to_add_tag: tag}}
+      {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+{%- endif -%}
+{%- comment -%}----- Custom HTML -----{%- endcomment -%}
+{%- if settings.sb_blog_html -%}
+<div class="box blog-module box-html banners">
+  {%- if settings.sb_blog_html_heading != '' -%}
+  <h3 class="box-heading">{{settings.sb_blog_html_heading}}</h3>
+  <div class="strip-line"></div>
+  {%- endif -%}
+  <div class="box-content">{{settings.sb_blog_html_content}}</div>
+</div>
+{%- endif -%}

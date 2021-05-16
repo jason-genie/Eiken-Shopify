@@ -1,0 +1,60 @@
+{%- assign _acm_blog = blogs[block.settings.acm_blog] -%}
+{%- assign _t = 'footer_bottom,footer,footer_top,footer_left,footer_right,customfooter_top,customfooter_bottom,customfooter' | split: ',' -%}
+{%- if _t contains _ag_pos -%}
+<h4>{{_acm_title}}</h4>
+<div class="strip-line"></div>
+
+<div class="clearfix" style="clear: both"><div class="advanced-grid-latest-blogs">
+  {%- for _article in _acm_blog.articles -%}
+  {%- if forloop.index > _acm_limit -%}
+  {%- break -%}
+  {%- endif -%}
+  <div class="news clearfix">
+    <div class="image">
+      {%- if _article.image -%}
+      <a href="{{_article.url}}" style="background-image: url({{_article.image.src | img_url: 'large' }});width:{{_acm_width}}px;height:{{_acm_height}}px"></a>
+      {%- endif -%}
+    </div>
+    <div class="title">
+      <a href="{{_article.url}}">{{_article.title}}</a>
+    </div>
+    <div class="article-date-added">
+      <i class="fa fa-calendar"></i>
+      {{ _article.published_at | date: "%b %d, %y" }}
+    </div>
+  </div>
+  {%- endfor -%}
+  </div></div>
+{%- else -%}
+<div class="box">
+  <div class="box-heading">
+    {{_acm_title}}
+  </div>
+  <div class="strip-line"></div>
+  <div class="box-content">
+    <div class="clearfix" style="clear: both">
+      <div class="advanced-grid-latest-blogs">
+        {%- for _article in _acm_blog.articles -%}
+        {%- if forloop.index > _acm_limit -%}
+        {%- break -%}
+        {%- endif -%}
+        <div class="news clearfix">
+          <div class="image">
+            {%- if _article.image -%}
+            <a href="{{_article.url}}" style="background-image: url({{_article.image.src | img_url: 'large' }});width:{{_acm_width}}px;height:{{_acm_height}}px"></a>
+            {%- endif -%}
+          </div>
+          <div class="title">
+            <a href="{{_article.url}}">{{_article.title}}</a>
+          </div>
+          <div class="article-date-added">
+            <i class="fa fa-calendar"></i>
+            {{ _article.published_at | date: "%b %d, %y" }}
+          </div>
+        </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+{%- endif -%}

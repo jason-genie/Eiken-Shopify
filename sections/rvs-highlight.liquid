@@ -1,0 +1,262 @@
+<link href="//fonts.googleapis.com/css?family=Roboto+Slab%3A400%2C300" rel="stylesheet" property="stylesheet" type="text/css" media="all" />
+
+<div data-placement_fullwidth="{%- if section.settings.placement_fullwidth -%}1{%- else -%}0{%- endif -%}" data-section-id="{{section.id}}"
+   data-section-type="rvshighlight" data-delaytime="{{section.settings.delay_time}}" id="rvshighlight-{{section.id}}_wrapper" 
+     class="rev_slider_wrapper fullwidthbanner-container {%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}" data-alias="highlight-showcase{{section.id}}" data-source="gallery" style="margin:0px auto;background-color:transparent;padding:0px;margin-top:0px;margin-bottom:0px;">
+   <!-- START REVOLUTION SLIDER 5.4.1 auto mode -->
+  <div id="rvshighlight-{{section.id}}" class="rev_slider fullwidthabanner" style="display:none;" data-version="5.4.1">
+    <ul>
+      <!-- SLIDE  -->
+      {%-for block in section.blocks limit: section.blocks.size-%}
+      {%-assign img_url = 'https://via.placeholder.com/640x480/ECB39F/ffffff?text=Put%20your%20Image%20here.'-%}
+      {%- if block.settings.slide_image != blank -%}
+      {%-capture image_size-%}{{block.settings.slide_image_quality}}{%- endcapture -%}
+      {%- assign img_url = block.settings.slide_image | img_url: image_size, crop: 'center' -%}
+      {%- endif -%}
+      <li data-index="rs-{{section.id}}{{block.id}}" data-transition="slideoverhorizontal" data-slotamount="7" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="default" data-easeout="default" data-masterspeed="1500"  
+          data-thumb="{{img_url}}"  data-rotate="0"  data-fstransition="fade" data-fsmasterspeed="1000" data-fsslotamount="7" data-saveperformance="off"  data-title="{{block.settings.slide_title}}" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
+        <!-- MAIN IMAGE -->
+        <img src="{{img_url}}"  alt=""  data-bgposition="center bottom" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="10" class="rev-slidebg" data-no-retina>
+        <!-- LAYERS -->
+        <!-- LAYER NR. 1 -->
+        <div class="tp-caption News-Title   tp-resizeme" 
+             id="slide-2985-layer-1" 
+             data-x="['left','left','left','left']" data-hoffset="['80','80','40','40']" 
+             data-y="['top','top','top','top']" data-voffset="['450','450','250','150']" 
+             data-width="364"
+             data-height="133"
+             data-whitespace="normal"
+             data-type="text" 
+             data-responsive_offset="on" 
+             data-frames='[{"from":"y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;","mask":"x:0px;y:0px;s:inherit;e:inherit;","speed":1500,"to":"o:1;","delay":500,"ease":"Power3.easeInOut"},{"delay":"wait","speed":1000,"to":"y:[100%];","mask":"x:inherit;y:inherit;s:inherit;e:inherit;","ease":"nothing"}]'
+             data-textAlign="['left','left','left','left']"
+             data-paddingtop="[0,0,0,0]"
+             data-paddingright="[0,0,0,0]"
+             data-paddingbottom="[0,0,0,0]"
+             data-paddingleft="[0,0,0,0]"
+             style="z-index: 5; min-width: 364px; max-width: 364px; max-width: 133px; max-width: 133px; white-space: normal;text-transform:left;color:{{block.settings.slide_heading_color}};{%-if block.settings.slide_url != blank-%}cursor:pointer;{%-endif-%}"
+             {%-if block.settings.slide_url != blank-%}onclick="location.href = '{{block.settings.slide_url}}'"{%-endif-%}>
+          {{block.settings.slide_heading}}
+        </div>
+        <!-- LAYER NR. 2 -->
+        <div class="tp-caption   tp-resizeme" 
+             id="slide-2985-layer-2" 
+             data-x="['left','left','left','left']" data-hoffset="['80','80','40','40']" 
+             data-y="['top','top','top','top']" data-voffset="['587','587','382','282']" 
+             data-width="none"
+             data-height="none"
+             data-whitespace="nowrap"
+             data-type="image" 
+             data-responsive_offset="on" 
+             data-frames='[{"from":"x:[-100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;","mask":"x:0px;y:0px;s:inherit;e:inherit;","speed":1500,"to":"o:1;","delay":500,"ease":"Power3.easeInOut"},{"delay":"wait","speed":1000,"to":"x:[100%];","mask":"x:inherit;y:inherit;s:inherit;e:inherit;","ease":"Power3.easeInOut"}]'
+             data-textAlign="['left','left','left','left']"
+             data-paddingtop="[0,0,0,0]"
+             data-paddingright="[0,0,0,0]"
+             data-paddingbottom="[0,0,0,0]"
+             data-paddingleft="[0,0,0,0]"
+             style="z-index: 6;text-transform:left;border-width:0px;"><img src="https://storage.googleapis.com/revolutionslider/assets/images/bluebar.png" alt="" data-ww="['350px','350px','350px','350px']" data-hh="['4px','4px','4px','4px']" width="350" height="4" data-no-retina> </div>
+        <!-- LAYER NR. 3 -->
+        <div class="tp-caption News-Subtitle   tp-resizeme" 
+             id="slide-2985-layer-3" 
+             data-x="['left','left','left','left']" data-hoffset="['81','81','41','41']" 
+             data-y="['top','top','top','top']" data-voffset="['605','605','401','301']" 
+             data-width="none"
+             data-height="none"
+             data-whitespace="nowrap"
+             data-type="text" 
+             data-responsive_offset="on" 
+             data-frames='[{"from":"y:[-100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;","mask":"x:0px;y:0px;","speed":1500,"to":"o:1;","delay":500,"ease":"Power3.easeInOut"},{"delay":"wait","speed":1000,"to":"y:[100%];","mask":"x:inherit;y:inherit;","ease":"nothing"},{"frame":"hover","speed":"300","ease":"Power3.easeInOut","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgba(255, 255, 255, 0.65);bs:solid;br:0 0 0px 0;"}]'
+             data-textAlign="['left','left','left','left']"
+             data-paddingtop="[0,0,0,0]"
+             data-paddingright="[0,0,0,0]"
+             data-paddingbottom="[0,0,0,0]"
+             data-paddingleft="[0,0,0,0]"
+             style="z-index: 7; white-space: nowrap;text-transform:left;cursor:pointer;color:{{block.settings.slide_caption_color}};">{{block.settings.slide_caption}}</div>
+        <!-- LAYER NR. 4 -->
+        <div class="tp-caption -   tp-resizeme" 
+             id="slide-2985-layer-4" 
+             data-x="['left','left','left','left']" data-hoffset="['423','423','383','383']" 
+             data-y="['top','top','top','top']" data-voffset="['607','607','403','303']" 
+             data-width="none"
+             data-height="none"
+             data-whitespace="nowrap"
+             data-type="text" 
+             data-responsive_offset="on" 
+             data-frames='[{"from":"x:[-100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;","mask":"x:0px;y:0px;s:inherit;e:inherit;","speed":1500,"to":"o:1;","delay":500,"ease":"Power3.easeInOut"},{"delay":"wait","speed":1000,"to":"x:[100%];","mask":"x:inherit;y:inherit;s:inherit;e:inherit;","ease":"Power3.easeInOut"}]'
+             data-textAlign="['left','left','left','left']"
+             data-paddingtop="[0,0,0,0]"
+             data-paddingright="[0,0,0,0]"
+             data-paddingbottom="[0,0,0,0]"
+             data-paddingleft="[0,0,0,0]"
+             style="z-index: 8; white-space: nowrap; font-size: 20px; line-height: 22px; font-weight: 400; color: rgba(0, 210, 255, 1.00);text-transform:left;border-width:0px;"><i class="fa-icon-caret-right"></i> </div>
+      </li>
+      {%-endfor-%}
+    </ul>
+    <div class="tp-bannertimer" style="height: 6px; background-color:{{section.settings.process_bar_color}}"></div>
+  </div>
+</div>
+<style>
+  @media (min-width: 768px) {
+    .templateIndex #rvshighlight-{{section.id}}_wrapper {
+      margin-top:{{section.settings.margin_top}}px!important;
+    }
+  }
+  .tp-caption img{
+  	display:none;
+  }
+  .tp-tabs{
+  	display:none;
+  }
+  
+
+</style>
+{% schema %}
+{
+  "name": "Highlight Slider",
+  "class": "rvshighlight section-wrapper",
+  "max_blocks": 5,
+  "settings": [
+	{
+	  "type": "paragraph",
+	  "content": "(!!!)WARNING: To use this slider, you must turn on the Revolution Slider in general settings tab: Theme Settings > Revolution Slider > Enabled"
+	},
+    {
+      "type": "checkbox",
+      "id": "placement_fullwidth",
+      "label": "Force Full Width",
+      "default": false
+    },
+	{
+      "type": "checkbox",
+      "id": "visible_on_mobile",
+      "label": "Show on Mobile",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Margin",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "process_bar_color",
+      "label": "Process Bar Color",
+      "default": "#CA302C"
+    },
+    {
+      "type": "range",
+      "label": "Delay (in milliseconds)",
+      "id": "delay_time",
+      "min": 2000,
+      "max": 9000,
+      "step": 1000,
+      "unit": "ms",
+      "default": 4000
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "header",
+          "content": "General"
+        },
+		{
+          "type": "image_picker",
+          "id": "slide_image",
+          "label": "Pick an Image"
+		},
+		{
+          "type": "select",
+          "id": "slide_image_quality",
+          "label": "Image Quality",
+          "options": [
+            {
+              "value": "500x",
+              "label": "Low"
+            },
+            {
+              "value": "1200x",
+              "label": "Normal"
+            },
+            {
+              "value": "1920x",
+              "label": "High"
+            }
+          ],
+          "default": "1920x"
+        },
+        {
+          "type": "text",
+          "id": "slide_title",
+          "label": "Give a Title",
+		  "default": "Your Title"
+        },
+		{
+          "type": "text",
+          "id": "slide_heading",
+          "label": "Give a Heading",
+		  "default": "Your Heading"
+        },
+		{
+          "type": "text",
+          "id": "slide_caption",
+          "label": "Give some texts",
+		  "default": "Even some texts can smile with you."
+        },
+		{
+          "type": "url",
+          "id": "slide_url",
+          "label": "Choose an URL",
+		  "default": "/collections/all"
+        },
+		{
+          "type": "header",
+          "content": "Style"
+        },
+		{
+          "type": "color",
+          "id": "slide_heading_color",
+          "label": "Heading color",
+		  "default": "#ffffff"
+        },
+		{
+          "type": "color",
+          "id": "slide_caption_color",
+          "label": "Caption color",
+		  "default": "#ffffff"
+        }
+      ]
+	}
+  ],
+  "presets": [
+	{
+      "name": "Highlight Slider",
+      "category": "Revolution Sliders",
+      "settings": {
+      },
+  	  "blocks": [
+		{
+          "type": "slide"
+        },
+		{
+          "type": "slide"
+        }
+  	  ]
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

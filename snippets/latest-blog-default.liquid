@@ -1,0 +1,50 @@
+
+
+<div class="box blog-module blog-latest-posts box-no-advanced{%- if _lblog_mobile == false -%}{{' '}}hidden-xs hidden-sm{%- endif -%}" data-order="{{_lblog_order}}">
+  <div class="box-heading">{{_lblog_heading}}</div>
+  <div class="strip-line"></div>
+  <div class="box-content box-latest-posts">
+    <ul class="blog-list-default">
+      {%- if _lblog_blog != blank-%}
+      	{%- for _article in _lblog_blog.articles -%}
+        {%- if forloop.index > _lblog_limit -%}
+        {%- break -%}
+        {%- endif -%}
+        <li>
+          <div class="media">
+            <a href="{{_article.url}}">
+              <div class="thumb-holder">
+                <a href="{{_article.url}}">
+                  <img alt="{{_article.title}}" src="{{_article.image.src | img_url: 'large' }}" />
+                </a>
+              </div>
+              <div class="media-body">
+                <div class="date-published">{{ _article.published_at | date: "%b %d, %y" }}</div>
+                <h5>{{_article.title}}</h5>
+              </div>
+            </a>
+          </div>
+        </li>
+        {%- endfor -%}
+      {%- else -%}
+      {%- for i in (1.._lblog_limit) -%}
+      <li>
+        <div class="media">
+          <a href="#">
+            <div class="thumb-holder">
+              <a href="#">
+                <img alt="" src="{{ "noimage_265_350.png" | asset_img_url:"master"}}" />
+              </a>
+            </div>
+            <div class="media-body">
+              <div class="date-published">{{ "Feb 24, 2016" | date: "%b %d, %y" }}</div>
+              <h5>{{"Article Title"}}</h5>
+            </div>
+          </a>
+        </div>
+      </li>
+      {%- endfor -%}
+      {%- endif-%}
+    </ul>
+  </div>
+</div>

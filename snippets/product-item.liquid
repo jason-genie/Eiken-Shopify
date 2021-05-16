@@ -1,0 +1,202 @@
+{%- assign roar360 = product.metafields.roar360 -%}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign featured_image = current_variant.featured_image | default:product.featured_image -%}
+{%- if _dim == empty or _dim == blank -%}
+{%- if settings.collection_product_size == "custom" %}
+{%- if settings.collection_product_img_width != blank and settings.collection_product_img_height != blank -%}
+{%- assign _dim = settings.collection_product_img_width | append: "x" | append : settings.collection_product_img_height -%}
+{%- else -%}
+{%- assign _dim = "large" -%}
+{%- endif -%}
+{%- else -%}
+{%- assign _dim = settings.collection_product_size -%}
+{%- endif -%}
+{%- endif -%}
+{%-assign _onepone = '" '-%}
+{%-if settings.image_lazy_loading_used -%}
+{%-assign _onepone = ' b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-'-%}
+{%-endif-%}
+<div class="{%if custom_class != blank%} {{custom_class}} {%endif%} product product-content-wrapper clearfix product-hover product-item-{{- settings.product_item_type -}}-wrapper quickshop-type-{{- settings.quickshop_type -}}-wrapper {{settings.product_item_advanced_thumb_type}}" data-_dim="_{{_dim}}">
+  <div class="left">
+    {%- if settings.product_sale_badge != '' and current_variant.compare_at_price > current_variant.price -%}
+    <div class="sale {% if settings.product_sale_badge != '0' %}percentage{% endif %}{% unless current_variant.compare_at_price > current_variant.price %} hide{% endunless %}">
+      {%- if settings.product_sale_badge == '0' -%}
+      {{- 'products.product.sale' | t -}}
+      {%- else -%}
+      -{{current_variant.compare_at_price | minus:current_variant.price | times:100.0 | divided_by:current_variant.compare_at_price | ceil }}%
+      {%- endif -%}
+    </div>
+    {%- elsif settings.product_new_badge and product.tags contains 'latest' -%}
+    <div class="new">{{'products.product.new' | t}}</div>
+    {%- endif -%}
+    {%- include 'product-item-images', my_layout: 'grid' -%}
+    {%- if settings.quickshop_image > 0 and product.images.size > 1 -%}{%- include 'item-images' with settings.quickshop_image | minus: 1 -%}{%- endif -%}
+    {% if settings.product_item_advanced_thumb_type != "dots" %}
+    {%- if settings.product_countdown_show -%}{%- include 'limited-offer' -%}{%- endif -%}
+    {%- endif -%}
+  </div>
+  {%- if settings.product_swatch_color and settings.product_swatch_color_item -%}
+    {%- include 'product-color-swatch' -%}
+  {%- endif -%}
+  {%- if settings.product_item_type == "" -%}
+  <div class="right">
+    <div class="name"><a href="{{ product.url | within: collection }}"><h2 class="product-title">{{ product.title }}</h2></a></div>
+    {% include 'judgeme_widgets', widget_type: 'removed', jm_style: '', concierge_install: true %}
+    {%- if settings.advanced_product_grid == '7' -%}
+    <div class="brand">{{product.vendor | link_to_vendor}}</div>
+    {%- endif -%}
+    <div class="price" data-price="{{-current_variant.price-}}">
+      {%- if product.available -%}
+      <span class="price-new money">{{current_variant.price | money}}</span>&nbsp
+      {%- if current_variant.compare_at_price > current_variant.price -%}
+      <span class="price-old money">{{current_variant.compare_at_price | money}}</span>
+      {%- endif -%}
+	{%- else -%}
+      <span class="price-old">{{'products.product.sold_out' | t}}</span>
+      {%- endif -%}
+    </div>
+    {%- if settings.product_hover_effect -%}
+    <div class="only-hover">
+      <ul>
+        {%- if settings.product_addtocart_show -%}
+        <li>
+          {%- if product.available -%}
+          {%- if product.variants.size > 1 -%}
+          <a href="{{product.url | within: collection}}" class="btn-action btooltip choose-options" title="See all colors"><i class="fa fa fa-eye"></i></a>
+          {%- else -%}
+          <form action="/cart/add" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="quantity" value="1" />
+            <button type="submit" class="btn-action btooltip add-to-cart" data-loading-text="{{'products.product.loading' | t | escape}}" title="Visit product page"><i class="fa fa fa-eye"></i></button>
+            <select class="hide" name="id">
+              {%- for variant in product.variants -%}
+              <option value="{{variant.id}}">{{variant.title | escape}} - {{variant.price | money}}</option>
+              {%- endfor -%}
+            </select>
+          </form>
+          {%- endif -%}
+          {%- else -%}
+          <a href="{{product.url | within: collection}}" class="btn-action btooltip choose-options" title="{{'products.product.show_details' | t | escape}}"><i class="fa fa fa-eye"></i></a>
+          {%- endif -%}
+        </li>
+        {%- endif -%}
+        {%- if settings.product_quickview_show -%}
+        <li class="quickview">
+          <a href="{{- product.url -}}?view=quickview" id="quickview-btn-{{- product.id -}}" class="btn-action quick_view btooltip" title="{{'products.product.quick_shop' | t | escape}}"><i class="fa fa-search"></i></a>
+        </li>
+        {%- if roar360.roar360view_enabled == '1' -%}
+        <div id="product-360-view-{{- section.id -}}" class="product-360-view-wrapper mfp-hide">
+          <div class="fastor-threed-view threed-id-{{- section.id -}}" 
+               data-_script_id="threed-id-{{- section.id -}}">
+            <ul class="threed-view-images"></ul>
+            <div class="spinner"><span>0%</span></div>
+          </div>
+          {%- unless roar360.roar360view_json == blank -%}
+          <script type="application/json" id="threed-id-{{- section.id -}}">
+  			{{- roar360.roar360view_json -}}
+          </script>
+          {%- endunless -%}
+        </div>
+        {%- endif -%}
+        {%- endif -%}
+        {%- if settings.compare_enable and settings.product_compare_show -%}<li class="compare">{% assign my_product = product %}{%- include 'compare' -%}</li>{%- endif -%}
+      </ul>
+    </div>
+    {%- endif -%}
+    
+  </div>
+  {%- else -%}
+  <div class="product-item-content">
+    {%- if settings.quickshop_type == "" -%}
+    <div class="product-item-top"> 
+      <div class="brand">{{product.vendor | link_to_vendor}}</div>
+      <div class="product-item-rating" data-url="{{- product.url -}}">
+     {% comment %}   <span class="shopify-product-reviews-badge" data-id="{{- product.id -}}"></span>{% endcomment %}
+      </div>
+    </div>
+    {%- endif -%}
+    <div class="name"><a href="{{product.url | within: collection}}"><h3 class="product-title">{{product.title}}</h3></a></div>
+    {% include 'judgeme_widgets', widget_type: 'removed', jm_style: '', concierge_install: true %}
+
+    
+    <div class="price" data-price="{{-current_variant.price-}}">
+      {%- if product.available -%}
+      <span class="price-old money{% unless current_variant.compare_at_price > current_variant.price %} hide{% endunless %}">{{current_variant.compare_at_price | money}}</span>
+      <span class="price-new money">{{current_variant.price | money}}</span>
+      {%- else -%}
+      <span class="price-new money">{{current_variant.price | money}}</span>
+      {%- endif -%}
+    </div>
+    
+    {%- if settings.product_swatch_color and settings.product_swatch_color_item -%}
+    {%- unless product.options.size == 1 and product.variants[0].title == 'Default Title' -%}
+    <div class="product-item-option" 
+         data-id="#ProductItemJson-{{- product.id -}}"
+         data-swatch_id="ProductSwatchItemJson-{{ product.id }}">
+      <div class="variations-item-{{product.id}} variations">
+        <div class="variations-content variations-content-{{product.id}}">
+          {%- for option in product.options_with_values -%}
+          <div class="selector-wrapper{{- " " -}}{{- option.name | handlezie -}}{{- " " -}}variation-select-{{ product.id }}-{{ forloop.index0 }}">
+            <select id="single-option-selector-{{ product.id }}-{{ forloop.index0 }}" data-id="single-option-selector-{{ product.id }}-{{ forloop.index0 }}" class="single-option-selector-item single-option-selector single-option-selector-{{ product.id }}" data-index="option{{ forloop.index }}" data-option="option{{ forloop.index }}">
+              {%- for value in option.values -%}
+              <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>
+              {%- endfor -%}
+            </select>
+          </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+    {%- endunless -%}
+    {%- endif -%}
+    {%- if settings.product_hover_effect -%}
+      <div class="product-item-inside-hover">
+        {% comment %} Cart {% endcomment %}
+        <form action="/cart/add" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="quantity" value="1" />
+          <button type="submit" class="btn-action addtocart-item-js add-to-cart" data-loading-text="{{'products.product.loading' | t | escape}}" title="{{'products.product.add_to_cart' | t | escape}}" {% unless product.available %}disabled{% endunless %}>{% if product.available %}<i class="fa fa-cart-svg">{%- include "cart-icon-plus" -%}</i>{% endif %}<span>{%- if product.available -%}{{'products.product.add_to_cart' | t | escape}}{%- else -%}{{'products.product.sold_out' | t}}{%- endif -%}</span></button>
+          <select name="id" id="ProductItemSelect-{{ product.id }}" class="variation-select no-js hide">
+            {%- for variant in product.variants -%}
+            {%- if variant.available -%}
+            <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
+              {{- variant.title -}}
+            </option>
+            {%- else -%}
+            <option disabled="disabled">{{ variant.title }} - {{ 'products.product.sold_out' | t | escape }}</option>
+            {%- endif -%}
+            {%- endfor -%}
+          </select>
+        </form>
+        {% comment %} QuickView {% endcomment %}
+        {%- if settings.product_quickview_show and settings.quickshop_type == ""-%}
+        <div class="quickview right-quickview">
+          <a href="{{- product.url -}}?view=quickview" id="quickview-btn-{{- product.id -}}" class="btn-action quick_view btooltip" title="{{'products.product.quick_shop' | t | escape}}"><i class="fa fa-search"></i></a>
+        </div>
+        {%- if roar360.roar360view_enabled == '1' -%}
+        <div id="product-360-view-{{- section.id -}}" class="product-360-view-wrapper mfp-hide">
+          <div class="fastor-threed-view threed-id-{{- section.id -}}" 
+               data-_script_id="threed-id-{{- section.id -}}">
+            <ul class="threed-view-images"></ul>
+            <div class="spinner"><span>0%</span></div>
+          </div>
+          {%- unless roar360.roar360view_json == blank -%}
+          <script type="application/json" id="threed-id-{{- section.id -}}">
+              {{- roar360.roar360view_json -}}
+          </script>
+          {%- endunless -%}
+        </div>
+        {%- endif -%}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+  {%- endif -%}
+</div>
+
+{%- unless product == empty -%}
+<script type="application/json" id="ProductItemJson-{{- product.id -}}"defer>
+    {{- product | json -}}
+</script>
+<script type="application/json" id="ProductSwatchItemJson-{{- product.id -}}"defer>
+    {{- product.metafields.texture | json -}}
+</script>
+{%- endunless -%}

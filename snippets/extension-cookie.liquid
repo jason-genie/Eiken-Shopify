@@ -1,0 +1,84 @@
+{%- if settings.cookie_enable -%}
+{%- if settings.cookie_position == 'popup' -%}
+<div id="cookie" class="popup mfp-hide">
+  <h4>{{'general.cookie.title' | t}}</h4>
+  <div class="content">{{settings.cookie_content}}</div>
+  <div class="buttons-yes-no">
+    <a href="https://google.com" class="button btn-default">{{'general.cookie.no' | t}}</a>
+    <div class="button accept">{{'general.cookie.yes' | t}}</div>
+  </div>
+</div>
+{%- else -%}
+<div id="cookie" class="cookie {{settings.cookie_position}}">
+  <div class="standard-body">
+    <div class="full-width">
+      <div class="container cookie-container">
+        <div class="content cookie-content">{{settings.cookie_content}}</div>
+        <div class="operations">
+          <div class="button accept">{{'general.cookie.accept_cookies' | t}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endif -%}
+{%- endif -%}
+
+<style>
+  
+  .cookie{
+    z-index: 1000000;
+  }
+  
+  .cookie-container {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    gap: 10px;
+}
+  
+  .cookie .operations {
+    width: 15%;
+  }
+  
+  .cookie-content {
+    width: 85%;
+  }
+  
+  .cookie .operations .button {
+    margin: 0;
+    font-size: 14px;
+    text-align: center;
+}
+  
+    .cookie .content {
+     font-size: 13px;
+}
+  
+@media screen and (max-width: 767px) {
+  .cookie .content {
+     font-size: 10px;
+  }
+  
+    .cookie-container {
+    display: flex;
+    align-items: center;
+    padding: 0 10px !important;
+    gap: 10px;
+}
+  
+    .cookie-content {
+    width: 80%;
+  }
+    .cookie .operations {
+    width: 20%;
+  }
+    
+  .cookie .operations .button {
+    margin: 0;
+    font-size: 11px; 
+    text-align: center;
+}
+}
+  
+</style>

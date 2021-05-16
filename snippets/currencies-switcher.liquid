@@ -1,0 +1,51 @@
+{%-if settings.show_multiple_currencies-%}
+<div class="dropdown currency__picker{% if settings.currency_flag == false %} noflag{% endif %}{% if settings.currency_code == false %} nocode{% endif %}">
+  {%- assign codes = 'USD,EUR,GBP,CAD,ALL,DZD,AOA,ARS,AMD,AWG,AUD,BBD,AZN,BDT,BSD,BHD,BYR,BZD,BTN,BAM,BRL,BOB,BWP,BND,BGN,MMK,KHR,KYD,XAF,CLP,CNY,COP,CRC,HRK,CZK,DKK,DOP,XCD,EGP,ETB,XPF,FJD,GMD,GHS,GTQ,GYD,GEL,HNL,HKD,HUF,ISK,INR,IDR,ILS,JMD,JPY,JEP,JOD,KZT,KES,KWD,KGS,LVL,LBP,LTL,MGA,MKD,MOP,MVR,MXN,MYR,MUR,MDL,MAD,MNT,MZN,NAD,NPR,ANG,NZD,NIO,NGN,NOK,OMR,PKR,PGK,PYG,PEN,PHP,PLN,QAR,RON,RUB,RWF,WST,SAR,STD,RSD,SCR,SGD,SYP,ZAR,KRW,LKR,SEK,CHF,TWD,THB,TZS,TTD,TND,TRY,UGX,UAH,AED,UYU,VUV,VEF,VND,XBT,XOF,ZMW,AFN,CVE,KMF,CDF,HTG,LAK,LSL,LRD,MWK,SDG,SBD,SRD,SZL,TMT,UZS,YER' | split: ',' -%}
+  {%- assign supported_codes = settings.currency_supported | split: ' ' -%}
+  <div class="currency__current notranslate" data-code="{{ shop.currency }}">{{ settings.currency_default | default: shop.currency | escape }}</div>
+  <ul class="currency__switcher">
+    <li data-code="{{ shop.currency }}" class="currency active notranslate">{{ shop.currency }}</li>
+    {%- for code in supported_codes -%}
+    {%- if code != shop.currency and codes contains code -%}
+    <li data-code="{{ code }}" class="currency notranslate">{{ code }}</li>
+    {%- endif -%}
+    {%- endfor -%}
+  </ul>
+  <input type="hidden" class="currency_format" value="{{ settings.currency_format | default: 'money_with_currency_format' | escape }}" />
+  <input type="hidden" class="shop_currency" value="{{ shop.currency | escape }}" />
+  <input type="hidden" class="default_currency" value="{{ settings.currency_default | default: shop.currency | escape }}" />
+  <input type="hidden" class="money_with_currency_format" value="{{ shop.money_with_currency_format | strip_html | escape }}" />
+  <input type="hidden" class="money_format" value="{{ shop.money_format | strip_html | escape }}" />
+  <input type="hidden" class="auto_switch" value="{{ settings.currency_auto_switch | escape }}" />
+  <input type="hidden" class="original_price" value="{{ settings.currency_original_price | escape }}" />
+</div>
+{% comment %}
+<div class="dropdown currency">
+  <a href="javascript:void(0);" class="dropdown-toggle currency_wrapper" data-hover="dropdown" data-toggle="dropdown">
+    <span class="currency_code">{{ shop.currency }}</span>
+  </a>
+  <ul class="dropdown-menu currencies_src">
+    {%- assign codes = 'USD,EUR,GBP,CAD,ARS,AUD,BBD,BDT,BSD,BHD,BRL,BOB,BND,BGN,ILS,MMK,KYD,CLP,CNY,COP,CRC,HRK,CZK,DKK,DOP,XCD,EGP,XPF,FJD,GHS,GTQ,GYD,GEL,HKD,HUF,ISK,INR,IDR,NIS,JMD,JPY,JOD,KZT,KES,KWD,LVL,LTL,MXN,MYR,MUR,MDL,MAD,MNT,MZN,ANG,NZD,NGN,NOK,OMR,PKR,PYG,PEN,PHP,PLN,QAR,RON,RUB,SAR,RSD,SCR,SGD,SYP,ZAR,KRW,LKR,SEK,CHF,TWD,THB,TZS,TTD,TRY,UAH,AED,UYU,VEB,VND,ZMK' | split: ',' -%}
+    {%- assign supported_codes = settings.supported_currencies | split: ' ' -%}
+    <li><a href="javascript:void(0);" data-value="{{ shop.currency }}">{{ shop.currency }}</a></li>
+    {%- for code in supported_codes -%}
+    {%- if code != shop.currency and codes contains code -%}
+    <li><a href="javascript:void(0);" data-value="{{ code }}">{{ code }}</a></li>
+    {%- endif -%}
+    {%- endfor -%}
+  </ul>
+</div>
+{% endcomment %}
+{%-endif-%}
+{%-unless _has_language == false-%}
+{%-if settings.show_languages-%}
+<div class="dropdown language-switcher">
+  <a href="javascript:void(0);" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown">
+    <span>{{'general.top.language' | t}}</span>
+  </a>
+  <ul class="dropdown-menu">
+    <li><div id="weketing_google_translate_element"></div></li>
+  </ul>
+</div>
+{%-endif-%}
+{%-endunless-%}

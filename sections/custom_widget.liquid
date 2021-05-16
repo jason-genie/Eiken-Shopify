@@ -1,0 +1,77 @@
+{%- if section.blocks.size > 0 -%}
+<div 
+     data-placement_fullwidth="{%- if section.settings.placement_fullwidth -%}1{%- else -%}0{%- endif -%}"
+     id="custom-widget-{{section.id}}" class="custom-widget-wrapper{%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}" data-section-id="{{ section.id }}" data-section-type="custom-widget">
+  	{%- for block in section.blocks -%}
+      <div class="custom-widget" {{ block.shopify_attributes }}>
+        {%- if block.type == 'custom_html' -%}
+        	{{block.settings.html_content}}
+        {%- else -%}
+        	{{pages[block.settings.page_content].content}}
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+</div>
+{%- endif -%}
+{% schema %}
+  {
+    "name": "Custom Widget",
+	"class": "index-section section-wrapper",
+	"max_blocks": 12,
+    "settings": [
+	  {
+        "type": "checkbox",
+        "id": "placement_fullwidth",
+        "label": "Force Full Width"
+      },
+      {
+        "type": "checkbox",
+        "id": "visible_on_mobile",
+        "label": "Display on Mobile"
+      }
+	],
+	"blocks": [
+      {
+		"type": "custom_html",
+        "name": "Custom HTML",
+        "settings": [
+          {
+			"type": "textarea",
+            "id": "html_content",
+            "label": "HTML Content",
+            "info": "[How to use?](https:\/\/youtu.be\/s7s8hWXVxGE)"
+		  }
+		]	
+      },
+	  {
+		"type": "content_page",
+        "name": "Page Content",
+        "settings": [
+          {
+            "type": "page",
+            "id": "page_content",
+            "label": "Choose a Page"
+          }
+		]	
+      }
+	],
+    "presets": [
+      {
+        "name": "Custom Widget",
+        "category": "Content",
+        "settings": {
+		  "placement_fullwidth": true,
+          "visible_on_mobile": true
+        },
+        "blocks": [
+          {
+            "type": "custom_html",
+			"settings": {
+				"html_content": "<div style='text-align: center;'><h1>This is sample HTML</h1></div>"
+			}
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

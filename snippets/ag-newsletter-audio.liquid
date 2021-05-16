@@ -1,0 +1,12 @@
+<div class="audio-newsletter" id="newsletter{{_id}}">
+  <div class="heading">
+    <div class="first">{{_acm_title}}</div>
+    <div class="second">{{_acm_text}}</div>
+  </div>
+  <div class="inputs">
+    <form action="{{settings.popup_mailchimp_action}}" method="post" name="mc-embedded-subscribe-form" target="_blank">
+      <input type="email" class="email" name="EMAIL" required="required" placeholder="{{_placeholder}}" />
+      <button type="submit" class="button btn-default subscribe">{{_bttext}}</button>
+    </form>
+  </div>
+</div>

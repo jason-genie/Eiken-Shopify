@@ -1,0 +1,15 @@
+<a class="CollectionGrid-tile" href="#">
+  {%-if block.settings.id_image != blank -%}
+  <div class="CollectionGrid-tileImage align-center">
+    <img src="{{block.settings.id_image | img_url:image_img_url}}" alt="">
+  </div>
+  {%-else-%}
+  <div class="CollectionGrid-tileImage align-center is--onboarding">
+    {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+    {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+  </div>
+  {%-endif-%}
+  <div class="CollectionGrid-tileName js-dotdotdot">
+     <p>{%- if block.settings.id_heading_item != blank -%}{{block.settings.id_heading_item}}{%-else-%}{{_collection.title}} {%-endif-%}</p>
+  </div>
+</a>

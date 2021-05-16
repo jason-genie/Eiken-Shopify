@@ -1,0 +1,215 @@
+{%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+{%- assign pUrl = contentForQuerystring | split:'"pageurl":"' | last | split:'"' | first | split:'.myshopify.com' | last |
+   replace:'\/','/' | 
+   replace:'%20',' ' | 
+   replace:'\u0026','&'
+-%}
+{%- assign per_page = settings.collection_limit -%}
+{%- assign aView =  pUrl | split : "view=" -%}
+{%- if aView.size > 1 and aView[1] != blank-%}
+{%- assign per_page = aView[1] | plus: 0  -%}
+{%- endif -%}
+{%- assign tmp =  shop.url | append: collection.url | append: "/" -%}
+{%- assign tmp_url = canonical_url | replace : tmp, ""  -%}
+{%- assign a_tmp_url = tmp_url | split: "/" -%}
+<input class="collection-canonical_url" type="hidden" data-url="collections/{{- collection.handle -}}" data-parts="{{- a_tmp_url.size -}}" value="{{tmp_url}}">
+
+<div data-section-id="{{ section.id }}" data-section-type="collection-template" data-view="{{per_page}}">
+  {%- if settings.sb_collection_placement == 'left' -%}
+  <div id="sidebar" class="col-md-3 col-sm-12{% if settings.sb_collection_mobile %} hidden-sm hidden-xs{% endif %}">
+    {%- include 'sidebar-collection' -%}
+  </div>
+  {%- endif -%}
+  {%- paginate collection.products by per_page -%}
+  <div id="col-main" class="center-column content-without-background collection-page{% if settings.sb_collection_placement != '' %} col-md-9{% else %} col-md-12{% endif %} col-sm-12{% if settings.shop_pagination != '' %} hide-pagination{% endif %}">
+    <div id="mfilter-content-container" class="{%- if settings.collection_list_grid == '0' -%}list{%- else -%}grid{%- endif -%}">
+      {%- include 'collection-filter' -%}
+      <div id="sandbox">
+        {%- if collection.products.size > 0 -%}
+        <div class="product-list products">
+          {%- for product in collection.products -%}
+          {%- include 'product-item2' -%}
+          {%- endfor -%}
+        </div>
+        {%- if settings.ctemplate_type == "promo" -%}
+        <div class="product-grid products">
+          <div class="row">
+            {%- for product in collection.products -%}
+            <div class="col-sm-4 col-xs-6 product-item">
+              {%- include 'product-item' -%}
+            </div>
+            {%- endfor -%}
+          </div>
+        </div>
+        {%- else -%}
+        {%- assign grid_row = settings.collection_product_per_pow2 | plus:0 -%}
+        {%- assign grid_class = 3 -%}
+        {%- if settings.collection_product_per_pow2 == '6' -%}{%- assign grid_class = 2 -%}{%- elsif settings.collection_product_per_pow2 == '5' -%}{%- assign grid_class = 25 -%}{%- elsif settings.collection_product_per_pow2 == '3' -%}{%- assign grid_class = 4 -%}{%- endif -%}
+        <div class="product-grid products">
+          <div class="row">
+            {%- assign row_fluid = 0 -%}
+            {%- for product in collection.products -%}
+            <div class="col-sm-{{grid_class}} col-xs-6 product-item">
+              {%- include 'product-item' -%}
+              {% include 'judgeme_widgets', widget_type: 'judgeme_preview_badge', jm_style: '', concierge_install: true %}
+            </div>
+            {%- endfor -%}
+          </div>
+        </div>
+        {%- endif -%}
+        {%- else -%}
+        <p class="empty">{{ 'collections.general.no_products' | t }}</p>
+        <div class="buttons">
+          <div class="pull-right"><a href="{{shop.url}}" class="btn btn-primary">{{'collections.general.continue' | t}}</a></div>
+        </div>
+        {%- endif -%}
+      </div>
+      {%- case settings.shop_pagination -%}
+      {%- when '1' -%}
+      <div class="fastor_ajax_load_button fastor_ajax_load_more_btn animated fadeIn">
+        <a class="button" href="#" data-processing="0" data-loading-items="{{ 'general.pagination.loading_items' | t | escape }}" data-no-more="{{ 'general.pagination.no_more' | t | escape }}">
+          {{- 'general.pagination.load_more' | t | escape -}}
+        </a>
+      </div>
+      {%- include 'pagination' -%}
+      {%- when '2' -%}
+      <div class="fastor_ajax_load_button fastor_ajax_load_more_hidden animated fadeIn">
+        <a class="button" href="#" data-processing="0" data-loading-items="{{ 'general.pagination.loading_items' | t | escape }}" data-no-more="{{ 'general.pagination.no_more' | t | escape }}">
+          <i class="icon-px-outline-load"></i>
+          &nbsp;&nbsp;{{- 'general.pagination.load_more' | t | escape -}}
+        </a>
+      </div>
+       {%- if collection.image or collection.description != blank -%}
+      <div class="category-info clearfix">
+        {%- if collection.image -%}<div class="image"><img src="{{collection.image | img_url: 'small'}}" alt="{{collection.title | escape}}" /></div>{%- endif -%}
+        {%- if collection.description -%}{{collection.description}}{%- endif -%}
+      </div>
+      {%- endif -%}
+      {%- include 'pagination' -%}
+      {%- else -%}
+      {%- include 'pagination' -%}
+      {%- endcase -%}
+      {%- include 'spinner' -%}
+    </div>
+  </div>
+  {%- endpaginate -%}
+
+  {%- if settings.sb_collection_placement == 'right' -%}
+  <div id="sidebar" class="col-md-3 col-sm-12{% if settings.sb_collection_mobile %} hidden-sm hidden-xs{% endif %}">
+    {%- include 'sidebar-collection' -%}
+  </div>
+  {%- endif -%}
+</div>
+{% schema %}
+  {
+    "name": "Collection Page",
+    "settings": []
+  }
+{% endschema %}
+
+<style>
+  .product-grid .product {
+    padding-top: 7% !important;
+    padding-bottom: 7% !important;
+}
+  
+  .product-filter.clearfix {
+    margin-top: 40px !important;
+}
+  
+  .product-grid .product-hover .only-hover {
+    bottom: 13vh;
+    padding: 0px 0 0px;
+}
+  .col-md-12 {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+  
+  .fa {
+    color: white;
+  }
+  
+  .sale-new-type-4 #main .new, .sale-new-type-4 #main .sale {
+    display: none;
+  }
+  
+  @media screen and (max-width: 767px) {
+    
+    .col-md-12 {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+    
+    .product-grid .product {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+}
+    
+    .box-heading {
+    text-align:center;
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+    padding-top: 0px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+    
+    .product-filter.clearfix {
+    margin-top: 0px !important;
+    }
+    
+   	.collection-template-promo .toolbar-left {
+    margin-top: 0px !important;
+    padding: 60px 10px;
+    }
+    
+    .collection-template-promo .toolbar-right {
+    padding: 0 15px;
+    }
+    
+    .responsive .product-filter .list-options .sort, .responsive .product-filter .list-options .limit {
+    margin: 0 50px 0px 0 !important;
+    }
+    
+    .product-grid-type-3 #mfilter-content-container .product-grid {
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 30px !important;
+    }
+
+   	.product-grid .product .name {
+    margin-top: 20px;
+	padding-top: 0px !important    
+    }
+    
+    .responsive .row>div {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+    
+    .category-info {
+    margin-right: 20px;
+    margin-left: 20px;
+    padding-right: 0;
+    padding-left: 0;
+}
+    
+    .category-info>p {
+    padding: 0;
+}
+    h2.product-title {
+	font-size: 13px !important;
+    line-height: 2.4vh;
+}
+    
+    .price-old {
+    font-size: 11px !important;
+}
+    
+    .price-new {
+    font-size: 14px !important;
+}
+}
+  
+</style>

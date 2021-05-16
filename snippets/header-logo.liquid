@@ -1,0 +1,26 @@
+<div class="logo">
+  <a href="{% if request.locale.iso_code == 'fr' %}{{shop.url | append: '/fr' }}{% else %}{{shop.url}}{% endif %}" title="{{ shop.name | escape }}">
+    {%- assign _logo = "fastor4logo.png" | asset_img_url: 'master'  -%}
+    {%- if settings.main_logo != blank -%}
+    {%- assign _logo = settings.main_logo | img_url: 'master' -%}
+    {%- endif -%}
+    <img class="b-lazy logo-header-eiken" data-src="{{ _logo }}"{{' '}}{%-if settings.logo_max_width != blank -%}style="max-width:{{settings.logo_max_width}}px;"{%-endif-%}{{' '}}title="{{ shop.name | escape }}" alt="{{ shop.name | escape }}" />
+ </a>
+  {% if template == "index" %}
+  <h1 class="hide hidden">{{ settings.main_logo.alt | escape}}</h1>
+  {% endif %}
+</div>
+
+<style>
+.logo-header-eiken {
+  width:95px;
+  height: auto;
+}
+  
+@media screen and (max-width: 767px) {
+.logo-header-eiken {
+  width:55px;
+  height: auto;
+}
+}
+</style>

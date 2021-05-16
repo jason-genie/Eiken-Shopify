@@ -1,0 +1,153 @@
+{%- if section.blocks.size > 0 -%}
+<div data-placement_fullwidth="{%- if section.settings.placement_fullwidth -%}1{%- else -%}0{%- endif -%}"
+     id="delivery-bar-{{section.id}}" class="delivery-bar{%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}" data-section-id="{{ section.id }}" data-section-type="banner">
+ <div class="row">
+  {%- for block in section.blocks limit: section.blocks.size -%}
+  {%- assign image_width = block.settings.image_width -%}
+  {%- assign image_height = block.settings.image_height -%}
+  {%- capture image_size %}{{ image_width }}x{{ image_height }}{%- endcapture -%}
+  <div class="{{ block.settings.delivery_width }}" {{ block.shopify_attributes }}>
+      {%- if block.settings.delivery_image != blank -%}
+      {%- assign img_url = block.settings.delivery_image | img_url: image_size, crop: 'center' -%}
+      {%- else -%}
+      {%- assign img_url = '' -%}
+      {%- endif -%}
+      {%- if img_url == blank -%}
+      <img src="{{"no_image_16_16.png" | asset_img_url : image_size, crop: 'center'}}" alt="" />
+      {%- else -%}
+      <img src="{{img_url}}" alt="" />
+      {%- endif -%}
+      <p>{{ block.settings.delivery_txt }}</p>
+  </div>
+ {%- endfor -%}
+  </div>  
+</div>
+{%- endif -%}
+{% schema %}
+  {
+    "name": "Icons With Text",
+    "class": "index-section section-wrapper",
+    "max_blocks": 3,
+    "settings": [
+	  {
+        "type": "checkbox",
+        "id": "placement_fullwidth",
+        "label": "Force Full Width"
+      },
+  	  {
+		"type": "checkbox",
+        "id": "visible_on_mobile",
+        "label": "Show on Mobile",
+        "default": true
+      }
+    ],
+    "blocks": [
+		{
+			"type": "image",
+			"name": "Item",
+			"settings": [
+			  {
+                "type": "header",
+                "content": "Icon"
+              },
+              {
+                "type": "image_picker",
+                "id": "delivery_image",
+                "label": "Pick an Icon"
+              },
+ 			  {
+                "type": "text",
+                "id": "image_width",
+                "label": "Width (in pixels)",
+				"default": "16"
+              },
+ 			  {
+                "type": "text",
+                "id": "image_height",
+                "label": "Height (in pixels)",
+				"default": "16"
+              },
+			  {
+                "type": "header",
+                "content": "Content"
+              },
+              {
+                "type": "text",
+                "id": "delivery_txt",
+                "label": "Text"
+              },
+			  {
+                "type": "select",
+                "id": "delivery_width",
+                "label": "Width",
+                "options": [
+                  {
+                    "value": "col-sm-3",
+                    "label": "25%"
+                  },
+                  {
+                    "value": "col-sm-4",
+                    "label": "33%"
+                  },
+                  {
+                    "value": "col-sm-5",
+                    "label": "42%"
+                  },
+                  {
+                    "value": "col-sm-6",
+                    "label": "50%"
+                  },
+                  {
+                    "value": "col-sm-7",
+                    "label": "58%"
+                  },
+                  {
+                    "value": "col-sm-8",
+                    "label": "67%"
+                  },
+                  {
+                    "value": "col-sm-9",
+                    "label": "75%"
+                  },
+                  {
+                    "value": "col-sm-12",
+                    "label": "100%"
+                  }
+                ],
+                "default": "col-sm-4"
+              }
+			]
+		}
+    ],
+    "presets": [
+      {
+        "name": "Texts with Icons",
+        "category": "Banners",
+        "settings": {
+		  "visible_on_mobile": true
+        },
+        "blocks": [
+          {
+            
+			"type": "image",
+			"settings": {
+				"delivery_txt": "Your Text Goes Here"
+			}
+          },
+          {
+            "type": "image",
+			"settings": {
+				"delivery_txt": "Your Text Goes Here"
+			}
+          },
+          {
+            "type": "image",
+			"settings": {
+				"delivery_txt": "Your Text Goes Here"
+			}
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

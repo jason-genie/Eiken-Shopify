@@ -1,0 +1,127 @@
+<div class="row product-bottom-wrappper">
+  <div class="col-sm-12">
+    {%- if settings.product_bottom_html and settings.product_bottom_html_content != '' -%}
+    {{settings.product_bottom_html_content}}
+    {%- endif -%}
+    {%- if settings.product_bottom_related or settings.product_bottom_viewed -%}
+    <div class="filter-product">
+      <div class="filter-tabs">
+        <div class="bg-filter-tabs">
+          <div class="bg-filter-tabs2 clearfix">
+            <ul id="tabProduct">
+              {%- if settings.product_bottom_related -%}
+              <li class="active"><a href="#product-related">{{settings.product_bottom_related_heading}}</a></li>
+              {%- endif -%}
+              {%- if settings.product_bottom_viewed -%}
+              <li id="viewed-related-tab" {%- if settings.product_bottom_related == false -%}{{' '}}class="active"{%- endif -%}><a href="#viewed-related">{{settings.product_bottom_viewed_heading}}</a></li>
+              {%- endif -%}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="tab-content clearfix">
+        {%- if settings.product_bottom_related -%}
+        <div class="tab-pane active" id="product-related">
+          <a class="next-button" href="javascript:void(0);" id="myCarouselRelated_next"><span></span></a>
+          <a class="prev-button" href="javascript:void(0);" id="myCarouselRelated_prev"><span></span></a>
+          <div class="box-product">
+            <div id="myCarouselRelated" class="product-grid carousel slide">
+              <div class="carousel-inner">
+                {%- if collection == null -%}
+                {%- assign my_collection_found = false -%}
+                {%- for my_collection in product.collections -%}
+                {%- if my_collection_found == false and my_collection.all_products_count > 1 -%}
+                {%- assign my_collection_found = true -%}
+                {%- assign collection = my_collection -%}
+                {%- endif -%}
+                {%- endfor -%}
+                {%- endif -%}
+
+                {%- assign my_limit = settings.product_bottom_related_limit | plus:1 -%}
+                {%- assign my_product = product -%}
+                {%- assign my_product_found = false -%}
+                
+                {%- for product in collection.products limit: my_limit -%}
+                {%- if product.handle == my_product.handle -%}
+                {%- assign my_product_found = true -%}
+                {%- else -%}
+                {%- unless my_product_found == false and forloop.last -%}
+                <div class="col-sm-2 col-xs-6">
+                  {%- include 'product-item' -%}
+                </div>
+                {%- endunless -%}
+                {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        </div>
+        {%- endif -%}
+        {%- if settings.product_bottom_viewed -%}
+        <div class="tab-pane{%- if settings.product_bottom_related == false -%}{{' '}}active{%- endif -%}" id="viewed-related">
+          <a class="next-button" href="javascript:void(0);" id="myCarouselViewed_next"><span></span></a>
+          <a class="prev-button" href="javascript:void(0);" id="myCarouselViewed_prev"><span></span></a>
+          <div class="box-product">
+            <div id="myCarouselViewed" class="product-grid carousel slide">
+              <div id="recently-viewed-products" class="carousel-inner" data-limit="{{settings.product_bottom_viewed_limit}}" data-handle="{{- product.handle -}}" data-id="{{- product.id -}}"></div>
+            </div>
+          </div>
+        </div>
+        {%- endif -%}
+      </div>
+    </div>
+    {%- endif -%}
+    
+    {% if settings.product_bottom_upsell and settings.product_bottom_upsell_collection != blank and settings.product_bottom_upsell_limit != blank %}
+    <div class="upsell-products filter-product">
+      <div class="filter-tabs">
+        <div class="bg-filter-tabs">
+          <div class="bg-filter-tabs2 clearfix">
+            <ul id="tabProduct">
+              <li class="active"><a href="#product-upsell">{{settings.product_bottom_upsell_heading}}</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="tab-content clearfix">
+        <div id="upsell-products" class="tab-pane active">
+          <a class="next-button" href="javascript:void(0);" id="upsellProduct_next"><span></span></a>
+          <a class="prev-button" href="javascript:void(0);" id="upsellProduct_prev"><span></span></a>
+          <div class="box-product">
+            <div id="upsellProducts" class="product-grid carousel slide">
+              <div class="carousel-inner">
+                {% assign collection = collections[settings.product_bottom_upsell_collection] %}
+                {%- assign my_limit = settings.product_bottom_upsell_limit | plus:1 -%}
+                {%- assign my_product = product -%}
+                {%- assign my_product_found = false -%}
+                {%- for product in collection.products limit: my_limit -%}
+                {%- if product.handle == my_product.handle -%}
+                {%- assign my_product_found = true -%}
+                {%- else -%}
+                {%- unless my_product_found == false and forloop.last -%}
+                <div class="col-sm-2 col-xs-6">
+                  {%- include 'product-item' -%}
+                </div>
+                {%- endunless -%}
+                {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  
+    @media screen and (max-width: 767px) {
+      
+    .h2.product-title {
+        line-height: 15px !important;
+      }
+      
+    }

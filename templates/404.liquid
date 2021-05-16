@@ -1,0 +1,23 @@
+<div id="content" class="col-sm-12 center-column content-with-background">
+  <section class="error-404 not-found">
+    <header class="page-header">
+      <div class="error-banner">
+        {%- if settings.settings.error_image != blank -%}
+        <img id="error-404" class="error-image" src="{{settings.error_image | img_url: "master"}}" >
+        {%- else -%}
+        <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#global__symbols-error"></use></svg>
+        {%- endif -%}
+        
+      </div>
+      <h1 class="page-title">{{'general.404.title' | t}}</h1>
+    </header>
+    <div class="page-content">
+      <p class="error-404-text">{{'general.404.subtext' | t}}</p>
+      <form action="/search" method="get" role="search" class="search_form">    
+ 
+        <input type="search" name="q" class="search-field" placeholder="{{ 'search.general.placeholder' | t }}">
+        <input type="submit" class="search-submit button" value="{{'general.404.search' | t}}">
+      </form>        
+    </div><!-- .page-content -->
+  </section>
+</div>

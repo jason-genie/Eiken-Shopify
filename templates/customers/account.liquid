@@ -1,0 +1,50 @@
+{%- if settings.sb_account_placement == 'left' -%}
+<div class="col-md-3{% if settings.sb_account_mobile %} hidden-sm hidden-xs{% endif %}">
+  {%- include 'sidebar-myaccount' -%}
+</div>
+{%- endif -%}
+<div id="content" class="{% if settings.sb_account_placement != '' %}col-md-9{% else %}col-md-12{% endif %} center-column body-other content-with-background">
+  <h2>{{'customer.account.title' | t}}</h2>
+  <ul class="list-unstyled">
+    <li><a href="/account/addresses">{{'customer.account.view_addresses' | t}}</a></li>
+    {%- if settings.wishlist_enable -%}<li><a href="{{pages[settings.wishlist_page].url}}">{{'customer.account.view_wishlist' | t}}</a></li>{%- endif -%}
+    <li>{{'customer.logout.title' | t | customer_logout_link}}</li>
+  </ul>
+  <h2>{{'customer.account.orders' | t}}</h2>
+  <div class="table-responsive">
+    {%- paginate customer.orders by 20 -%}
+    {%- if customer.orders.size != 0 -%}
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <td class="text-right">{{'customer.orders.order_number' | t}}</td>
+          <td class="text-left">{{'customer.orders.date' | t}}</td>
+          <td class="text-left">{{'customer.orders.payment_status' | t}}</td>
+          <td class="text-left">{{'customer.orders.fulfillment_status' | t}}</td>
+          <td class="text-left">{{'customer.orders.total' | t}}</td>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for order in customer.orders -%}
+        <tr class="{% cycle 'odd', 'even' %} {% if order.cancelled %}cancelled_order{% endif %}">
+          <td class="text-right">{{order.name | link_to: order.customer_url}}</td>
+          <td class="text-left">{{order.created_at | date: format: 'short'}}</td>
+          <td class="text-left">{{order.financial_status_label}}</td>
+          <td class="text-left">{{order.fulfillment_status_label}}</td>
+          <td class="text-left"><span class="money">{{order.total_price | money}}</span></td>
+        </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+    {%- include 'pagination' -%}
+    {%- else -%}
+    <div class="empty">{{'customer.orders.none_html' | t}}</div>
+    {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+{%- if settings.sb_account_placement == 'right' -%}
+<div class="col-md-3{% if settings.sb_account_mobile %} hidden-sm hidden-xs{% endif %}">
+  {%- include 'sidebar-myaccount' -%}
+</div>
+{%- endif -%}

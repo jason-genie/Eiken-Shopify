@@ -1,0 +1,33 @@
+<div class="product-thumbnails-{{- settings.product_design -}}" id="product-thumbnails-{{section.id}}">
+  <div class="thumbnails">
+    {%- assign _f_image_alt = featured_image_alt -%}
+    {%- if featured_image_alt contains 'iframe' -%}
+    {%- assign _a_image_alt = featured_image_alt |  split: "<iframe" -%}
+    {%- assign  _f_image_alt = _a_image_alt[0] | trim -%}
+    {%- endif -%}
+    <div data-href="{{featured_image | img_url:"master"}}"
+         data-color="{{_f_image_alt}}"
+         data-color="{{_f_image_alt}}"
+         id="thumbnail-gallery-item-{{- section.id -}}-0" class="thumbnail-gallery-item active{%- if current_variant.image.alt contains 'iframe' -%}{{- " video-thumb" -}}{%- endif -%}"  data-href="{{ featured_image.src | img_url: 'master' }}">
+      <img data-src="{{ featured_image | img_url: '350px' }}" 
+           class="lazy attachment-shop_thumbnail size-shop_thumbnail" alt="{{ featured_image_alt | escape }}" 
+           srcset="{{ featured_image.src | img_url: '350x' }} 350w, {{ featured_image.src | img_url: '150x' }} 150w, {{ featured_image.src | img_url: '235x' }} 235w, {{ featured_image.src | img_url: '768x' }} 768w" sizes="(max-width: 350px) 100vw, 350px" />
+    </div>
+    {%- for image in product.images -%}
+    {%- unless image == featured_image -%}
+    {%- assign _image_alt = image.alt -%}
+    {%- if image.alt contains 'iframe' -%}
+    {%- assign _a_image_alt = image.alt |  split: "<iframe" -%}
+    {%- endif -%}
+    <div data-href="{{image.src | img_url:"master"}}"
+         data-color="{{_image_alt}}"
+         id="thumbnail-gallery-item-{{- section.id -}}-{{- forloop.index -}}" class="thumbnail-gallery-item{%- if image.alt contains 'iframe' -%}{{- " video-thumb" -}}{%- endif -%}"  data-href="{{ image.src | img_url: 'master' }}">
+      <img data-src="{{ image.src | img_url: '350x' }}" 
+           class="lazy attachment-shop_thumbnail size-shop_thumbnail" 
+           alt="{{ image | escape }}" 
+           srcset="{{ image.src | img_url: '350x' }} 350w, {{ image.src | img_url: '150x' }} 150w, {{ image.src | img_url: '235x' }} 235w, {{ image.src | img_url: '768x' }} 768w" sizes="(max-width: 350px) 100vw, 350px" />
+    </div>
+    {%- endunless -%}
+    {%- endfor -%}
+  </div>
+</div>

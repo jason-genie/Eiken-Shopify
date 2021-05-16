@@ -1,0 +1,261 @@
+{%- assign next_block = section.blocks[k] -%}
+{%- assign _sub_item_content_w 				= next_block.settings.mi_ct_w | plus: 0 -%}
+{%- assign _sub_item_content_w_mobile 		= next_block.settings.mi_ct_w_mobile | plus: 0 -%}
+{%- assign _sub_item_content_padding 		= next_block.settings.mi_submenu_padding -%}
+{%- assign _sub_item_content_background 	= next_block.settings.mi_submenu_bg_c -%}
+{%- assign _sub_item_content_height		 	= next_block.settings.mi_ct_height -%}
+{%- assign _sub_item_content_mobile_height 	= next_block.settings.mi_ct_mobile_height -%}
+{%- assign _sub_item_ct_type 				= next_block.type -%}
+
+<div class="col-rb-{{_sub_item_content_w}}{{' '}}col-rbm-{{_sub_item_content_w_mobile}}{%-if _sub_item_ct_type == 'submenu_banner' or _sub_item_ct_type == 'submenu_product'-%}{{' rich-banners'}}{%-endif-%}" style="background-color:{{_sub_item_content_background}};{%-if _sub_item_content_padding != blank-%}padding:{{_sub_item_content_padding}}px;{%-endif-%}" {{ next_block.shopify_attributes }}>
+  {%- if _sub_item_ct_type == 'submenu_html' -%}
+  {%-if next_block.settings.mi_ct_html == blank-%}
+  {%-include 'section-mega-menu-content-dummie' with 'html'-%}  
+  {%-else-%}
+  {{next_block.settings.mi_ct_html}}
+  {%-endif-%}
+  {%- elsif _sub_item_ct_type == 'submenu_product' -%}
+  <div id="rich-banner-{{next_block.id}}" class="rich-banner product-grid col-rb-100 col-rbm-100">
+  {%-if next_block.settings.mi_ct_prod != blank -%}
+  {%-assign product = all_products [next_block.settings.mi_ct_prod]-%}
+  {%-include 'product-item'-%}
+  {%-else-%}
+  {%- include 'product-item-onboarding' -%}
+  {%-endif-%}
+  </div>
+  {%- elsif _sub_item_ct_type == 'submenu_linklist' -%}
+  {%- include 'section-mega-menu-content-links' -%}
+
+  {%- elsif _sub_item_ct_type == 'submenu_products' -%}
+  {%- assign _sub_item_ct_prods_inrow = next_block.settings.mi_ct_prods_inrow -%}
+  {%- assign _one = 1 -%}
+  {%- assign _two = 1 -%}
+  {%- assign _three = 1 -%}
+  {%- assign _four = 1 -%}
+
+  {%- if _sub_item_ct_prods_inrow == '2' -%}
+  {%- assign _two = 1 -%}
+  {%- assign _three = 2 -%}
+  {%- assign _four = 2 -%}
+  {%- endif -%}
+
+  {%- if _sub_item_ct_prods_inrow == '3' -%}
+  {%- assign _two = 1 -%}
+  {%- assign _three = 2 -%}
+  {%- assign _four = 3 -%}
+  {%- endif -%}
+
+  {%- if _sub_item_ct_prods_inrow == '4' -%}
+  {%- assign _one = 1 -%}
+  {%- assign _two = 2 -%}
+  {%- assign _three = 3 -%}
+  {%- assign _four = 4 -%}
+  {%- endif -%}
+
+  {%- if _sub_item_ct_prods_inrow == '5' -%}
+  {%- assign _one = 2 -%}
+  {%- assign _two = 3 -%}
+  {%- assign _three = 4 -%}
+  {%- assign _four = 5 -%}
+  {%- endif -%}
+
+  {%- if _sub_item_ct_prods_inrow == '6' -%}
+  {%- assign _one = 2 -%}
+  {%- assign _two = 3 -%}
+  {%- assign _three = 5 -%}
+  {%- assign _four = 6 -%}
+  {%- endif -%}
+
+  {%- assign _id = 'rt' | append: i | append: '_' | append: k -%}
+  {%- assign _sub_item_ct_prods = next_block.settings.mi_ct_prods -%}
+
+
+  {%- assign _sub_item_ct_prods_limit = next_block.settings.mi_ct_prods_limit -%}
+
+  {%- assign _sub_item_ct_prods_size = 'grande' -%}
+  {%- assign _sub_item_ct_prods_width = next_block.settings.mi_ct_prods_imgw -%}
+  {%- assign _sub_item_ct_prods_height = next_block.settings.mi_ct_prods_imgh  -%}
+  {%- if _sub_item_ct_prods_width != '' and _sub_item_ct_prods_height != '' -%}
+  {%- capture _sub_item_ct_prods_size -%}{{ _sub_item_ct_prods_width }}x{{ _sub_item_ct_prods_height }}{%- endcapture -%}
+  {%- endif -%}
+  <div class="products-carousel-overflow clearfix products-carousel-megamenu" 
+       data-_id="{{_id}}" 
+       data-_one="{{_one}}"
+       data-_two="{{_two}}"
+       data-_three="{{_three}}"
+       data-_four="{{_four}}"
+       >
+
+    {%- assign _sub_item_ct_prods_inrow = _sub_item_ct_prods_inrow | plus: 0 -%}
+    {%- assign _sub_item_ct_prods_limit = _sub_item_ct_prods_limit | plus: 0 -%}
+    {%-if _sub_item_ct_prods_inrow < _sub_item_ct_prods_limit-%}
+    {%-unless collections[_sub_item_ct_prods].empty? -%}
+    <div class="next productsCarousel{{_id}}_next" id="productsCarousel{{_id}}_next"><span></span></div>
+    <div class="prev productsCarousel{{_id}}_prev" id="productsCarousel{{_id}}_prev"><span></span></div>
+    {%-endunless-%}
+    {%-endif-%}
+    <div class="box-heading">{{next_block.settings.mi_ct_prods_head}}</div>
+    <div class="strip-line"></div>
+    <div class="clear"></div>
+    {%-if collections[_sub_item_ct_prods].empty? -%}
+    <h2>PLEASE CHOOSE A COLLECTION FIRST.</h2>
+    {%-else-%}
+    <div class="products-carousel owl-carousel productsCarousel{{_id}}" id="productsCarousel{{_id}}">
+      {%- for _prod in collections[_sub_item_ct_prods].products limit: _sub_item_ct_prods_limit -%}
+      {%- assign _variant_tmp = _prod.selected_or_first_available_variant | default: _prod.variants.first -%}
+      <div class="item">
+        <div class="product">
+          <div class="image">
+            {%- if _variant_tmp.compare_at_price > variant_tmp.price and settings.product_sale_badge != '' -%}
+            {%- if settings.product_sale_badge == '1' -%}
+            <div class="sale">-{{ _variant_tmp.compare_at_price | minus: _variant_tmp.price | times: 100.0 | divided_by: _variant_tmp.compare_at_price | money_without_currency | times: 100 | remove: '.0'}}%</div>
+            {%- else -%}
+            <div class="sale">{{'products.product.sale' | t}}</div>
+            {%- endif -%}
+            {%- elsif settings.product_new_badge and _prod.tags contains 'latest' -%}
+            <div class="new">{{'products.product.new' | t}}</div>
+            {%- endif -%}
+            <a href="{{_prod.url}}"><img src="{{_prod.featured_image | product_img_url:_sub_item_ct_prods_size}}" alt="" /></a>
+          </div>
+          <div class="name"><a href="{{_prod.url}}">{{_prod.title}}</a></div>
+          <div class="price"><span class="money">{{ _variant_tmp.price | money }}</span></div>
+        </div>
+      </div>
+      {%- endfor -%}
+    </div>
+    {%-endif-%}
+  </div>
+  {%- elsif _sub_item_ct_type == 'submenu_image' -%}
+  {%-if next_block.settings.mi_url != blank-%}
+  <a href="{{next_block.settings.mi_url}}" class="mi-subimage--wrapper image-to-text--{{next_block.settings.mi_ct_image_pos}}{{' '}}{{next_block.settings.mi_text_align}}" {%if next_block.settings.mi_text == blank%} style="line-height:0;" {%endif%}>
+    {%-else-%}
+    <div class="mi-subimage--wrapper image-to-text--{{next_block.settings.mi_ct_image_pos}}{{' '}}{{next_block.settings.mi_text_align}}">
+      {%-endif-%}
+      {%-if next_block.settings.mi_ct_image_pos != blank-%}
+      {%-if next_block.settings.mi_ct_image == blank-%}
+      <div class="mi-image">
+        <img src="https://via.placeholder.com/640x360/ECB39F/ffffff?text=Put%20your%20Image%20here."/>
+      </div>
+      {%-else-%}
+      {%-capture image_size-%}{{next_block.settings.mi_ct_image_quality}}{%- endcapture -%}
+      {%- assign img_url = next_block.settings.mi_ct_image | img_url: image_size, crop: 'center' -%}
+      <div class="mi-image">
+        <img src="{{img_url}}" alt="{{next_block.settings.mi_text | strip_html}}"/>
+      </div>
+      {%-endif-%}
+      {%-endif-%}
+      {%-if next_block.settings.mi_text != blank-%}
+      <div class="mi-head" style="font-weight:{{next_block.settings.mi_text_weight}};font-size:{{next_block.settings.mi_text_size}}px;color:{{next_block.settings.mi_text_color}};">
+        {{next_block.settings.mi_text}}
+      </div>
+      {%-endif-%}
+      {%-if next_block.settings.mi_url == blank-%}
+    </div>
+    {%-else-%}
+  </a>
+  {%-endif-%}
+  {%- elsif _sub_item_ct_type == 'submenu_blank' -%}
+  <div class="col-rbm-0" style="min-height:{{_sub_item_content_height}}px"></div>
+  <div class="col-rb-0" style="min-height:{{_sub_item_content_mobile_height}}px"></div>
+  {%- elsif _sub_item_ct_type == 'submenu_banner' -%}
+
+  {%-capture image_size-%}{{next_block.settings.mi_ct_banner_image_quality}}{%- endcapture -%}
+  <div id="rich-banner-{{next_block.id}}" class="col-rb-100 col-rbm-100 {{' rich-banner '}}{{next_block.settings.mi_ct_banner_text_pos}}{%- if next_block.settings.mi_ct_banner_image != blank and settings.image_lazy_loading_used -%}{{' b-lazy '}}{%-endif-%}"
+       style="background-color:{{next_block.settings.mi_ct_banner_bg_color}};
+              {%- if next_block.settings.mi_ct_banner_image != blank -%}
+              {%- assign img_url = next_block.settings.mi_ct_banner_image | img_url: image_size, crop: 'center' -%}
+              {%-if settings.image_lazy_loading_used-%}
+              "{{' '}}data-src="{{img_url}}"
+       		  {%-else-%}
+       		  background-image:url({{img_url}})"
+              {%-endif-%}
+              {%-else-%}"{%- endif -%}>
+    {%-if next_block.settings.mi_ct_banner_cta != blank or next_block.settings.mi_ct_banner_linklist != blank-%}
+    <div class="banner-content-wrapper{{' '}}{{next_block.settings.mi_ct_banner_text_vpos}}">
+      {%-else-%}
+      <a href="{{next_block.settings.mi_ct_banner_link}}" class="banner-content-wrapper{{' '}}{{next_block.settings.mi_ct_banner_text_vpos}}">
+        {%-endif-%}
+        {%-if next_block.settings.mi_ct_banner_head != blank or next_block.settings.mi_ct_banner_cap != blank-%}
+        <div class="banner-texting{{' '}}{{next_block.settings.mi_ct_banner_text_align}}{{' without--fx '}}{%-if next_block.settings.mi_ct_banner_cta == blank-%}{{' without--cta '}}{%-endif-%}{%-if next_block.settings.mi_ct_banner_linklist == blank-%}{{' without--linklist '}}{%-endif-%}">
+          {%-if next_block.settings.mi_ct_banner_head != blank-%}
+          <div class="b-heading self-fontsize-adj{%-if next_block.settings.mi_ct_banner_head_shadow == true -%}{{' has--text-shadow '}}{%-endif-%}" style="font-weight:{{next_block.settings.mi_ct_banner_head_weight}};font-size:{{next_block.settings.mi_ct_banner_head_size}}px;color:{{next_block.settings.mi_ct_banner_head_color}};">
+            {{next_block.settings.mi_ct_banner_head}}
+          </div>
+          {%-endif-%}
+
+          {%-if next_block.settings.mi_ct_banner_cap != blank-%}
+          <div class="b-caption self-fontsize-adj{%-if next_block.settings.mi_ct_banner_cap_shadow == true -%}{{' has--text-shadow '}}{%-endif-%}" style="font-weight:{{next_block.settings.mi_ct_banner_cap_weight}};font-size:{{next_block.settings.mi_ct_banner_cap_size}}px;color:{{next_block.settings.mi_ct_banner_cap_color}};">
+            {{next_block.settings.mi_ct_banner_cap}}
+          </div>	
+          {%-endif-%}
+          
+          {%-if next_block.settings.mi_ct_banner_linklist != blank-%}
+          {%-assign _linklist = linklists[next_block.settings.mi_ct_banner_linklist]-%}
+          <ul class="richbanner-linklist">
+            {%-for _link in _linklist.links-%}
+            <li>
+              <a href="{{_link.url}}">{{_link.title}}</a>
+            </li>
+            {%-endfor-%}
+          </ul>
+          {%-endif-%}
+
+          {%-if next_block.settings.mi_ct_banner_cta != blank-%}
+          <a class="btn cta self-fontsize-adj" href="{{next_block.settings.mi_ct_banner_link}}" style="font-weight:{{next_block.settings.mi_ct_banner_cta_weight}};font-size:{{next_block.settings.mi_ct_banner_cta_size}}px;color:{{next_block.settings.mi_ct_banner_cta_color}}!important;background-color:{{next_block.settings.mi_ct_banner_cta_bgcolor}}!important;">{{next_block.settings.mi_ct_banner_cta}}</a>
+          {%-endif-%}
+        </div>
+        {%-endif-%}
+        {%-if next_block.settings.mi_ct_banner_cta == blank and next_block.settings.mi_ct_banner_linklist == blank-%}
+      </a>
+      {%-else-%}
+    </div>
+    {%-endif-%}
+  </div>
+
+  <style>
+    @media (max-width: 767px) {
+      .rich-banners .rich-banner#rich-banner-{{next_block.id}} .banner-content-wrapper {
+        min-height:{{_sub_item_content_mobile_height | append: 'px'}}
+      }
+    }
+    @media (min-width: 768px) {
+      .rich-banners .rich-banner#rich-banner-{{next_block.id}} .banner-content-wrapper {
+        min-height:{{_sub_item_content_height | append: 'px'}}
+      }
+    }
+
+    .rich-banners .rich-banner#rich-banner-{{next_block.id}}.text-pos-left .banner-content-wrapper{
+      margin-left:{{next_block.settings.mi_ct_banner_side_padding_hori}}%;
+    }
+
+    .rich-banners .rich-banner#rich-banner-{{next_block.id}}.text-pos-right .banner-content-wrapper{
+      margin-right:{{next_block.settings.mi_ct_banner_side_padding_hori}}%;
+    }
+
+    .rich-banners .rich-banner#rich-banner-{{next_block.id}} .banner-content-wrapper.text-vpos-top{
+      padding-top:{{next_block.settings.mi_ct_banner_side_padding_vert}}%;
+    }
+
+    .rich-banners .rich-banner#rich-banner-{{next_block.id}} .banner-content-wrapper.text-vpos-bottom{
+      padding-bottom:{{next_block.settings.mi_ct_banner_side_padding_vert}}%;
+    }
+    
+    .rich-banners .rich-banner#rich-banner-{{next_block.id}} ul.richbanner-linklist {
+      width:{{next_block.settings.mi_ct_banner_linklist_width}}px;
+    }
+    {%-assign li_w = 'auto,100%,50%,33.3%,25%,20%'%}
+  	{%-assign li_w_o = li_w | split: ','-%}
+    .rich-banners .rich-banner#rich-banner-{{next_block.id}} ul.richbanner-linklist li{
+      flex: 0 0 {{li_w_o[next_block.settings.mi_ct_banner_linklist_col]}};
+    }
+    .rich-banners .rich-banner#rich-banner-{{next_block.id}} ul.richbanner-linklist li a {
+      color:{{next_block.settings.mi_ct_banner_linklist_color}};
+      font-size:{{next_block.settings.mi_ct_banner_linklist_size}}px;
+      font-weight:{{next_block.settings.mi_ct_banner_linklist_weight}};
+    }
+    .rich-banners .rich-banner#rich-banner-{{next_block.id}} ul.richbanner-linklist li a:hover {
+      color:{{next_block.settings.mi_ct_banner_linklist_color_hover}};
+    }
+  </style>
+  {%- endif -%}
+</div>

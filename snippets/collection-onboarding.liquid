@@ -1,0 +1,56 @@
+    <div class="wapper-content">
+      <div class="item">  
+        <div class="CollectionGrid-tileName js-dotdotdot">
+           <p>{{block.settings.id_heading_item}}</p>
+        </div>
+        {% for i in (0..2) %}
+        <div class="products">
+          <div class="product">
+            <div class="product-micro">
+              <div class="row product-micro-row">
+                <div class="col col-md-4 col-xs-6 ">
+                  <div class="product-image">
+                    <div class="image">
+                      {% if i == 0 %}
+                      {% assign _i = i  | modulo: 2%}
+                      {% if _i == 0 and j == 0 %}
+                      <div class="new">
+                        {{'products.product.new' | t}}
+                      </div>
+                      {% else %}
+                      <div class="sale"> 
+                        {{'products.product.sale' | t}}
+                      </div>
+                      {% endif %}
+                      {% endif %}
+                      <a href=""> {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                        {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}</a>
+                    </div>
+                    <!-- /.image --> 
+
+                  </div>
+                  <!-- /.product-image --> 
+                </div>
+                <!-- /.col -->
+                <div class="col2 col-md-8 col-xs-6">
+                  <div class="product-info right">
+                    <div class="name"><a href="">Title Product</a></div>
+
+                    <div class="price"> 
+                      <span class="new-price money">99</span> 
+                    </div>
+                    <!-- /.product-price --> 
+
+                  </div>
+                </div>
+                <!-- /.col --> 
+              </div>
+              <!-- /.product-micro-row --> 
+            </div>
+            <!-- /.product-micro --> 
+
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>

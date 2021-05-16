@@ -1,0 +1,186 @@
+{%- assign _llist_items = linklists[section.settings.mmenu_links].links -%}
+{%- assign _llist_length = _llist_items | size -%}
+
+{%- for _llist_item in _llist_items -%}
+
+{%- assign _mix_tmp = _llist_item.title | strip -%}
+{%- assign _a_mix_tmp = _mix_tmp | split: '[' -%}
+{%- assign _mixed_text = _a_mix_tmp[0] -%}
+{%- assign _item_has_sub = false -%}
+{%- assign _handle = _mixed_text | handle -%}
+{%- if linklists[_handle] != empty -%}
+{%- assign _item_has_sub = true -%}
+{%- endif -%}
+
+{%- assign _submenu_w = section.settings.mmenu_links_w | default: '300px' -%}
+{%- assign _label_color = section.settings.mmenu_label_text_color | default: '' -%}
+{%- assign _label_bg_color = section.settings.mmenu_label_bg_color | default: '' -%}
+
+{%- assign _url = _llist_item.url -%}
+{%- assign _class = '' -%}
+{%- assign _class_link = 'clearfix' -%}
+{%- assign _title = '' -%}
+{%- assign _target = '' -%}
+{%- assign _label = '' -%}
+{%- assign _label_html = '' -%}
+
+{%- assign _mixed_icon_url = "" -%}
+{%- if _a_mix_tmp.size > 1 -%}
+{%- assign _mix_icon_size =  _a_mix_tmp[1].size | minus: 1 -%}
+{%- assign _mixed_icon_url = _a_mix_tmp[1] | slice: 0, _mix_icon_size | asset_url -%}
+{%- endif -%}  
+{%- assign _f_letter = _mixed_text | slice: 0 -%}
+{%- assign _l_letter = _mixed_text | slice: -1, 1 -%}
+{%- if _f_letter != '{' -%}
+{%- assign _mixed_text = _mixed_text | prepend: '{ }' -%}
+{%- endif -%}
+{%- if _l_letter != '}' -%}
+{%- assign _mixed_text = _mixed_text | append: '{ }' -%}
+{%- endif -%}
+{%- assign _texts = _mixed_text | split: '}' -%}
+{%- assign _label = _texts[0] | remove: '{' | strip -%}
+{%- assign _texts = _texts[1] | split: '{' -%}
+{%- assign _name = _texts[0] | strip -%}
+{%- assign _desc = _texts[1] | strip -%}	
+
+{%- if _mixed_icon_url != '' -%}
+{%- assign _mx_icon_url = '<img class="img-check-required" src="'| append: _mixed_icon_url | append: '">' -%}
+{%- endif -%}
+{%- if _desc != empty -%}
+{%- assign _t = _desc | slice: 0, 6 -%}
+{%- if _t == 'class:' -%}
+{%- assign _t = _desc | split: ':' -%}
+{%- assign _class = _class | append: ' ' | append: _t[1] -%}
+{%- assign _desc = '' -%}
+{%- else -%}
+{%- assign _class_link = _class_link | append: ' description' -%}
+{%- endif -%}
+{%- endif -%}
+
+{%- if _item_has_sub == true -%}
+{%- assign _class = _class | append: ' with-sub-menu' -%}
+{%- if section.settings.mmenu_submenu_appear == '1' -%}
+{%- assign _class = _class | append: ' click' -%}
+{%- else -%}
+{%- assign _class = _class | append: ' hover' -%}
+{%- endif -%}
+{%- endif -%}
+
+{%- if section.settings.mmenu_submenu_appear == '2' -%}
+{%- assign _title = 'title="hover-intent"' -%}
+{%- endif -%}
+
+
+{%- assign _first_letter_of_label = _label_color | slice: 0 -%}
+{%- assign _first_letter_of_label_bg = _label_bg_color | slice: 0 -%}
+
+{%- if _first_letter_of_label != '#' -%}
+{%- assign _label_color = '' -%}
+{%- endif -%}
+{%- if _first_letter_of_label_bg != '#' -%}
+{%- assign _label_bg_color = '' -%}
+{%- endif -%}
+
+{%- if _label != empty -%}
+{%- assign _label_html = '<span  class="megamenu-label" style="background:' | append: _label_bg_color | append: '!important;color:' | append: _label_color | append: ';"><span style="background:' | append: _label_bg_color | append: '!important;border-color:' | append: _label_bg_color | append: '"></span>' | append: _label | append: '</span>' -%}
+{%- endif -%}
+
+<li class='{{_class}}' {{_title}}>
+  <p class='close-menu'></p><p class='open-menu'></p>
+  <a href='{{_url | default:'#'}}' class='{{_class_link}}' {{_target}}>
+    <span>
+      <strong>{%- if _desc != empty -%}<span class="description-left">{%- if _mixed_icon_url != '' -%}{{_mx_icon_url}}{%- endif -%}{{_name}}<br /><span class="description">{{_desc}}</span></span>{%- else -%}{%- if _mixed_icon_url != '' -%}{{_mx_icon_url}}{%- endif -%}{{_name}}{%- endif -%}{{_label_html}}</strong>
+    </span>
+  </a>
+
+  {%- if _item_has_sub == true -%}
+  {%- if section.settings.mmenu_orientation == '1' and _submenu_w == '100%' -%}
+  {%- assign _submenu_w = '350%'-%}
+  {%- endif -%}
+  {%- assign _full_width_class = '' -%}
+  {%- if _submenu_w == '100%' or _submenu_w == '300%' or _submenu_w == '338%' or _submenu_w == '1230px' -%}
+  {%- assign _full_width_class = 'full-width-sub-menu' -%}
+  {%- endif -%}
+  {%- endif -%}
+
+  <div class="sub-menu {{_full_width_class}}" style="width:{{_submenu_w}}">
+    <div class="content" ><p class="arrow"></p>
+      <div class="row">
+        {%- assign _row_fluid = 0 -%}
+        {%- for _llist_child_item in linklists[_handle].links -%}
+
+        {%- assign _sub_item_content_w = 12 -%}
+        {%- assign _t = _row_fluid | plus: _sub_item_content_w -%}
+        
+        {%- if _t > 12 -%}
+        {%- assign _row_fluid = _sub_item_content_w -%}
+      	</div><div class="border"></div><div class="row">
+      	{%- else -%}
+      	{%- assign _row_fluid = _t -%}
+      	{%- endif -%}
+      
+      	<div class="col-sm-{{_sub_item_content_w}} mobile-enabled"> 
+          <div class="row">
+            <div class="col-sm-12 hover-menu">
+              <div class="menu">
+                <ul>
+                  {%- assign _mix_tmp = _llist_child_item.title | strip -%}
+                  {%- assign _a_mix_tmp = _mix_tmp | split: '[' -%}
+                  {%- assign _mixed_text = _a_mix_tmp[0] -%}
+                  {%- assign _mixed_icon_url = "" -%}
+                  {%- if _a_mix_tmp.size > 1 -%}
+                  {%- assign _mix_icon_size =  _a_mix_tmp[1].size | minus: 1 -%}
+                  {%- assign _mixed_icon_url = _a_mix_tmp[1] | slice: 0, _mix_icon_size | asset_url -%}
+                  {%- endif -%}  
+                  {%- assign _f_letter = _mixed_text | slice: 0 -%}
+                  {%- assign _l_letter = _mixed_text | slice: -1, 1 -%}
+                  {%- if _f_letter != '{' -%}
+                  {%- assign _mixed_text = _mixed_text | prepend: '{ }' -%}
+                  {%- endif -%}
+                  {%- if _l_letter != '}' -%}
+                  {%- assign _mixed_text = _mixed_text | append: '{ }' -%}
+                  {%- endif -%}
+                  {%- assign _texts = _mixed_text | split: '}' -%}
+                  {%- assign _label = _texts[0] | remove: '{' | strip -%}
+                  {%- assign _texts = _texts[1] | split: '{' -%}
+                  {%- assign _name = _texts[0] | strip -%}
+                  {%- assign _desc = _texts[1] | strip -%}	
+				  {%- assign _mx_icon_url = '' -%}
+                  {%- if _mixed_icon_url != '' -%}
+                  {%- assign _mx_icon_url = '<img class="img-check-required" src="'| append: _mixed_icon_url | append: '">' -%}
+                  {%- endif -%}
+                  
+                  {%- assign _class_link = '' -%}
+                  {%- assign _has_children = false -%}
+                  {%- assign _handle = _mixed_text | handle -%}
+                  {%- if linklists[_handle] != empty -%}
+                  {%- assign _class_link = 'with-submenu' -%}
+                  {%- assign _has_children = true -%}
+                  {%- endif -%}
+
+                  {%- assign _html_name = _name -%}
+                  {%- if _mx_icon_url != '' -%}
+                  {%- assign _html_name = _html_name | prepend: _mx_icon_url -%}
+                  {%- endif -%}
+                  {%- if _label != '' -%}
+                  {%- assign _html_name = _html_name | append: '<span class="megamenu-label" style="background:' | append: _label_bg_color | append: '!important;color: ' | append: _label_color | append: '"><span style="background:' | append: _label_bg_color | append: '!important;border-color:' | append: _label_bg_color | append: '"></span>' | append: _label | append: '</span>' -%}
+                  {%- endif -%}
+                  <li>
+                    <a href="{{_llist_child_item.url}}" class="main-menu {{_class_link}}">{{_html_name}}</a>
+                    {%- if _has_children == true -%}
+                    {%- assign _children = linklists[_handle].links -%}
+                    {%- include 'slider-mega-menu-content-linklist-children' -%}
+                    {%- endif -%}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+      	</div> 
+      
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</li>
+{%- endfor -%}

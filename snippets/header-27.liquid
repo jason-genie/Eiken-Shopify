@@ -1,0 +1,52 @@
+<header class="header-type-27">
+  <div class="background-header"></div>
+  <div class="slider-header">
+    <!-- Top of pages -->
+    <div id="top" class="{%- if settings.header_layout == '1' -%}full-width{%- elsif settings.header_layout == '4' -%}fixed3 fixed2{%- elsif settings.header_layout == '3' -%}fixed2{%- else -%}fixed{%- endif -%}">
+      <div class="background-top"></div>
+      <div class="background">
+        <div class="shadow"></div>
+        <div class="pattern">
+          <div class="container">
+            <!-- Currency & Language -->
+            {%- include 'currencies-switcher' -%}
+            <!-- Logo -->
+            {%- include "header-logo" -%}
+            <!-- Search -->
+            <a href="/search" class="search_form">{%- include "search-icon" -%}</a>
+          </div>
+          {%- assign megamenu_type_having_2ndMenu = '4,5,6,9,14,19,29' | split: ',' -%}
+          {%- if megamenu_type_having_2ndMenu contains settings.advanced_megamenu_type -%}
+          <div class="container container-megamenu2 orderable">
+            {%- endif -%}
+            <!-- Menu -->
+            <div  class="megamenu-background">
+              <div class="">
+                <div class="overflow-megamenu container menu-one-only">
+                  {%- section 'header-menu1' -%}
+                </div>
+              </div>
+            </div>
+            {%- if megamenu_type_having_2ndMenu contains settings.advanced_megamenu_type -%}
+          </div>
+          {%- endif -%}
+          <div class="overflow-menu2">
+            {%- section 'header-menu2' -%}
+          </div>
+          {%- include 'cartblock' with 'header' -%}
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Slider -->
+  <div id="slider" class="{%- if settings.slideshow_layout == '1' -%}full-width{%- elsif settings.slideshow_layout == '4' -%}fixed3 fixed2{%- elsif settings.slideshow_layout == '3' -%}fixed2{%- else -%}fixed{%- endif -%}">
+    <div class="background-slider"></div>
+    <div class="background">
+      <div class="shadow"></div>
+      <div class="pattern orderable">
+        {%- include 'header-slideshow' -%}
+      </div>
+    </div>
+  </div>
+</header>

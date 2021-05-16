@@ -1,0 +1,13 @@
+{%- assign GENERAL_FONT = settings.general_font | default:'Poppins' -%}
+{%- assign HEADING_FONT = settings.heading_font | default:'Poppins' -%}
+{%- assign SPECIAL_FONT = settings.special_font | default:'Poppins' -%}
+{%- if HEADING_FONT != GENERAL_FONT -%}
+<link rel="preload" href="//fonts.googleapis.com/css?family={{HEADING_FONT | replace: ' ', '+'}}:200,300,400,500,600,700" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css?family={{HEADING_FONT | replace: ' ', '+'}}:200,300,400,500,600,700"></noscript>
+{%- endif -%}
+{%- if SPECIAL_FONT != GENERAL_FONT and SPECIAL_FONT != HEADING_FONT -%}
+<link rel="preload" href="//fonts.googleapis.com/css?family={{SPECIAL_FONT | replace: ' ', '+'}}:200,300,400,500,600" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css?family={{SPECIAL_FONT | replace: ' ', '+'}}:200,300,400,500,600"></noscript>
+{%- endif -%}
+<link rel="preload" href="//fonts.googleapis.com/css?family={{GENERAL_FONT | replace: ' ', '+'}}:300italic,400italic,200,300,400,500,600" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css?family={{GENERAL_FONT | replace: ' ', '+'}}:300italic,400italic,100,200,300,400,500,600"></noscript>

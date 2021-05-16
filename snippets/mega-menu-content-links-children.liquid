@@ -1,0 +1,319 @@
+{%- if _sub_visible == true -%}
+
+{%- assign _sub_row_fluid = 12 -%}
+
+{%- if _sub_columns == 2 -%}{%- assign _sub_row_fluid =  6 -%}{%- endif -%}
+{%- if _sub_columns == 3 -%}{%- assign _sub_row_fluid =  4 -%}{%- endif -%}
+{%- if _sub_columns == 4 -%}{%- assign _sub_row_fluid =  3 -%}{%- endif -%}
+{%- if _sub_columns == 5 -%}{%- assign _sub_row_fluid = 25 -%}{%- endif -%}
+{%- if _sub_columns == 6 -%}{%- assign _sub_row_fluid =  2 -%}{%- endif -%}
+
+{%- if _sub_columns <= 0 or _sub_columns >= 7 -%}
+{%- assign _sub_columns = 1 -%}
+{%- endif -%}
+
+{%- if _is_submenu == true -%}
+{%- assign _sub_columns = 1 -%}
+{%- assign _sub_row_fluid = 12 -%}
+{%- endif -%}
+
+{%- if _width <= 0 or _height <= 0 -%}
+<div class="open-categories"></div><div class="close-categories"></div>
+{%- endif -%}
+
+{%- if _sub_columns != 1 -%}
+<div class="row visible">
+  {%- endif -%}
+
+  {%- assign _children_length = _children | size -%}
+  {%- assign _sub_min_index = 0 -%}
+  {%- for _m in (1.._children_length) -%}
+  {%- if _m <= _sub_min_index -%}{%- continue -%}{%- endif -%}
+  {%- if _sub_columns != 1 -%}
+  <div class="col-sm-{{_sub_row_fluid}}">
+    {%- endif -%}
+    <ul>
+      {%- assign _n = _children_length | divided_by: _sub_columns -%}
+      {%- assign _remainder = _children_length | modulo: _sub_columns -%}
+
+      {%- if _remainder > 0 -%}
+      {%- assign _n = _n | plus: 1 -%}
+      {%- endif -%}
+
+      {%- assign _n = _n | plus: _m | minus: 1 -%}
+
+      {%- for _k in (_m.._n) -%}
+      {%- assign _real_index = _k | minus: 1 -%}
+      
+      {%- if _real_index >= _children_length -%}
+      {%- continue -%}
+      {%- endif -%}
+      
+      {%- assign _child = _children[_real_index] -%}
+      {%- assign _child_object = _child.object -%}
+
+      {%- assign _mixed_text = _child.title | strip -%}
+      {%- assign _f_letter = _mixed_text | slice: 0 -%}
+      {%- assign _l_letter = _mixed_text | slice: -1, 1 -%}
+      {%- if _f_letter != '{' -%}
+      {%- assign _mixed_text = _mixed_text | prepend: '{ }' -%}
+      {%- endif -%}
+      {%- if _l_letter != '}' -%}
+      {%- assign _mixed_text = _mixed_text | append: '{ }' -%}
+      {%- endif -%}
+      {%- assign _texts = _mixed_text | split: '}' -%}
+      {%- assign _label = _texts[0] | remove: '{' | strip -%}
+      {%- assign _texts = _texts[1] | split: '{' -%}
+      {%- assign _name = _texts[0] | strip -%}
+      {%- assign _desc = _texts[1] | strip -%}
+
+      {%- assign _img_url = '' -%}
+
+      {%- if _child_object.image -%}
+      {%- assign _img_url = _child_object.image | img_url: 'medium' -%}
+      {%- endif -%}
+
+      {%- assign _has_children = false -%}
+      {%- assign _handle = _child.title | handle -%}
+
+      {%- if _child.links.size > 0 -%}
+      {%- assign _has_children = true -%}
+      {%- endif -%}
+
+      {%- assign _link = _child.url -%}
+
+      {%- assign _html_name = _name -%}
+      {%- if _label != '' -%}
+      {%- assign _html_name = _html_name | append: '<span class="megamenu-label" style="background:' | append: _label_bg_color | append: '!important;color: ' | append: _label_color | append: '"><span style="background:' | append: _label_bg_color | append: '!important;border-color:' | append: _label_bg_color | append: '"></span>' | append: _label | append: '</span>' -%}
+      {%- endif -%}
+
+      <li>
+        <a href="{{_link}}" data-image="{{_data_img}}">
+          {{_html_name}}
+        </a>
+        {%- if _has_children == true -%}
+        {%- assign _children = _child.links -%}
+        {%- assign _is_submenu = true -%}
+        {%- include 'mega-menu-content-links-children' -%}
+        {%- endif -%}
+      </li>
+
+      {%- endfor -%}
+      {%- assign _sub_min_index = _n -%}
+    </ul>
+    {%- if _sub_columns != 1 -%}
+  </div>
+  {%- endif -%}
+  {%- endfor -%}
+  {%- if _sub_columns != 1 -%}
+</div>
+{%- endif -%}
+
+{%- else -%}
+<div class="open-categories"></div><div class="close-categories"></div>
+<ul>
+  {%- for _child in _children -%}
+  {%- assign _child_object = _child.object -%}
+  {%- assign _link = _child.url -%}
+
+  {%- assign _class_link = '' -%}
+  {%- assign _has_children = false -%}
+  {%- assign _handle = _child.title | handle -%}
+  {%- if _child.links.size > 0 -%}
+  {%- assign _class_link = 'with-submenu' -%}
+  {%- assign _has_children = true -%}
+  {%- endif -%}
+
+  {%- assign _mixed_text = _child.title | strip -%}
+  {%- assign _f_letter = _mixed_text | slice: 0 -%}
+  {%- assign _l_letter = _mixed_text | slice: -1, 1 -%}
+  {%- if _f_letter != '{' -%}
+  {%- assign _mixed_text = _mixed_text | prepend: '{ }' -%}
+  {%- endif -%}
+  {%- if _l_letter != '}' -%}
+  {%- assign _mixed_text = _mixed_text | append: '{ }' -%}
+  {%- endif -%}
+  {%- assign _texts = _mixed_text | split: '}' -%}
+  {%- assign _label = _texts[0] | remove: '{' | strip -%}
+  {%- assign _texts = _texts[1] | split: '{' -%}
+  {%- assign _name = _texts[0] | strip -%}
+  {%- assign _desc = _texts[1] | strip -%}	
+
+  {%- assign _html_name = _name -%}
+  {%- if _label != '' -%}
+  {%- assign _html_name = _html_name | append: '<span class="megamenu-label" style="background:' | append: _label_bg_color | append: ';color: ' | append: _label_color | append: '"><span style="background:' | append: _label_bg_color | append: ';border-color:' | append: _label_bg_color | append: '"></span>' | append: _label | append: '</span>' -%}
+  {%- endif -%}
+  
+  <li>
+    <a href="{{_link}}" class="{{_class_link}}">
+      {{_html_name}}
+    </a>
+    {%- if _has_children == true -%}
+    {%- assign _children = _child.links -%}
+    {%- assign _is_submenu = false -%}
+     {%- include 'mega-menu-content-links-children' -%}
+    {%- endif -%}
+  </li>
+  {%- endfor -%}
+</ul>
+{%- endif -%}
+{% comment %}
+{%- if _sub_visible == true -%}
+
+{%- assign _sub_row_fluid = 12 -%}
+
+{%- if _sub_columns == 2 -%}{%- assign _sub_row_fluid =  6 -%}{%- endif -%}
+{%- if _sub_columns == 3 -%}{%- assign _sub_row_fluid =  4 -%}{%- endif -%}
+{%- if _sub_columns == 4 -%}{%- assign _sub_row_fluid =  3 -%}{%- endif -%}
+{%- if _sub_columns == 5 -%}{%- assign _sub_row_fluid = 25 -%}{%- endif -%}
+{%- if _sub_columns == 6 -%}{%- assign _sub_row_fluid =  2 -%}{%- endif -%}
+
+{%- if _sub_columns <= 0 or _sub_columns >= 7 -%}
+{%- assign _sub_columns = 1 -%}
+{%- endif -%}
+
+{%- if _is_submenu == true -%}
+{%- assign _sub_columns = 1 -%}
+{%- assign _sub_row_fluid = 12 -%}
+{%- endif -%}
+
+{%- if _width <= 0 or _height <= 0 -%}
+<div class="open-categories"></div><div class="close-categories"></div>
+{%- endif -%}
+
+{%- if _sub_columns != 1 -%}
+<div class="row visible">
+  {%- endif -%}
+
+  {%- assign _children_length = _children | size -%}
+  {%- assign _sub_min_index = 0 -%}
+  {%- for _m in (1.._children_length) -%}
+  {%- if _m <= _sub_min_index -%}{%- continue -%}{%- endif -%}
+  {%- if _sub_columns != 1 -%}
+  <div class="col-sm-{{_sub_row_fluid}}">
+    {%- endif -%}
+    <ul>
+      {%- assign _n = _children_length | divided_by: _sub_columns -%}
+      {%- assign _remainder = _children_length | modulo: _sub_columns -%}
+
+      {%- if _remainder > 0 -%}
+      {%- assign _n = _n | plus: 1 -%}
+      {%- endif -%}
+
+      {%- assign _n = _n | plus: _m | minus: 1 -%}
+
+      {%- for _k in (_m.._n) -%}
+      {%- assign _real_index = _k | minus: 1 -%}
+      
+      {%- if _real_index >= _children_length -%}
+      {%- continue -%}
+      {%- endif -%}
+      
+      {%- assign _child = _children[_real_index] -%}
+      {%- assign _child_object = _child.object -%}
+
+      {%- assign _mixed_text = _child.title | strip -%}
+      {%- assign _f_letter = _mixed_text | slice: 0 -%}
+      {%- assign _l_letter = _mixed_text | slice: -1, 1 -%}
+      {%- if _f_letter != '{' -%}
+      {%- assign _mixed_text = _mixed_text | prepend: '{ }' -%}
+      {%- endif -%}
+      {%- if _l_letter != '}' -%}
+      {%- assign _mixed_text = _mixed_text | append: '{ }' -%}
+      {%- endif -%}
+      {%- assign _texts = _mixed_text | split: '}' -%}
+      {%- assign _label = _texts[0] | remove: '{' | strip -%}
+      {%- assign _texts = _texts[1] | split: '{' -%}
+      {%- assign _name = _texts[0] | strip -%}
+      {%- assign _desc = _texts[1] | strip -%}
+
+      {%- assign _img_url = '' -%}
+
+      {%- if _child_object.image -%}
+      {%- assign _img_url = _child_object.image | img_url: 'medium' -%}
+      {%- endif -%}
+
+      {%- assign _has_children = false -%}
+      {%- assign _handle = _child.title | handle -%}
+      {%- if linklists[_handle] != empty -%}
+      {%- assign _has_children = true -%}
+      {%- endif -%}
+
+      {%- assign _link = _child.url -%}
+
+      {%- assign _html_name = _name -%}
+      {%- if _label != '' -%}
+      {%- assign _html_name = _html_name | append: '<span class="megamenu-label" style="background:' | append: _label_bg_color | append: '!important;color: ' | append: _label_color | append: '"><span style="background:' | append: _label_bg_color | append: '!important;border-color:' | append: _label_bg_color | append: '"></span>' | append: _label | append: '</span>' -%}
+      {%- endif -%}
+
+      <li>
+        <a href="{{_link}}" data-image="{{_data_img}}">
+          {{_html_name}}
+        </a>
+        {%- if _has_children == true -%}
+        {%- assign _children = linklists[_handle].links -%}
+        {%- assign _is_submenu = true -%}
+        {%- include 'mega-menu-content-links-children' -%}
+        {%- endif -%}
+      </li>
+
+      {%- endfor -%}
+      {%- assign _sub_min_index = _n -%}
+    </ul>
+    {%- if _sub_columns != 1 -%}
+  </div>
+  {%- endif -%}
+  {%- endfor -%}
+  {%- if _sub_columns != 1 -%}
+</div>
+{%- endif -%}
+
+{%- else -%}
+<div class="open-categories"></div><div class="close-categories"></div>
+<ul>
+  {%- for _child in _children -%}
+  {%- assign _child_object = _child.object -%}
+  {%- assign _link = _child.url -%}
+
+  {%- assign _class_link = '' -%}
+  {%- assign _has_children = false -%}
+  {%- assign _handle = _child.title | handle -%}
+  {%- if linklists[_handle] != empty -%}
+  {%- assign _class_link = 'with-submenu' -%}
+  {%- assign _has_children = true -%}
+  {%- endif -%}
+
+  {%- assign _mixed_text = _child.title | strip -%}
+  {%- assign _f_letter = _mixed_text | slice: 0 -%}
+  {%- assign _l_letter = _mixed_text | slice: -1, 1 -%}
+  {%- if _f_letter != '{' -%}
+  {%- assign _mixed_text = _mixed_text | prepend: '{ }' -%}
+  {%- endif -%}
+  {%- if _l_letter != '}' -%}
+  {%- assign _mixed_text = _mixed_text | append: '{ }' -%}
+  {%- endif -%}
+  {%- assign _texts = _mixed_text | split: '}' -%}
+  {%- assign _label = _texts[0] | remove: '{' | strip -%}
+  {%- assign _texts = _texts[1] | split: '{' -%}
+  {%- assign _name = _texts[0] | strip -%}
+  {%- assign _desc = _texts[1] | strip -%}	
+
+  {%- assign _html_name = _name -%}
+  {%- if _label != '' -%}
+  {%- assign _html_name = _html_name | append: '<span class="megamenu-label" style="background:' | append: _label_bg_color | append: ';color: ' | append: _label_color | append: '"><span style="background:' | append: _label_bg_color | append: ';border-color:' | append: _label_bg_color | append: '"></span>' | append: _label | append: '</span>' -%}
+  {%- endif -%}
+  
+  <li>
+    <a href="{{_link}}" class="{{_class_link}}">
+      {{_html_name}}
+    </a>
+    {%- if _has_children == true -%}
+    {%- assign _children = linklists[_handle].links -%}
+    {%- assign _is_submenu = false -%}
+    {%- include 'mega-menu-content-links-children' -%}
+    {%- endif -%}
+  </li>
+  {%- endfor -%}
+</ul>
+{%- endif -%}
+{% endcomment %}

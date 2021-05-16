@@ -1,0 +1,8 @@
+{%-if settings.image_lazy_loading_used -%}
+<div class="b-spinner">
+  <div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div>
+  {%-if loading_text != blank-%}
+  <span>{{loading_text}}</span>
+  {%-endif-%}
+</div>
+{%-endif-%}

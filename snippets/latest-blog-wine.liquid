@@ -1,0 +1,46 @@
+<div class="box blog-module box-with-products box-no-advanced{%- if _lblog_mobile == false -%}{{' '}}hidden-xs hidden-sm{%- endif -%}" data-order="{{_lblog_order}}">
+  <div class="box-heading">{{_lblog_heading}}</div>
+  <div class="clear"></div>
+  <div class="box-content">
+    <div class="wine-news row">
+      {%- if _lblog_blog != blank-%}
+      {%- for _article in _lblog_blog.articles -%}
+      {%- if forloop.index > _lblog_limit -%}
+      {%- break -%}
+      {%- endif -%}
+      <div class="col-sm-4 col-xs-12">
+        <div class="media clearfix">
+          <div class="media-body">
+            <div class="bottom">
+              <div class="date-published">{{ _article.published_at | date: "%b %d, %y" }}</div>
+              <div class="post-title"><a href="{{_article.url}}">{{_article.title}}</a></div>
+              <div class="post-description">
+                {{_article.excerpt | truncatewords:17}}
+              </div>
+              <a href="{{_article.url}}" class="button-more">{{'blogs.general.read_more' | t}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%- endfor -%}
+      {%- else -%}
+      {%- for i in (1.._lblog_limit) -%}
+      <div class="col-sm-4 col-xs-12">
+        <div class="media clearfix">
+          <div class="media-body">
+            <div class="bottom">
+               <div class="date-published">{{ "Feb 24, 2016" | date: "%b %d, %y" }}</div>
+              <div class="post-title"><a href="#">{{"Article Title"}}</a></div>
+              <div class="post-description">
+                {{"Article Desription"}}
+              </div>
+              <a href="#" class="button-more">{{'blogs.general.read_more' | t}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>

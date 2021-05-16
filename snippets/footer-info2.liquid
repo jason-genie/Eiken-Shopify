@@ -1,0 +1,30 @@
+{%- assign iColumns = settings.footer_info2_layout | split: '-' -%}
+<div class="row footer-blocks-bottom">
+  <div class="col-sm-{{iColumns[0]}} cell1 text-{{settings.footer_info2_cell1_align}}">
+    <div class="footer-block{%- if settings.footer_info2_cell1_inline -%}{{' '}}footer-inline{%- endif -%}">
+      {%- if settings.footer_info2_cell1_icon != '' -%}<img src="{{'footer_info2_cell1.png' | asset_url}}" alt="" />{%- endif -%}
+      {%- if settings.footer_info2_cell1_inline == false -%}<div class="footer-block-content">{%- endif -%}
+        {%- if settings.footer_info2_cell1_caption != '' -%}<h6 class="caption">{{settings.footer_info2_cell1_caption}}</h6>{%- endif -%}
+        {%- if settings.footer_info2_cell1_content != '' -%}<p class="content">{{settings.footer_info2_cell1_content}}</p>{%- endif -%}
+      {%- if settings.footer_info2_cell1_inline == false -%}</div>{%- endif -%}
+    </div>
+  </div>
+  <div class="col-sm-{{iColumns[1]}} cell2 text-{{settings.footer_info2_cell2_align}}">
+    <div class="footer-block{%- if settings.footer_info2_cell2_inline -%}{{' '}}footer-inline{%- endif -%}">
+      {%- if settings.footer_info2_cell2_icon != '' -%}<img src="{{'footer_info2_cell2.png' | asset_url}}" alt="" />{%- endif -%}
+      {%- if settings.footer_info2_cell2_inline == false -%}<div class="footer-block-content">{%- endif -%}
+        {%- if settings.footer_info2_cell2_caption != '' -%}<h6 class="caption">{{settings.footer_info2_cell2_caption}}</h6>{%- endif -%}
+        {%- if settings.footer_info2_cell2_content != '' -%}<p class="content">{{settings.footer_info2_cell2_content}}</p>{%- endif -%}
+      {%- if settings.footer_info2_cell2_inline == false -%}</div>{%- endif -%}
+    </div>
+  </div>
+  <div class="col-sm-{{iColumns[2]}} cell3 text-{{settings.footer_info2_cell3_align}}">
+    <div class="footer-block{%- if settings.footer_info2_cell3_inline -%}{{' '}}footer-inline{%- endif -%}">
+      {%- if settings.footer_info2_cell3_icon != '' -%}<img src="{{'footer_info2_cell3.png' | asset_url}}" alt="" />{%- endif -%}
+      {%- if settings.footer_info2_cell3_inline == false -%}<div class="footer-block-content">{%- endif -%}
+        {%- if settings.footer_info2_cell3_caption != '' -%}<h6 class="caption">{{settings.footer_info2_cell3_caption}}</h6>{%- endif -%}
+        {%- if settings.footer_info2_cell3_content != '' -%}<p class="content">{{settings.footer_info2_cell3_content}}</p>{%- endif -%}
+      {%- if settings.footer_info2_cell3_inline == false -%}</div>{%- endif -%}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+{%- assign _pos = latest-blogs -%}
+{%- if _pos != empty -%}
+
+{%- for i in (1..MAX_LATEST_BLOGS) -%}
+
+{%- assign lblog_use			= 'lblog_use_'		| append: i -%}
+{%- assign lblog_pos			= 'lblog_pos_' 		| append: i -%}
+
+{%- assign _lblog_use		= settings[lblog_use] -%}
+{%- assign _lblog_pos		= settings[lblog_pos] -%}
+
+{%- comment -%}
+<!-- Layout config is hidden in current version. 
+For now, use '0' as 'ALL PAGES' and '1' as 'HOMEPAGE' -->
+{%- assign lblog_layout = 'lblog_layout_' | append: i -%}
+{%- assign _lblog_layout = settings[lblog_layout] -%}
+{%- endcomment -%}
+
+{%- assign _lblog_layout = '1' -%}
+
+{%- if _lblog_layout == '0' or _lblog_layout == CURRENT_LAYOUT -%}
+{%- if _lblog_use and _lblog_pos == _pos -%}
+
+{%- assign lblog_mobile		= 'lblog_mobile_'	| append: i -%}
+{%- assign lblog_heading		= 'lblog_head_'		| append: i -%}
+{%- assign lblog_blog 		= 'lblog_blog_' 	| append: i -%}
+{%- assign lblog_limit		= 'lblog_limit_'	| append: i -%}
+{%- assign lblog_order		= 'lblog_order_'	| append: i -%}
+{%- assign lblog_skin		= 'lblog_skin_'		| append: i -%}
+
+{%- assign _lblog_mobile		= settings[lblog_mobile] -%}
+{%- assign _lblog_heading	= settings[lblog_heading] -%}
+{%- assign _lblog_blog 		= blogs[settings[lblog_blog]] -%}
+
+{%- assign _lblog_limit		= settings[lblog_limit] | plus: 0 -%}
+{%- assign _lblog_order		= settings[lblog_order] -%}
+
+{%- assign _lblog_skin		= settings[lblog_skin] -%}
+{%- if _lblog_skin == blank -%}
+{%- assign _lblog_skin	= 'default' -%}
+{%- endif -%}
+
+{%- assign _skin_snippet = 'latest-blog-' | append: _lblog_skin -%}
+{%- include _skin_snippet -%}
+
+{%- endif -%}
+{%- endif -%}
+
+{%- endfor -%}
+{%- endif -%}

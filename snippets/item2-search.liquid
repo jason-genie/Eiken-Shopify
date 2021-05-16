@@ -1,0 +1,26 @@
+{%- assign featured_image = product.image.src -%}
+{%- assign _dim = product-item -%}
+{%- if _dim == empty or _dim == blank -%}
+{%- if settings.collection_product_size == "custom" and settings.collection_product_img_width != blank and settings.collection_product_img_height != blank -%}
+{%- assign _dim = settings.collection_product_img_width | append: "x" | append : settings.collection_product_img_height -%}
+{%- else -%}
+{%- assign _dim = settings.collection_product_size -%}
+{%- endif -%}
+{%- endif -%}
+<div class="product clearfix">
+  <div class="row">
+    <div class="image col-sm-3{%- if settings.product_img_fx == '1' -%}{{' '}}image-swap-effect{%- endif -%}">
+      <a href="{{product.url | within: collection}}">
+        <div data-class="reveal" class="main-images-wrapper">
+          <img class="mpt-image {% if settings.product_img_fx == '2' %} zoom-image-effect{% endif %}" src="{{featured_image | img_url: _dim}}" alt="{{product.title | escape}}" alt="image" srcset="{{featured_image | img_url: _dim, scale: 2}} 500w, {{featured_image | img_url: _dim}} 166w" sizes="(max-width: 500px) 100vw, 500px"/>
+        </div>
+      </a>
+    </div>
+    <div class="name-actions col-sm-4">
+      <div class="name"><a href="{{product.url}}">{{product.title}}</a></div>
+    </div>
+    <div class="desc col-sm-5">
+      <div class="description">{{product.description | strip_html | truncatewords: 18}}</div>
+    </div>
+  </div>
+</div>

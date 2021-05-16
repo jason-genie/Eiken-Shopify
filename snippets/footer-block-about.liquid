@@ -1,0 +1,54 @@
+<div class="footer-about-us footer-accordion" {{ block.shopify_attributes }}>
+  <h4 class="title footer-accordion-heading {% if block.settings.footer_about_heading == blank %}footer-title-hide{% endif %}">
+    <span>
+      {%- if block.settings.footer_about_heading != blank -%}
+      {{block.settings.footer_about_heading}}
+      {%- else -%}
+      {{ "general.footer.about_us" | t }}
+      {%- endif -%}
+    </span>
+    <i class="fa fa-plus-svg">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="width: 12px;"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"></path></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"  style="width: 12px;"><path d="M0 10h24v4h-24z"/></svg>
+    </i>
+  </h4>
+  <div class="strip-line {% if block.settings.footer_about_heading == blank %}footer-title-hide{% endif %}"></div>
+  <div class="footer-accordion-content">
+    {%- if footer-block-about == '2' -%}
+    {%- if block.settings.footer_about_logo -%}
+    {%- if block.settings.footer_about != blank -%}
+    <img src="{{block.settings.footer_about | img_url:"master"}}" alt="" />
+    {%- else -%}
+    <img src="{{'noimage_500_300.png' | asset_img_url: "165x35", crop:"center"}}" alt="" />
+    {%- endif -%}
+    {%- endif -%}
+    <div class="row">
+      <div class="col-sm-6">
+        {%- if block.settings.footer_about_address != '' -%}<h6{%- if block.settings.footer_about_logo -%}{{' '}}class="has-logo"{%- endif -%}>{{block.settings.footer_about_address}}</h6>{%- endif -%}
+      </div>
+      <div class="col-sm-6">
+        <p{%- if block.settings.footer_about_logo -%}{{' '}}class="has-logo"{%- endif -%}>
+          {%- if block.settings.footer_about_phone  != '' -%}{{block.settings.footer_about_phone}}<br/>{%- endif -%}
+          {%- if block.settings.footer_about_email  != '' -%}{{block.settings.footer_about_email}}<br/>{%- endif -%}
+        </p>
+      </div>
+    </div>
+    {%- else -%}
+    {%- if block.settings.footer_about_logo -%}
+
+    {%- if block.settings.footer_about != blank -%}
+    <img src="{{block.settings.footer_about | img_url:"master"}}" alt="" />
+    {%- else -%}
+    <img src="{{'noimage_500_300.png' | asset_img_url: "165x35", crop:"center"}}" alt="" />
+    {%- endif -%}
+    {%- endif -%}
+    {%- if block.settings.footer_about_address != '' -%}<h6{%- if block.settings.footer_about_logo -%}{{' '}}class="has-logo"{%- endif -%}>{{block.settings.footer_about_address}}</h6>{%- endif -%}
+    {%- if block.settings.footer_about_phone  != '' or block.settings.footer_about_email  != '' -%}
+    <ul>
+      {%- if block.settings.footer_about_phone  != '' -%}<li>{{block.settings.footer_about_phone}}</li>{%- endif -%}
+      {%- if block.settings.footer_about_email  != '' -%}<li>{{block.settings.footer_about_email}}</li>{%- endif -%}
+    </ul>
+    {%- endif -%}
+    {%- endif -%}
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<div id="sticky-info-{{section.id}}" class="sticky-info-product">
+  <div class="container">
+    <div class="sticky-thumb-left"> 
+      <img class="sticky-image" src="{{ featured_image.src | img_url: '100x100' }}">
+      <div class="sticky-title">
+        <h4 class="name product_title">{{- product.title -}}</h4>
+        <a class="smoothscroll" href="#product-reviews-a">
+          <span class="shopify-product-reviews-badge" data-id="{{product.id}}"></span>
+        </a>
+      </div> 
+    </div>
+    <div class="sticky-info-right">
+      <button type="button" class="sticky-button button button-cart">{%- unless current_variant.available -%}{{- 'products.product.sold_out' | t | escape -}}{%- else -%}{{- 'products.product.add_to_cart' | t | escape-}}{%- endunless -%}</button>
+    </div>
+  </div>
+</div>

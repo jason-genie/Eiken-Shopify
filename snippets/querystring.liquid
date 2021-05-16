@@ -1,0 +1,27 @@
+{%- comment -%} Params: name, default {%- endcomment -%}
+
+{%- comment -%} Capture the content for header containing the tracking data {%- endcomment -%}
+{%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+
+{%- comment -%} Use string splitting to pull the value from content_for_header and apply some string clean up {%- endcomment -%}
+{%- assign pageUrl = contentForQuerystring | split: '"pageurl":"' | last | split: '"' | first | split: '.myshopify.com' | last |
+   replace:'\/','/' | 
+   replace:'%20',' ' | 
+   replace:'\u0026','&'
+-%}
+
+{%- assign param = querystring | default: name | append: '=' -%}
+{%- assign query = pageUrl | split: param -%}
+
+{%- assign value = default -%}
+{%- if query.size > 1 and query[1] != blank-%}
+
+  {%- assign value = query[1] -%}
+  {%- assign query2 = query[1] | split: '&' -%}
+  {%- if query2.size > 1 and query2[0] != blank-%}
+    {%- assign value = query2[0] -%}
+  {%- endif -%}
+
+{%- endif -%}
+
+{{- value | strip -}}

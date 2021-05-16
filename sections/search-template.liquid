@@ -1,0 +1,282 @@
+{%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+{%- assign pUrl = contentForQuerystring | split:'"pageurl":"' | last | split:'"' | first | split:'.myshopify.com' | last |
+   replace:'\/','/' | 
+   replace:'%20',' ' | 
+   replace:'\u0026','&'
+-%}
+{%- assign per_page = settings.collection_limit -%}
+{%- assign aView =  pUrl | split : "view=" -%}
+{%- if aView.size > 1 and aView[1] != blank-%}
+{%- assign per_page = aView[1] | plus: 0  -%}
+{%- endif -%}
+{%- assign tmp =  shop.url | append: collection.url | append: "/" -%}
+{%- assign tmp_url = canonical_url | replace : tmp, ""  -%}
+{%- assign a_tmp_url = tmp_url | split: "/" -%}
+<input class="collection-canonical_url" type="hidden" data-url="collections/{{- collection.handle -}}" data-parts="{{- a_tmp_url.size -}}" value="{{tmp_url}}">
+
+<div data-section-id="{{ section.id }}" data-section-type="search-template" data-view="{{per_page}}">
+  <div id="col-main" class="center-column content-without-background collection-page col-md-12 col-sm-12{% if settings.shop_pagination != '' %} hide-pagination{% endif %}">
+    <div id="mfilter-content-container" class="{%- if settings.collection_list_grid == '0' -%}list{%- else -%}grid{%- endif -%}">
+      <form action="/search" method="get">
+        <label class="control-label" for="input-search"><strong>{{'search.general.title' | t}}</strong></label>
+        <div class="row" id="content-search">
+          <div class="col-sm-4">
+            <input type="text" name="q" value="{{search.terms | escape}}" placeholder="{{'search.general.placeholder' | t}}" id="input-search" class="form-control" autocomplete="off" />
+          </div>
+        </div>
+        <input type="submit" value="{{'search.general.submit' | t}}" id="button-search" class="btn btn-primary" />
+        <input type="hidden" name="type" value="product" />
+      </form>
+      {%- if search.performed and search.results.size > 0 -%}
+      {%- if settings.ctemplate_type == "promo" -%}
+      <div class="product-filter clearfix">
+        <div class="toolbar-left">
+          <div class="collection-title">
+            <h3 class="box-heading">{{'search.general.heading' | t}}</h3>
+          </div>
+        </div>
+        <ul class="toolbar-left">
+          <li>
+            <div class="shop__view shop__view_1" data-view="list">
+              <svg width="19px" height="19px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 19 19">
+                <rect y="1" width="19" height="2"></rect>
+                <rect y="9" width="19" height="2"></rect>
+                <rect y="17" width="19" height="2"></rect>
+              </svg>
+            </div>
+          </li>
+          <li>
+            <div class="shop__view shop__view_2" data-view="grid" data-per_row="2">
+              <svg width="19px" height="19px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                   viewBox="0 0 19 19">
+                <path d="M7,2v5H2V2H7 M9,0H0v9h9V0L9,0z"></path>
+                <path d="M17,2v5h-5V2H17 M19,0h-9v9h9V0L19,0z"></path>
+                <path d="M7,12v5H2v-5H7 M9,10H0v9h9V10L9,10z"></path>
+                <path d="M17,12v5h-5v-5H17 M19,10h-9v9h9V10L19,10z"></path>
+              </svg>
+            </div>
+          </li>
+          <li> 
+            <div class="shop__view shop__view_3" data-view="grid" data-per_row="3">
+              <svg width="19px" height="19px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                   viewBox="0 0 19 19">
+                <rect width="5" height="5"></rect>
+                <rect x="7" width="5" height="5"></rect>
+                <rect x="14" width="5" height="5"></rect>
+                <rect y="7" width="5" height="5"></rect>
+                <rect x="7" y="7" width="5" height="5"></rect>
+                <rect x="14" y="7" width="5" height="5"></rect>
+                <rect y="14" width="5" height="5"></rect>
+                <rect x="7" y="14" width="5" height="5"></rect>
+                <rect x="14" y="14" width="5" height="5"></rect>
+              </svg>
+            </div>
+          </li>
+          <li>
+            <div class="shop__view shop__view_4" data-view="grid" data-per_row="4">
+              <svg width="19px" height="19px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                   viewBox="0 0 19 19">
+                <rect width="4" height="4"></rect>
+                <rect x="5" width="4" height="4"></rect>
+                <rect x="10" width="4" height="4"></rect>
+                <rect x="15" width="4" height="4"></rect>
+                <rect y="5" width="4" height="4"></rect>
+                <rect x="5" y="5" width="4" height="4"></rect>
+                <rect x="10" y="5" width="4" height="4"></rect>
+                <rect x="15" y="5" width="4" height="4"></rect>
+                <rect y="15" width="4" height="4"></rect>
+                <rect x="5" y="15" width="4" height="4"></rect>
+                <rect x="10" y="15" width="4" height="4"></rect>
+                <rect x="15" y="15" width="4" height="4"></rect>
+                <rect y="10" width="4" height="4"></rect>
+                <rect x="5" y="10" width="4" height="4"></rect>
+                <rect x="10" y="10" width="4" height="4"></rect>
+                <rect x="15" y="10" width="4" height="4"></rect>
+              </svg>
+            </div>
+          </li>
+          {%- if settings.sb_collection_placement == "" -%}
+          <li>
+            <div class="shop__view shop__view_6" data-view="grid" data-per_row="6">
+              <svg width="23px" height="19px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                   viewBox="0 0 23 19">
+                <rect width="3" height="4"></rect>
+                <rect x="4" width="3" height="4"></rect>
+                <rect x="8" width="3" height="4"></rect>
+                <rect x="12" width="3" height="4"></rect>
+                <rect x="16" width="3" height="4"></rect>
+                <rect x="20" width="3" height="4"></rect>
+                <rect y="5" width="3" height="4"></rect>
+                <rect x="4" y="5" width="3" height="4"></rect>
+                <rect x="8" y="5" width="3" height="4"></rect>
+                <rect x="12" y="5" width="3" height="4"></rect>
+                <rect x="16" y="5" width="3" height="4"></rect>
+                <rect x="20" y="5" width="3" height="4"></rect>
+                <rect y="10" width="3" height="4"></rect>
+                <rect x="4" y="10" width="3" height="4"></rect>
+                <rect x="8" y="10" width="3" height="4"></rect>
+                <rect x="12" y="10" width="3" height="4"></rect>
+                <rect x="16" y="10" width="3" height="4"></rect>
+                <rect x="20" y="10" width="3" height="4"></rect>
+                <rect y="15" width="3" height="4"></rect>
+                <rect x="4" y="15" width="3" height="4"></rect>
+                <rect x="8" y="15" width="3" height="4"></rect>
+                <rect x="12" y="15" width="3" height="4"></rect>
+                <rect x="16" y="15" width="3" height="4"></rect>
+                <rect x="20" y="15" width="3" height="4"></rect>
+              </svg>
+            </div>
+          </li>
+          {%- endif-%}
+        </ul>
+        {% comment %}
+        <div class="toolbar-right">
+          <div class="list-options">
+            <div class="sort advanced-sortby">
+              {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+              <select class="field orderby filters-toolbar__input--sort">
+                {% if sort_by == collection.default_sort_by %}
+                <option value="title-ascending" selected="selected">{{ 'collections.sorting.title' | t }}</option>
+                {% if collection.default_sort_by != 'manual' %}
+                <option value="manual"{% if sort_by == "manual" %} selected="selected"{% endif %}>{{ 'collections.sorting.featured' | t }}</option>
+                {% endif %}
+                {% if collection.default_sort_by != 'best-selling' %}
+                <option value="best-selling"{% if sort_by == "best-selling" %} selected="selected"{% endif %}>{{ 'collections.sorting.best_selling' | t }}</option>
+                {% endif %}
+                {% if collection.default_sort_by != 'title-ascending' %}
+                <option value="title-ascending"{% if sort_by == "title-ascending"  %}selected="selected"{% endif %}>{{ 'collections.sorting.az' | t }}</option>
+                {% endif %}
+                {% if collection.default_sort_by != 'title-descending' %}
+                <option value="title-descending"{% if sort_by == "title-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.za' | t }}</option>
+                {% endif %}
+                {% if collection.default_sort_by != 'price-ascending' %}
+                <option value="price-ascending"{% if sort_by == "price-ascending" %} selected="selected"{% endif %}>{{ 'collections.sorting.price_ascending' | t }}</option>
+                {% endif %}
+                {% if collection.default_sort_by != 'price-descending' %}
+                <option value="price-descending"{% if sort_by == "price-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.price_descending' | t }}</option>
+                {% endif %}
+                {% if collection.default_sort_by != 'created-descending' %}
+                <option value="created-descending"{% if sort_by == "created-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.date_descending' | t }}</option>
+                {% endif %}
+                {% if collection.default_sort_by != 'created-ascending' %}
+                <option value="created-ascending"{% if sort_by == "created-ascending" %} selected="selected"{% endif %}>{{ 'collections.sorting.date_ascending' | t }}</option>
+                {% endif %}
+                {% else %}
+                <option value="manual"{% if sort_by == "manual" %} selected="selected"{% endif %}>{{ 'collections.sorting.featured' | t }}</option>
+                <option value="best-selling"{% if sort_by == "best-selling" %} selected="selected"{% endif %}>{{ 'collections.sorting.best_selling' | t }}</option>
+                <option value="title-ascending"{% if sort_by == "title-ascending"  %}selected="selected"{% endif %}>{{ 'collections.sorting.az' | t }}</option>
+                <option value="title-descending"{% if sort_by == "title-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.za' | t }}</option>
+                <option value="price-ascending"{% if sort_by == "price-ascending" %} selected="selected"{% endif %}>{{ 'collections.sorting.price_ascending' | t }}</option>
+                <option value="price-descending"{% if sort_by == "price-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.price_descending' | t }}</option>
+                <option value="created-descending"{% if sort_by == "created-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.date_descending' | t }}</option>
+                <option value="created-ascending"{% if sort_by == "created-ascending" %} selected="selected"{% endif %}>{{ 'collections.sorting.date_ascending' | t }}</option>
+                {% endif %}
+              </select>
+              <input class="collection-header__default-sort" type="hidden" value="{{ collection.default_sort_by }}">
+            </div>
+
+            <div class="limit">
+              <div class="select advanced-limit">
+                <select class="field orderby filters-toolbar__input--view">
+                  <option value="8" {% if 8 == per_page %}selected{% endif %} >8</option>
+                  <option value="12" {% if 12 == per_page %}selected{% endif %} >12</option>
+                  <option value="24" {% if 24 == per_page %}selected{% endif %} >24</option>
+                  <option value="36" {% if 36 == per_page %}selected{% endif %} >36</option>
+                  <option value="48" {% if 48 == per_page %}selected{% endif %} >48</option>
+                </select>
+                <input class="collection-header__default-view" type="hidden" value="{{-  per_page -}}">
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endcomment %}
+      </div>
+      {%- else -%}
+      <div class="product-filter clearfix">
+        <div class="options">
+          {%- if settings.wishlist_enable -%}<div class="product-wishlist"><a href="{{pages[settings.wishlist_page].url}}">{{'collections.general.wishlist' | t}}</a></div>{%- endif -%}
+          <div class="button-group display" data-toggle="buttons-radio">
+            <button id="grid" class="btooltip{% if settings.collection_list_grid == '1' %} active{% endif %}" title="{{'collections.general.grid' | t | escape}}"><i class="fa fa-th-large"></i></button>
+            <button id="list" class="btooltip{% if settings.collection_list_grid == '0' %} active{% endif %}" title="{{'collections.general.list' | t | escape}}"><i class="fa fa-th-list"></i></button>
+          </div>
+        </div>
+      </div>
+      {%- endif -%}
+      {%- paginate search.results by per_page -%}
+      <div id="sandbox">
+        <div class="product-list products">
+          {%- for product in search.results -%}
+          {%- if product.object_type  != 'article' and product.object_type  != 'page'  -%}
+          {%- include 'product-item2' -%}
+          {%- else -%}
+          {%- include 'item2-search' -%}
+          {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- if settings.ctemplate_type == "promo" -%}
+        <div class="product-grid products">
+          <div class="row">
+            {%- for product in search.results -%}
+            <div class="col-sm-4 col-xs-6 product-item">
+              {%- if product.object_type  != 'article' and product.object_type  != 'page'  -%}
+              {%- include 'product-item' -%}
+              {%- else -%}
+              {%- include 'item-search' -%}
+              {%- endif -%}
+            </div>
+            {%- endfor -%}
+          </div>
+        </div>
+        {%- else -%}
+        {%- assign grid_row = settings.collection_product_per_pow2 | plus:0 -%}
+        {%- assign grid_class = 3 -%}
+        {%- if settings.collection_product_per_pow2 == '6' -%}{%- assign grid_class = 2 -%}{%- elsif settings.collection_product_per_pow2 == '5' -%}{%- assign grid_class = 25 -%}{%- elsif settings.collection_product_per_pow2 == '3' -%}{%- assign grid_class = 4 -%}{%- endif -%}
+        <div class="product-grid products">
+          <div class="row">
+            {%- assign row_fluid = 0 -%}
+            {%- for product in search.results -%}
+            <div class="col-sm-{{grid_class}} col-xs-6 product-item">
+              {%- if product.object_type  != 'article' and product.object_type  != 'page'  -%}
+              {%- include 'product-item' -%}
+              {%- else -%}
+              {%- include 'item-search' -%}
+              {%- endif -%}
+            </div>
+            {%- endfor -%}
+          </div>
+        </div>
+        {%- endif -%}
+      </div>
+      {%- case settings.shop_pagination -%}
+      {%- when '1' -%}
+      <div class="fastor_ajax_load_button fastor_ajax_load_more_btn animated fadeIn">
+        <a class="button" href="#" data-processing="0" data-loading-items="{{ 'general.pagination.loading_items' | t | escape }}" data-no-more="{{ 'general.pagination.no_more' | t | escape }}">
+          {{- 'general.pagination.load_more' | t | escape -}}
+        </a>
+      </div>
+      {%- include 'pagination' -%}
+      {%- when '2' -%}
+      <div class="fastor_ajax_load_button fastor_ajax_load_more_hidden animated fadeIn">
+        <a class="button" href="#" data-processing="0" data-loading-items="{{ 'general.pagination.loading_items' | t | escape }}" data-no-more="{{ 'general.pagination.no_more' | t | escape }}">
+          <i class="icon-px-outline-load"></i>
+          &nbsp;&nbsp;{{- 'general.pagination.load_more' | t | escape -}}
+        </a>
+      </div>
+      {%- include 'pagination' -%}
+      {%- else -%}
+      {%- include 'pagination' -%}
+      {%- endcase -%}
+      {%- include 'spinner' -%}
+      {%- endpaginate -%}
+      {%- else -%}
+      <p class="empty">{{'search.general.no_products' | t}}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Search Page",
+    "settings": []
+  }
+{% endschema %}

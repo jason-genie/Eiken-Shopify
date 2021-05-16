@@ -1,0 +1,65 @@
+{%- assign _class = 3 -%}
+{%- assign _all = 4 -%}
+{%- assign _count = _acm_prods | size -%}
+
+{%- if _acm_limit < _count -%}
+{%- assign _count = _acm_limit -%}
+{%- endif -%}
+
+{%- if _count == 6 -%}
+{%- assign _class = 2 -%}
+{%- assign _all = 6 -%}
+{%- endif -%}
+
+{%- if _count == 5 -%}
+{%- assign _class = 25 -%}
+{%- assign _all = 5 -%}
+{%- endif -%}
+
+{%- if _count == 3 -%}
+{%- assign _class = 4 -%}
+{%- assign _all = 3 -%}
+{%- endif -%}
+
+{%- if _count == 2 -%}
+{%- assign _class = 6 -%}
+{%- assign _all = 2 -%}
+{%- endif -%}
+
+{%- if _count == 1 -%}
+{%- assign _class = 12 -%}
+{%- assign _all = 1 -%}
+{%- endif -%}
+
+<div class="box clearfix box-with-products products-grid-with-carousel-bk{{' '}}{%- if _acm_title == blank -%}{{' '}}without-heading-type-2{%- endif -%}">
+  <a class="next" href="#myCarousel{{_id}}" id="myCarousel{{_id}}_next"><span></span></a>
+  <a class="prev" href="#myCarousel{{_id}}" id="myCarousel{{_id}}_prev"><span></span></a>
+  {%- if _acm_title != blank -%}
+  <div class="box-heading">
+  {{_acm_title}}
+  </div>
+  <div class="strip-line"></div>
+  {%- endif -%}
+  <div class="clear"></div>
+  <div class="box-content products">
+    <div class="box-product">
+      <div id="myCarousel{{_id}}" class="myProductsCarousel-{{section.id}}" data-_id="{{_id}}">
+          {%- assign _i = 0 -%}
+
+          {%- for product in _acm_prods -%}
+
+          {%- if _i == _acm_limit -%}
+          {%- break -%}
+          {%- endif -%}
+
+          <div class="item">
+            <div class="product-grid">
+              {%- include 'product-item' with _acm_url_imgdim -%}
+            </div>
+          </div>
+          {%- assign _i = _i | plus: 1 -%}
+          {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>

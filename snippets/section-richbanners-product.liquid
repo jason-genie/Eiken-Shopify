@@ -1,0 +1,63 @@
+{%-assign borders_class = ' '-%}
+{%-if block.settings.product_borders == '1'-%}
+{%-assign borders_class = borders_class | append: ' has-borders' -%}
+
+{%-if block.settings.product_borders_top == true-%}
+{%-assign borders_class = borders_class | append: ' border-top' -%}
+{%-endif-%}
+
+{%-if block.settings.product_borders_bottom == true-%}
+{%-assign borders_class = borders_class | append: ' border-bottom' -%}
+{%-endif-%}
+
+{%-if block.settings.product_borders_left == true-%}
+{%-assign borders_class = borders_class | append: ' border-left' -%}
+{%-endif-%}
+
+{%-if block.settings.product_borders_right == true-%}
+{%-assign borders_class = borders_class | append: ' border-right' -%}
+{%-endif-%}
+
+{%-assign borders_class = borders_class | append: ' ' -%}
+{%-endif-%}
+
+{%-assign borders_mobile_class = ' '-%}
+{%-if block.settings.product_mobile_borders == '1'-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' has-mobile-borders' -%}
+
+{%-if block.settings.product_mobile_borders_top == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-top' -%}
+{%-endif-%}
+
+{%-if block.settings.product_mobile_borders_bottom == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-bottom' -%}
+{%-endif-%}
+
+{%-if block.settings.product_mobile_borders_left == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-left' -%}
+{%-endif-%}
+
+{%-if block.settings.product_mobile_borders_right == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-right' -%}
+{%-endif-%}
+
+{%-assign borders_mobile_class = borders_mobile_class | append: ' ' -%}
+{%-endif-%}
+
+<div id="rich-banner-{{block.id}}" class="col-rb-{{ block.settings.product_width }}{{' rich-banner product-grid '}}col-rbm-{{ block.settings.product_mobile_width }}{{borders_class}}{{borders_mobile_class}}" {{ block.shopify_attributes }}>
+  {%-if block.settings.product_id != blank-%}
+  {%-assign product = all_products[block.settings.product_id]-%}
+  {%-assign _custom_class = ''-%}
+  {%if block.settings.product_shadow == true%}
+  {%-assign _custom_class = _custom_class | append: 'has--box-shadow'-%}
+  {%endif%}
+  {%-include 'product-item', custom_class: _custom_class-%}
+  {%-else-%}
+  {%- include 'product-item-onboarding' -%}
+  {%-endif-%}
+</div>
+<style>
+  .rich-banners#rich-banners-{{section.id}} .rich-banner#rich-banner-{{block.id}} div.product {
+    background-color:{{block.settings.product_bg_color}};
+  } 
+</style>

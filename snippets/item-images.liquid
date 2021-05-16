@@ -1,0 +1,20 @@
+<div class="item-images-wrapper">
+  <a href="javascript:void(0);" class="active" data-_image="{{ featured_image | product_img_url:"master" }}" data-_dim="_{{_dim}}">
+    {%-if settings.product_item_advanced_thumb_type == ""-%}
+    <img class="b-lazy" data-src="{{ featured_image | img_url: '100x' }}" />
+    {%-else-%}
+    <div class="dot"></div>
+    {%-endif-%}
+  </a>
+  {%- for image in product.images limit: item-images -%}
+  {%- unless image == featured_image -%}
+  <a href="javascript:void(0);" data-_image="{{ image.src  | img_url:"master" }}"  data-_dim="_{{_dim}}">
+    {%-if settings.product_item_advanced_thumb_type == ""-%}
+    <img class="b-lazy" data-src="{{ image | img_url: '100x' }}" />
+    {%-else-%}
+    <div class="dot"></div>
+    {%-endif-%}
+  </a>
+  {%- endunless -%}
+  {%- endfor -%}
+</div>

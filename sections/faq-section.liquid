@@ -1,0 +1,43 @@
+<div class="faq-wrapper"  data-section-id="{{ section.id }}" data-section-type="faq-section">
+  {%- for block in section.blocks -%}
+  <div class="panel panel-faq" {{ block.shopify_attributes }}>
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#questions" href="#answer-{{block.id}}"
+           aria-expanded="false" class="collapsed">
+          {{- block.settings.question -}}
+        </a>
+      </h4>
+    </div>
+    <div id="answer-{{block.id}}" class="panel-collapse collapse" aria-expanded="false">
+      <div class="panel-body">
+		{{- block.settings.answer -}}
+      </div>
+    </div>
+  </div>
+{%- endfor -%}
+</div> 
+{% schema %}
+  {
+    "name": "FAQ Page",
+    "settings": [],
+	"blocks": [
+		{
+			"type": "faq",
+			"name": "Content",
+			"settings": [
+				{
+					"type": "html",
+					"id": "question",
+					"label": "Question"
+				},
+				{
+					"type": "html",
+					"id": "answer",
+					"label": "Answer"
+				}
+			]
+		}
+	]
+  }
+{% endschema %}

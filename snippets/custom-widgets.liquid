@@ -1,0 +1,66 @@
+{%- assign _pos = custom-widgets -%}
+{%- if _pos != empty -%}
+
+{%- for i in (1..MAX_CUSTOM_WIDGETS) -%}
+{%- assign cwidget_use		= 'cwidget_use_'		| append: i -%}
+{%- assign cwidget_pos		= 'cwidget_pos_' 		| append: i -%}
+
+{%- assign _cwidget_use		= settings[cwidget_use] -%}
+{%- assign _cwidget_pos		= settings[cwidget_pos] -%}
+
+{%- comment -%}
+<!-- Layout config is hidden in current version. 
+For now, use '0' as 'ALL PAGES' and '1' as 'HOMEPAGE' -->
+{%- assign cwidget_layout = 'cwidget_layout_' | append: i -%}
+{%- assign _cwidget_layout = settings[cwidget_layout] -%}
+{%- endcomment -%}
+
+{%- assign _cwidget_layout = '1' -%}
+
+{%- if _pos == 'top_block' -%}
+{%- assign _cwidget_layout = '0' -%}
+{%- endif -%}
+
+{%- if _cwidget_layout == '0' or _cwidget_layout == CURRENT_LAYOUT -%}
+{%- if _cwidget_use and _cwidget_pos == _pos -%}
+
+{%- assign cwidget_type		= 'cwidget_type_'		| append: i -%}
+{%- assign cwidget_html		= 'cwidget_html_'		| append: i -%}
+{%- assign cwidget_heading	= 'cwidget_head_'		| append: i -%}
+{%- assign cwidget_page		= 'cwidget_page_'		| append: i -%}
+{%- assign cwidget_order		= 'cwidget_order_'		| append: i -%}
+
+{%- assign _cwidget_type		= settings[cwidget_type] -%}
+
+{%- if _pos != 'top_block' -%}
+<div data-order="{{settings[cwidget_order]}}">
+{%- endif -%}
+{%- if _cwidget_type == '0' -%}
+{{settings[cwidget_html]}}
+{%- else -%}
+{%- assign _t = 'footer_bottom,footer_top,footer_left,footer_right,customfooter_top,customfooter_bottom' | split: ',' -%}
+{%- if _t contains _cwidget_pos -%}
+<h4>{{settings[cwidget_heading]}}</h4>
+<div class="strip-line"></div>
+{{pages[settings[cwidget_page]].content}}
+{%- else -%}
+<div class="box">
+  <div class="box-heading">
+    {{settings[cwidget_heading]}}
+  </div>
+  <div class="strip-line"></div>
+  <div class="box-content">
+    {{pages[settings[cwidget_page]].content}}
+  </div>
+</div>
+{%- endif -%}
+{%- endif -%}
+{%- if _pos != 'top_block' -%}
+</div>
+{%- endif -%}
+
+{%- endif -%}
+{%- endif -%}
+{%- endfor -%}
+
+{%- endif -%}

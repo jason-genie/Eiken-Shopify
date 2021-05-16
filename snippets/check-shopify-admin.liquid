@@ -1,0 +1,4 @@
+{%- assign is_shopify_admin = false -%}
+{%- capture check_shopify_admin -%}{{ content_for_header }}{%- endcapture -%}
+{%- if check_shopify_admin contains 'design_mode' -%}{% assign is_shopify_admin = true %}{%- endif -%}
+{{- is_shopify_admin -}}

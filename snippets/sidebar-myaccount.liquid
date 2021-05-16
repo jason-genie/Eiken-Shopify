@@ -1,0 +1,24 @@
+{%- comment -%}----- Link List -----{%- endcomment -%}
+{%- if settings.sb_account_linklist -%}
+{%- assign list_temp = settings.sb_account_linklist_list -%}
+{%- if linklists[list_temp] != empty -%}
+{%- assign list = linklists[list_temp] -%}
+<div class="box box-with-links box-no-advanced">
+  <div class="box-content">
+    <ul class="list-box">
+      {%- for my_link in list.links -%}
+      <li><a href="{{my_link.url}}" title="{{my_link.title}}">{{my_link.title}}</a></li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+{%- endif -%}
+{%- endif -%}
+{%- comment -%}----- Banner -----{%- endcomment -%}
+{%- if settings.sb_account_banner -%}
+<div class="banners">
+  <div class="clearfix">
+    <a href="{{settings.sb_account_banner_link}}"><img src="{{'sb_account_banner.png' | asset_url}}" alt="Banner" /></a>
+  </div>
+</div>
+{%- endif -%}

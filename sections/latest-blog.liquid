@@ -1,0 +1,166 @@
+<style>
+  #latest_blog-{{section.id}} {
+    background-color: {{section.settings.bg_color}};
+  }
+  #latest_blog-{{section.id}} .box .box-heading{
+    {%- if section.settings.heading_color != blank -%}
+    color: {{section.settings.heading_color}};
+    {%- endif -%}
+    font-size: {{section.settings.heading_fontsize | append: "px"}};
+    font-weight: {{section.settings.heading_fontweight}}!important;
+    {%- if section.settings.heading_border_color != blank -%}
+    border-bottom-color: {{section.settings.heading_border_color}};
+    {%- endif -%}
+  }
+</style>
+<div data-placement_fullwidth="{%- if section.settings.placement_fullwidth -%}1{%- else -%}0{%- endif -%}"
+     id="latest_blog-{{section.id}}" class="{% if section.settings.placement_fullwidth %}section-placement-fullwidth{% endif %} product-tab-arrow-beside latest_blog_content{%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}" data-section-id="{{ section.id }}" data-section-type="latest-blog">
+	{%- assign _lblog_mobile		= section.settings.visible_on_mobile -%}
+    {%- assign _lblog_heading	= section.settings.lblog_head -%}
+    {%- assign _lblog_blog 		= blogs[section.settings.lblog_blog] -%}
+    {%- assign _lblog_limit		= section.settings.lblog_limit | plus: 0 -%}
+    {%- assign _lblog_order		= 1 -%}
+  	{%- assign _lblog_skin		= section.settings.lblog_skin -%}
+  	{%- assign _skin_snippet = 'latest-blog-' | append: _lblog_skin -%}
+	{%- include _skin_snippet -%}
+</div>
+{% schema %}
+  {
+    "name": "Latest Blogs",
+	"class": "index-section section-wrapper",
+    "settings": [
+		{
+          "type": "header",
+          "content": "Layout"
+        },
+  		{
+          "type": "checkbox",
+          "id": "placement_fullwidth",
+          "label": "Force Full Width"
+        },
+		{
+          "type": "checkbox",
+          "id": "visible_on_mobile",
+          "label": "Show on Mobile",
+          "default": true
+        },
+		{
+          "type": "header",
+          "content": "Content"
+        },
+  		{
+          "type": "text",
+          "id": "lblog_head",
+          "label": "Heading"
+        },
+        {
+          "type": "blog",
+          "id": "lblog_blog",
+          "label": "Choose a Blog"
+        },
+        {
+          "type": "text",
+          "id": "lblog_limit",
+          "label": "Articles Limit"
+        },
+		{
+          "type": "header",
+          "content": "Skins"
+        },
+		{
+			"type": "select",
+            "id": "lblog_skin",
+            "label": "Choose a Skin",
+			"options": [
+				{
+					"value": "default",
+					"label": "Default"
+				},
+				{
+					"value": "default2",
+					"label": "Default 2"
+				},
+				{
+					"value": "cameras",
+					"label": "Cameras"
+				},
+				{
+					"value": "cosmetics",
+					"label": "Cosmetics"
+				},
+				{
+					"value": "home",
+					"label": "Home"
+				},
+				{
+					"value": "homev2",
+					"label": "Home Version 2"
+				},
+				{
+					"value": "medic",
+					"label": "Medic"
+				},
+				{
+					"value": "wine",
+					"label": "Wine"
+				}
+			]
+		},
+		{
+			"type" :"header",
+			"content": "Styling"
+		},
+		{
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background"
+        },
+		{
+			"type" :"header",
+			"content": "- Heading"
+		},
+		{
+            "type": "color",
+            "id": "heading_color",
+            "label": "Color"
+        },
+		{
+            "type": "color",
+            "id": "heading_border_color",
+            "label": "Border Color"
+        },
+        {
+          "type": "range",
+          "id": "heading_fontsize",
+          "min": 10,
+          "max": 70,
+          "step": 1,
+          "unit": "px",
+          "label": "FontSize",
+          "default": 25
+        },
+        {
+          "type": "range",
+          "id": "heading_fontweight",
+          "min": 100,
+          "max": 900,
+          "step": 100,
+          "label": "FontWeight",
+          "default": 400
+        }
+	],
+	"presets": [
+		{
+          "name": "Latest Blogs",
+          "category": "Content",
+          "settings": {
+              "visible_on_mobile": true,
+              "lblog_head": "Latest Blogs",
+			  "lblog_blog": "",
+			  "lblog_limit": "3",
+			  "lblog_skin":"cameras"
+          }
+		}
+	]
+  }
+{% endschema %}

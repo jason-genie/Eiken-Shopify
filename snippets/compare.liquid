@@ -1,0 +1,8 @@
+<a href="javascript:void(0)" rel="nofollow" data-pid="{{- my_product.handle -}}_sp_{{- my_product.id -}}" class="add_to_compare btn-action {%- if compare != true -%}{{" btooltip"}}{%- endif -%}" data-add="{{- "products.product.add_to_compare" | t -}}" data-added="{{- "products.product.added_compare" | t -}}" title="{{- "products.product.add_to_compare" | t -}}">
+  {%- if compare == true -%}
+  <i class="fa fa-exchange" aria-hidden="true"></i>
+  <span>{{- "products.product.add_to_compare" | t -}}</span>
+  {%- else -%}
+  <i class="fa fa-exchange" aria-hidden="true"></i>
+  {%- endif -%}
+</a>

@@ -1,0 +1,35 @@
+<div class="linklist">
+  {%- if settings.footer_linklist2_heading != '' -%}
+  <h3 class="title">{{settings.footer_linklist2_heading}}</h3>
+  <div class="strip-line"></div>
+  {%- endif -%}
+  {%- if footer-linklist2 == '2' -%}
+  {%- assign list = linklists[settings.footer_linklist2] -%}
+  {%- assign limit = list.links.size | plus:1 | divided_by:2 -%}
+  <div class="row">
+    <div class="col-sm-6">
+      <ul>
+        {%- for link in list.links limit:limit -%}
+        <li><a href="{{link.url}}">{{link.title}}</a></li>
+        {%- endfor -%}
+      </ul>
+    </div>
+    <div class="col-sm-6">
+      <ul>
+        {%- for link in list.links offset:limit -%}
+        <li><a href="{{link.url}}">{{link.title}}</a></li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+  {%- else -%}
+  <div class="clearfix">
+    <ul>
+      {%- assign list = linklists[settings.footer_linklist2] -%}
+      {%- for link in list.links -%}
+      <li><a href="{{link.url}}">{{link.title}}</a></li>
+      {%- endfor -%}
+    </ul>
+  </div>
+  {%- endif -%}
+</div>

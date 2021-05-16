@@ -1,0 +1,33 @@
+<div class="{% if product.images.size <= 6 %}product-thumbnails-no-slick {% endif %} product-thumbnails{%- if settings.product_design == "sidebar" or settings.product_design == "simple" or settings.product_design == "bottom" or  settings.product_design == "full-screen" or  settings.product_design == "split" -%}-bottom{%- endif -%}" id="product-thumbnails-{{section.id}}" data-vertical="{%- if settings.product_design == "left" or settings.product_design == "compact2" -%}1{%- else -%}0{%- endif -%}">
+  <div class="thumbnails">
+    {%- assign _f_image_alt = featured_image_alt -%}
+    {%- if featured_image_alt contains 'iframe' -%}
+    {%- assign _a_image_alt = featured_image_alt |  split: "<iframe" -%}
+    {%- assign  _f_image_alt = _a_image_alt[0] | trim -%}
+    {%- endif -%}
+    <div data-href="{{featured_image | img_url:"master"}}"
+         data-color="{{_f_image_alt}}"
+         class="thumbnails-item current {% if current_variant.image.alt contains 'iframe' %}video-thumb{% endif %}">
+      <img data-src="{{ featured_image | img_url: '70x70' }}" 
+           class="lazy attachment-shop_thumbnail size-shop_thumbnail" alt="{{ featured_image_alt | escape }}" 
+           srcset="{{ featured_image | img_url: '70x70' }} 70w, {{ featured_image | img_url: '150x' }} 150w, {{ featured_image | img_url: '235x' }} 235w, {{ featured_image | img_url: '768x' }} 768w" sizes="(max-width: 70px) 100vw, 70px" />
+    </div>
+    {%- for image in product.images -%}
+    {%- unless image == featured_image -%}
+    {%- assign _image_alt = image.alt -%}
+    {%- if image.alt contains 'iframe' -%}
+    {%- assign _a_image_alt = image.alt |  split: "<iframe" -%}
+    {%- assign _image_alt = _a_image_alt[0] | trim -%}
+    {%- endif -%}
+    <div data-href="{{image.src | img_url:"master"}}"
+         data-color="{{_image_alt}}"
+         class="thumbnails-item {% if image.alt contains 'iframe' %}video-thumb{% endif %}">
+      <img data-src="{{ image.src | img_url: '70x70' }}" 
+           class="lazy attachment-shop_thumbnail size-shop_thumbnail" 
+           alt="{{ image | escape }}" 
+           srcset="{{ image.src | img_url: '70x70' }} 70w, {{ image.src | img_url: '150x' }} 150w, {{ image.src | img_url: '235x' }} 235w, {{ image.src | img_url: '768x' }} 768w" sizes="(max-width: 70px) 100vw, 70px" />
+    </div>
+    {%- endunless -%}
+    {%- endfor -%}
+  </div>
+</div>

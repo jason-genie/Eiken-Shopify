@@ -1,0 +1,21 @@
+<div class="featured">
+  {%- if settings.footer_product_heading != '' -%}<h3 class="title">{{settings.footer_product_heading}}</h3>{%- endif -%}
+  <div class="strip-line"></div>
+  <div class="clearfix">
+    {%- assign featuredC = collections[settings.footer_product_collection] -%}
+    <div class="advanced-grid-products">
+      {%- for featuredP in featuredC.products limit: settings.footer_product_limit -%}
+      {%- assign featuredV = featuredP.selected_or_first_available_variant -%}
+      <div class="product clearfix">
+        <div class="image">
+          <a href="{{featuredP.url}}"><img src="{{featuredP.featured_image | product_img_url:'small'}}" alt="{{featuredP.title | escape}}" /></a>
+        </div>
+        <div class="right">
+          <div class="name"><a href="{{featuredP.url}}">{{featuredP.title}}</a></div>
+          <div class="price"><span class="money">{{featuredV.price | money}}</span>{%- if featuredV.compare_at_price > featuredV.price -%}{{' '}}<span class="price-old money">{{featuredV.compare_at_price | money}}</span>{%- endif -%}</div>
+        </div>
+      </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>

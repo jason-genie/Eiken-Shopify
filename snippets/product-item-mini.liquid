@@ -1,0 +1,44 @@
+{%- assign current_variant_item = my_product_mini.selected_or_first_available_variant -%}
+{%- assign featured_image_item = current_variant_item.image.src | default:my_product_mini.featured_image -%}
+{%- assign featured_image_width = current_variant_item.image.width | default:my_product_mini.featured_image.width -%}
+{%- assign featured_image_height = current_variant_item.image.height | default:my_product_mini.featured_image.height -%}
+{%- assign my_instructions_mini = my_product_mini.metafields.info -%}
+{%- if product-item-mini != blank -%}
+{%- assign product_mini_img_url = product-item-mini -%}
+{%- else -%}
+{%- assign product_mini_img_url = '100x100'  -%}
+{%- if settings.image_mini_width !=  blank and settings.image_mini_height !=  blank -%}
+{%- assign image_mini_width = settings.image_mini_width -%}
+{%- assign image_mini_height = settings.image_mini_height -%}
+{%- capture product_mini_img_url -%}{{- image_mini_width -}}x{{- image_mini_height -}}{%- endcapture -%}
+{%- endif -%}
+{%- endif -%}
+<div class="product-inner  clearfix">
+  {%- assign shop_second_image = false -%}
+  {%- if my_product_mini.images.size > 1 and settings.shop_second_image != '' -%}
+  {%- assign shop_second_image = true -%}
+  {%- endif -%}
+  <div class="un-product-thumbnail">
+    <a class="un-loop-thumbnail" href="{{ my_product_mini.url | within: collection }}" >
+       <img src="{{"transparent.png" | asset_url}}" 
+           data-original="{{ featured_image_item  | product_img_url:product_img_url }}" 
+           data-lazy="{{ featured_image_item | product_img_url:product_img_url }}" 
+            alt="{{ my_product_mini.title | escape }}"
+           class="lazy product-item-image" width="{{- featured_image_width -}}" height="{{- featured_image_height -}}">
+    </a>
+  </div>
+  <div class="un-product-details">
+    <h3><a href="{{ my_product_mini.url | within: collection }}">{{ my_product_mini.title }}</a></h3>
+    <div class="price" data-product-id="{{my_product_mini.id}}">
+      {%- if my_product_mini.available -%}
+      {%- if current_variant_item.compare_at_price > current_variant_item.price -%}
+      <span class="price-old money">{{current_variant_item.compare_at_price | money}}</span>
+      {%- endif -%}
+      <span class="price-new money">{{current_variant_item.price | money}}</span>
+      {%- else -%}
+      <span class="price-old">{{'products.product.sold_out' | t}}</span>
+      {%- endif -%}
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>

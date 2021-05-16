@@ -1,0 +1,156 @@
+{%- assign blocks = section.blocks | sort: 'collection.all_products_count' -%}
+<div id="col-main" class="center-column content-with-background">
+  <div class="row categories-wall">
+    {% if section.settings.display_type == 'all' %}
+    {% case section.settings.sort %}
+    {% when 'products_high' or 'products_low' %}
+    {%- assign collections = collections | sort: 'all_products_count' -%}
+    {% when 'date' or 'date_reversed' %}
+    {%- assign collections = collections | sort: 'published_at' -%}
+    {% endcase %}
+    {% if section.settings.sort == 'products_low' or section.settings.sort == 'date' or section.settings.sort == 'alphabetical' %}
+    {%- for my_collection in collections -%}
+    {%- unless my_collection.handle == 'all' -%}
+    <div class="col-sm-4">
+      <div class="category-wall">
+        <div class="image">
+          <a href="{{my_collection.url}}">
+            {%- if my_collection.image -%}
+            <img src="{{my_collection.image.src | collection_img_url: 'large'}}" alt="{{my_collection.title}}" />
+            {%- else -%}
+            <img src="{{my_collection.products.first.featured_image | product_img_url: 'large'}}" alt="{{my_collection.title}}" />
+            {%- endif -%}
+          </a>
+        </div>
+        <h1><a href="{{my_collection.url}}">{{my_collection.title}}</a></h1>
+        <ul>
+          <li>{{my_collection.products_count}} {{my_collection.products_count | pluralize: 'collections.general.product', 'collections.general.products' | t}}</li>
+        </ul>
+        <a href="{{my_collection.url}}" class="more-categories">{{'collections.general.more_products' | t}}</a>
+      </div>
+    </div>
+    {%- endunless -%}
+    {%- endfor -%}
+    {% else %}
+    {%- for my_collection in collections reversed -%}
+    {%- unless my_collection.handle == 'all' -%}
+    <div class="col-sm-4">
+      <div class="category-wall">
+        <div class="image">
+          <a href="{{my_collection.url}}">
+            {%- if my_collection.image -%}
+            <img src="{{my_collection.image.src | collection_img_url: 'large'}}" alt="{{my_collection.title}}" />
+            {%- else -%}
+            <img src="{{my_collection.products.first.featured_image | product_img_url: 'large'}}" alt="{{my_collection.title}}" />
+            {%- endif -%}
+          </a>
+        </div>
+        <h1><a href="{{my_collection.url}}">{{my_collection.title}}</a></h1>
+        <ul>
+          <li>{{my_collection.products_count}} {{my_collection.products_count | pluralize: 'collections.general.product', 'collections.general.products' | t}}</li>
+        </ul>
+        <a href="{{my_collection.url}}" class="more-categories">{{'collections.general.more_products' | t}}</a>
+      </div>
+    </div>
+    {%- endunless -%}
+    {%- endfor -%}
+    {% endif %}
+    {% else %}
+    {% for block in section.blocks %}
+    {%- assign my_collection = collections[block.settings.collection] -%}
+    <div class="col-sm-4">
+      <div class="category-wall">
+        <div class="image">
+          <a href="{{my_collection.url}}">
+            {%- if my_collection.image -%}
+            <img src="{{my_collection.image.src | collection_img_url: 'large'}}" alt="{{my_collection.title}}" />
+            {%- else -%}
+            <img src="{{my_collection.products.first.featured_image | product_img_url: 'large'}}" alt="{{my_collection.title}}" />
+            {%- endif -%}
+          </a>
+        </div>
+        <h1><a href="{{my_collection.url}}">{{my_collection.title}}</a></h1>
+        <ul>
+          <li>{{my_collection.products_count}} {{my_collection.products_count | pluralize: 'collections.general.product', 'collections.general.products' | t}}</li>
+        </ul>
+        <a href="{{my_collection.url}}" class="more-categories">{{'collections.general.more_products' | t}}</a>
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}   
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Collections list page",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "All of your collections are listed by default. To customize your list, choose 'Selected' and add collections."
+      },
+      {
+        "type": "radio",
+        "id": "display_type",
+        "label": "Select collections to show",
+        "default": "all",
+        "options": [
+          {
+            "value": "all",
+            "label": "All"
+          },
+          {
+            "value": "selected",
+            "label": "Selected"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "sort",
+        "label": "Sort collections by:",
+        "info": "Sorting only applies when 'All' is selected",
+        "default": "alphabetical",
+        "options": [
+          {
+            "value": "products_high",
+            "label": "Product count, high to low"
+          },
+          {
+            "value": "products_low",
+            "label": "Product count, low to high"
+          },
+          {
+            "value": "alphabetical",
+            "label": "Alphabetically, A-Z"
+          },
+          {
+            "value": "alphabetical_reversed",
+            "label": "Alphabetically, Z-A"
+          },
+          {
+            "value": "date",
+            "label": "Date, old to new"
+          },
+          {
+            "value": "date_reversed",
+            "label": "Date, new to old"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "label": "Collection",
+            "id": "collection",
+            "type": "collection"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

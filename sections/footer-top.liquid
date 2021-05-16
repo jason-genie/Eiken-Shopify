@@ -1,0 +1,1746 @@
+<style> 
+  .footer .container>.row>div#footer-top-{{section.id}}:before {
+  	display: none;
+  }
+{%- for block in section.blocks limit: section.blocks.size -%}
+  #footer-top-{{section.id}} #footer-blocks-top-{{block.id}}.footer-blocks-top .footer-block .caption{
+    {%- if block.settings.footer_info_caption_size != '' -%}
+    font-size: {{block.settings.footer_info_caption_size | plus:0}}px;
+    {%- endif -%}
+    {%- if block.settings.footer_info_caption_weight != blank -%}
+    font-weight: {{block.settings.footer_info_caption_weight | plus:0}} !important;
+    {%- endif -%}
+    {%- if settings.heading_font == 'Teko' -%}
+    text-transform: none;
+    {%- endif -%}
+  }
+  #footer-top-{{section.id}} #footer-blocks-top-{{block.id}}.footer-blocks-top .footer-block .content{
+    {%- if block.settings.footer_info_content_size != blank -%}
+    font-size: {{block.settings.footer_info_content_size | plus:0}}px;
+    {%- endif -%}
+    {%- if block.settings.footer_info_content_weight != blank -%}
+    font-weight: {{block.settings.footer_info_content_weight | plus:0}} !important;
+    {%- endif -%}
+  }
+  #footer-top-{{section.id}} #footer-blocks-top-{{block.id}}.footer-blocks-top .cell1 .{{block.settings.footer_info_cell1_decor}}{
+    color: {{block.settings.footer_info_cell1_decor_color}};
+  }
+  #footer-top-{{section.id}} #footer-blocks-top-{{block.id}}.footer-blocks-top .cell2 .{{block.settings.footer_info_cell2_decor}}{
+    color: {{block.settings.footer_info_cell2_decor_color}};
+  }
+  #footer-top-{{section.id}} #footer-blocks-bottom-{{block.id}}.footer-blocks-bottom .footer-block .caption{
+    {%- if block.settings.footer_info_caption_size != blank -%}
+    font-size: {{block.settings.footer_info_caption_size | plus:0}}px;
+    {% endif %}
+    {%- if block.settings.footer_info_caption_weight != blank -%}
+    font-weight: {{block.settings.footer_info_caption_weight | plus:0}} !important;
+    {%- endif -%}
+  }
+  #footer-top-{{section.id}} #footer-blocks-bottom-{{block.id}}.footer-blocks-bottom .footer-block .content{
+    {%- if block.settings.footer_info_content_size != blank -%}
+    font-size: {{block.settings.footer_info_content_size | plus:0}}px;
+    {%- endif -%}
+    {%- if block.settings.footer_info_content_weight != blank -%}
+    font-weight: {{block.settings.footer_info_content_weight | plus:0}} !important;
+    {%- endif -%}
+  }
+
+  #footer-top-{{section.id}} #footer-blocks-bottom-{{block.id}}.footer-blocks-bottom .cell1 .{{block.settings.footer_info_cell1_decor}}{
+    color: {{block.settings.footer_info_cell1_decor_color}};
+  }
+  #footer-top-{{section.id}} #footer-blocks-bottom-{{block.id}}.footer-blocks-bottom .cell2 .{{block.settings.footer_info_cell2_decor}}{
+    color: {{block.settings.footer_info_cell2_decor_color}};
+  }
+  #footer-top-{{section.id}} #footer-blocks-bottom-{{block.id}}.footer-blocks-bottom .cell3 .{{block.settings.footer_info_cell3_decor}}{
+    color: {{block.settings.footer_info_cell3_decor_color}};
+  }
+  
+  {%- if block.settings.footer_social_size != blank -%}
+  #footer-top-{{section.id}} #social-icons-{{block.id}}.social-icons li {
+    font-size:{{block.settings.footer_social_size | plus:0}}px;
+  }
+  {%- endif -%}
+{%- endfor -%}
+</style>  
+
+<div id="footer-top-{{section.id}}"  class="col-sm-12 {%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}" data-section-id="{{ section.id }}" data-section-type="footer-top">
+    {%- for block in section.blocks limit: section.blocks.size -%}
+    {%- case block.type -%}
+    {%- when 'about_us' -%}
+    {%- include 'footer-block-about' -%}
+    {%- when 'banner'- %}
+    {%- include 'footer-block-banner' -%}
+    {%- when 'banner2'- %}
+    {%- include 'footer-block-banner2' -%}
+    {%- when 'html' -%}
+    {%- include 'footer-block-html' -%}
+    {%- when 'info_block_1' -%}
+    {%- include 'footer-block-info-1' -%}
+    {%- when 'info_block_2' -%}
+    {%- include 'footer-block-info-2' -%}
+    {%- when 'info_block_3' -%}
+    {%- include 'footer-block-info-3' -%}
+    {%- when 'newsletter' -%}
+    {%- include 'footer-block-newsletter' -%}
+    {%- when 'social_icon' -%}
+    {%- include 'footer-block-social-icon' -%}
+    {%- when 'featured_product' -%}
+    {%- include 'footer-block-product' -%}
+    {%- when 'linklist' -%}
+    {%- include 'footer-block-linklist' -%}
+    {%- else -%}
+    {%- endcase -%}
+    {%- endfor -%}
+</div>
+{% schema %}
+  {
+    "name": "Footer Top",
+    "class": "index-section section-wrapper row",
+    "settings": [
+		{
+          "type": "checkbox",
+          "id": "visible_on_mobile",
+          "label": "Show on Mobile",
+          "default": true
+        }
+	],
+	"blocks":[
+		{
+			"type":"about_us",
+			"name": "About Us",
+			"settings": [
+                {
+                  "type": "text",
+                  "id": "footer_about_heading",
+                  "label": "Heading",
+				  "default": "About Us"
+                },
+                {
+                  "type": "checkbox",
+                  "id": "footer_about_logo",
+                  "label": "Use Logo",
+				  "default": true
+                },
+                {
+                  "type": "image_picker",
+                  "id": "footer_about",
+                  "label": "Pick a Logo"
+                },
+                {
+                  "type": "textarea",
+                  "id": "footer_about_address",
+                  "label": "Address",
+				  "default": "Your Address Goes Here"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_about_phone",
+                  "label": "Phone",
+				  "default": "123-456-7890"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_about_email",
+                  "label": "Email",
+				  "default": "address@email.com"
+                }
+			]
+		},
+		{
+			"type": "banner",
+			"name": "Banners",
+			"settings": [
+				{
+                  "type": "header",
+                  "content": "Layout"
+                },
+                {
+                  "type": "select",
+                  "id": "footer_banner_layout",
+                  "label": "Columns Width",
+                  "options": [
+                    {
+                      "value": "12",
+                      "label": "1 Column (100%)"
+                    },
+                    {
+                      "value": "6-6",
+                      "label": "2 Columns (50% - 50%)"
+                    },
+                    {
+                      "value": "8-4",
+                      "label": "2 Columns (67% - 33%)"
+                    },
+                    {
+                      "value": "4-8",
+                      "label": "2 Columns (33% - 67%)"
+                    },
+                    {
+                      "value": "4-4-4",
+                      "label": "3 Columns (33% - 33% - 33%)"
+                    },
+                    {
+                      "value": "6-3-3",
+                      "label": "3 Columns (50% - 25% - 25%)"
+                    },
+                    {
+                      "value": "3-6-3",
+                      "label": "3 Columns (25% - 50% - 25%)"
+                    },
+                    {
+                      "value": "3-3-6",
+                      "label": "3 Columns (25% - 25% - 50%)"
+                    }
+                  ],
+				  "default": "4-4-4"
+                },
+                {
+                  "type": "header",
+                  "content": "Column #1"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "footer_banner1",
+                  "label": "Pick a Banner"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_banner1_link",
+                  "label": "Link"
+                },
+                {
+                  "type": "header",
+                  "content": "Column #2"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "footer_banner2",
+                  "label": "Pick a Banner"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_banner2_link",
+                  "label": "Link"
+                },
+                {
+                  "type": "header",
+                  "content": "Column #3"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "footer_banner3",
+                  "label": "Pick a Banner"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_banner3_link",
+                  "label": "Link"
+                }
+			]
+		},
+		{
+			"type": "banner2",
+			"name": "Banners Content",
+			"settings": [
+				{
+					"type": "header",
+					"content": "General"
+				},
+				{
+					"type": "header",
+					"content": "Content #1"
+				},
+				{
+					"type" : "select",
+					"id": "icon_type_1",
+					"label": "Icon Type",
+					"options": [
+						{
+							"value": "",
+							"label": "Font Awesome Icon"
+						},
+						{
+							"value": "svg",
+							"label": "SVG content"
+						}
+					]
+				},
+				{
+				  "type" :"text", 
+                  "label": "Font Awesome Icon",
+                  "id": "icon_class_1",
+				  "default": "fa-truck",
+                  "info": "[Other icons?](https:\/\/fontawesome.com\/v4.7.0\/icons)"
+				},
+				{
+					"type": "html",
+					"id": "svg_content_1",
+					"label": "SVG Content"
+				},
+				{
+					"type": "text",
+					"id": "content_1",
+					"label": "Content"
+				},
+				{
+					"type": "checkbox",
+					"id": "line_1",
+					"label": "Line"
+				},
+				{
+					"type": "header",
+					"content": "Content #2"
+				},
+				{
+					"type" : "select",
+					"id": "icon_type_2",
+					"label": "Icon Type",
+					"options": [
+						{
+							"value": "",
+							"label": "Font Awesome Icon"
+						},
+						{
+							"value": "svg",
+							"label": "SVG content"
+						}
+					]
+				},
+				{
+				  "type" :"text", 
+                  "label": "Font Awesome Icon",
+                  "id": "icon_class_2",
+				  "default": "fa-refresh",
+                  "info": "[Other icons?](https:\/\/fontawesome.com\/v4.7.0\/icons)"
+				},
+				{
+					"type": "html",
+					"id": "svg_content_2",
+					"label": "SVG Content"
+				},
+				{
+					"type": "text",
+					"id": "content_2",
+					"label": "Content"
+				},
+				{
+					"type": "checkbox",
+					"id": "line_2",
+					"label": "Line"
+				},
+				{
+					"type": "header",
+					"content": "Content #3"
+				},
+				{
+					"type" : "select",
+					"id": "icon_type_3",
+					"label": "Icon Type",
+					"options": [
+						{
+							"value": "",
+							"label": "Font Awesome Icon"
+						},
+						{
+							"value": "svg",
+							"label": "SVG content"
+						}
+					]
+				},
+				{
+				  "type" :"text", 
+                  "label": "Font Awesome Icon",
+                  "id": "icon_class_3",
+				  "default": "fa-life-ring",
+                  "info": "[Other icons?](https:\/\/fontawesome.com\/v4.7.0\/icons)"
+				},
+				{
+					"type": "html",
+					"id": "svg_content_3",
+					"label": "SVG Content"
+				},
+				{
+					"type": "text",
+					"id": "content_3",
+					"label": "Content"
+				},
+				{
+					"type": "header",
+					"content": "Styling"
+				},
+				{
+					"type": "color",
+					"id": "bg_color",
+					"label": "Background"
+				},
+                {
+                  "type": "range",
+                  "id": "content_fontsize",
+                  "min": 10,
+                  "max": 50,
+                  "step": 1,
+                  "unit": "px",
+                  "label": "FontSize",
+                  "default": 15
+                },
+                {
+                  "type": "range",
+                  "id": "content_fontweight",
+                  "min": 100,
+                  "max": 900,
+                  "step": 100,
+                  "label": "FontWeight",
+                  "default": 400
+                },
+				{
+					"type": "color",
+					"id": "icon_color",
+					"label": "Icon"
+				},
+				{
+					"type": "color",
+					"id": "icon_hover_color",
+					"label": "Icon Hover"
+				},
+				{
+					"type": "color",
+					"id": "color",
+					"label": "Text Color"
+				},
+				{
+					"type": "color",
+					"id": "hover_color",
+					"label": "Text Hover Color"
+				},
+				{
+					"type": "color",
+					"id": "line_color",
+					"label": "Line Color"
+				}
+			]
+		},
+		{
+			"type": "html",
+			"name": "Custom HTML",
+			"settings": [
+				{
+                  "type": "text",
+                  "id": "footer_html_heading",
+                  "label": "Heading",
+                  "default": "Heading"
+                },
+                {
+                  "type": "textarea",
+                  "id": "footer_html_custom",
+                  "label": "Your HTML [( ? )](https:\/\/youtu.be\/s7s8hWXVxGE)",
+				  "default": "This is HTML Content"
+                }
+			]
+		},
+		{
+			"type": "info_block_1",
+			"name": "Info Block 1",
+			"settings": [
+				{
+                  "type": "header",
+                  "content": "--- Layout ---"
+                },
+				{
+                  "type": "select",
+                  "id": "footer_info_layout",
+                  "label": "Columns Width",
+                  "options": [
+                    {
+                      "value": "4-4-4",
+                      "label": "3 Columns (33% - 33% - 33%)"
+                    },
+                    {
+                      "value": "6-3-3",
+                      "label": "3 Columns (50% - 25% - 25%)"
+                    },
+                    {
+                      "value": "3-6-3",
+                      "label": "3 Columns (25% - 50% - 25%)"
+                    },
+                    {
+                      "value": "3-3-6",
+                      "label": "3 Columns (25% - 25% - 50%)"
+                    },
+                    {
+                      "value": "3-5-4",
+                      "label": "3 Columns (25% - 42% - 33%)"
+                    },
+                    {
+                      "value": "4-5-3",
+                      "label": "3 Columns (33% - 42% - 25%)"
+                    }
+                  ]
+                },
+                {
+                  "type": "header",
+                  "content": "--- Styling ---"
+                },
+				{
+                  "type": "header",
+                  "content": "Caption"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_info_caption_size",
+                  "label": "Font Size (in pixels, optional)"
+                },
+                {
+                  "type": "select",
+                  "id": "footer_info_caption_weight",
+                  "label": "Font Weight",
+				  "options": [
+					  {
+                          "value": "100",
+                          "label": "100"
+                      },
+                      {
+                          "value": "200",
+                          "label": "200"
+                      },
+                      {
+                          "value": "300",
+                          "label": "300"
+                      },
+                      {
+                          "value": "400",
+                          "label": "400"
+                      },
+                      {
+                          "value": "500",
+                          "label": "500"
+                      },
+                      {
+                          "value": "600",
+                          "label": "600"
+                      },
+                      {
+                          "value": "700",
+                          "label": "700"
+                      },
+                      {
+                          "value": "800",
+                          "label": "800"
+                      }
+					]
+                },
+				{
+                  "type": "header",
+                  "content": "Content"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_info_content_size",
+                  "label": "Font Size (in pixels, optional)"
+                },
+				{
+                  "type": "select",
+                  "id": "footer_info_content_weight",
+                  "label": "Font Weight",
+				  "options": [
+                      {
+                          "value": "100",
+                          "label": "100"
+                      },
+                      {
+                          "value": "200",
+                          "label": "200"
+                      },
+                      {
+                          "value": "300",
+                          "label": "300"
+                      },
+                      {
+                          "value": "400",
+                          "label": "400"
+                      },
+                      {
+                          "value": "500",
+                          "label": "500"
+                      },
+                      {
+                          "value": "600",
+                          "label": "600"
+                      },
+                      {
+                          "value": "700",
+                          "label": "700"
+                      },
+                      {
+                          "value": "800",
+                          "label": "800"
+                      }
+					]
+                },
+				{
+                  "type": "header",
+                  "content": "--- Columns ---"
+                },
+                {
+                  "type": "header",
+                  "content": "Column #1"
+                },
+                {
+                  "type": "select",
+                  "id": "footer_info_cell1_align",
+                  "label": "Alignment",
+                  "options": [
+                    {
+                      "value": "center",
+                      "label": "Center"
+                    },
+                    {
+                      "value": "left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "right",
+                      "label": "Right"
+                    }
+                  ],
+				  "default": "center"
+                },
+                {
+                    "type": "select",
+                    "id": "footer_info_cell1_icon",
+                    "label": "Use Icon",
+                    "options": [
+						{
+                            "value": "",
+                            "label": "None"
+                        },
+                        {
+                            "value": "svg",
+                            "label": "SVG Content"
+                        },
+                        {
+                            "value": "icon",
+                            "label": "Image"
+                        }
+                    ]
+                },
+                {
+                    "type": "html",
+                    "id": "footer_info_svg_cell1",
+                    "label": "SVG content"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "footer_info_cell1",
+                  "label": "Pick an Icon"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_info_cell1_caption",
+                  "label": "Caption",
+				  "default": "Your Caption"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_info_cell1_content",
+                  "label": "Content",
+				  "default": "Your Text Goes Here"
+                },
+                {
+                  "type": "checkbox",
+                  "id": "footer_info_cell1_inline",
+                  "label": "Inline Caption & Content",
+				  "default": false
+                },
+                {
+                  "type": "select",
+                  "id": "footer_info_cell1_decor",
+                  "label": "Highlighting",
+                  "options": [
+                    {
+                      "value": "default",
+                      "label": "Default"
+                    },
+                    {
+                      "value": "caption",
+                      "label": "Caption"
+                    },
+                    {
+                      "value": "content",
+                      "label": "Content"
+                    }
+                  ],
+				  "default": "default"
+                },
+                {
+                  "type": "color",
+                  "id": "footer_info_cell1_decor_color",
+                  "label": "Highlight Color",
+				  "default": "#d42f37"
+                },
+                {
+                  "type": "header",
+                  "content": "Column #2"
+                },
+                {
+                  "type": "select",
+                  "id": "footer_info_cell2_align",
+                  "label": "Alignment",
+                  "options": [
+                    {
+                      "value": "center",
+                      "label": "Center"
+                    },
+                    {
+                      "value": "left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "right",
+                      "label": "Right"
+                    }
+                  ],
+          		  "default": "center"
+                },
+                {
+                    "type": "select",
+                    "id": "footer_info_cell2_icon",
+                    "label": "Use Icon",
+                    "options": [
+						{
+                            "value": "",
+                            "label": "None"
+                        },
+                        {
+                            "value": "svg",
+                            "label": "SVG Content"
+                        },
+                        {
+                            "value": "icon",
+                            "label": "Image"
+                        }
+                    ]
+                },
+                {
+                    "type": "html",
+                    "id": "footer_info_svg_cell2",
+                    "label": "SVG content"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "footer_info_cell2",
+                  "label": "Pick an Icon"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_info_cell2_caption",
+                  "label": "Caption",
+          		  "default": "Your Caption"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_info_cell2_content",
+                  "label": "Content",
+          		  "default": "Your Text Goes Here"
+                },
+                {
+                  "type": "checkbox",
+                  "id": "footer_info_cell2_inline",
+                  "label": "Inline Caption & Content",
+          		  "default": false
+                },
+                {
+                  "type": "select",
+                  "id": "footer_info_cell2_decor",
+                  "label": "Highlighting",
+                  "options": [
+                    {
+                      "value": "default",
+                      "label": "Default"
+                    },
+                    {
+                      "value": "caption",
+                      "label": "Caption"
+                    },
+                    {
+                      "value": "content",
+                      "label": "Content"
+                    }
+                  ],
+          		  "default": "default"
+                },
+                {
+                  "type": "color",
+                  "id": "footer_info_cell2_decor_color",
+                  "label": "Highlight Color",
+          		  "default": "#d42f37"
+                },
+                {
+                  "type": "header",
+                  "content": "Column #3"
+                },
+                {
+                  "type": "select",
+                  "id": "footer_info_cell3_align",
+                  "label": "Alignment",
+                  "options": [
+                    {
+                      "value": "center",
+                      "label": "Center"
+                    },
+                    {
+                      "value": "left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "right",
+                      "label": "Right"
+                    }
+                  ],
+          		  "default": "center"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_info_cell3_button",
+                  "label": "Button Text",
+				  "default": "Contact Form"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_info_cell3_link",
+                  "label": "Button Link",
+				  "default": "#"
+                }
+			]
+		},
+		{
+			"type": "info_block_2",
+			"name": "Info Block 2",
+			"settings": [
+				{
+                  "type": "header",
+                  "content": "--- Layout ---"
+                },
+				{
+                  "type": "select",
+                  "id": "footer_info_layout",
+                  "label": "Columns Width",
+                  "options": [
+					{
+                      "value": "4-4-4",
+                      "label": "3 Columns (33% - 33% - 33%)"
+                    },
+                    {
+                      "value": "6-3-3",
+                      "label": "3 Columns (50% - 25% - 25%)"
+                    },
+                    {
+                      "value": "3-6-3",
+                      "label": "3 Columns (25% - 50% - 25%)"
+                    },
+                    {
+                      "value": "3-3-6",
+                      "label": "3 Columns (25% - 25% - 50%)"
+                    },
+                    {
+                      "value": "3-5-4",
+                      "label": "3 Columns (25% - 42% - 33%)"
+                    },
+                    {
+                      "value": "4-5-3",
+                      "label": "3 Columns (33% - 42% - 25%)"
+                    },
+                    {
+                      "value": "4-3-5",
+                      "label": "3 Columns (33% - 25% - 42%)"
+                    }
+                  ]
+                },
+                {
+                  "type": "header",
+                  "content": "--- Styling ---"
+                },
+				{
+                  "type": "header",
+                  "content": "Caption"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_info_caption_size",
+                  "label": "Font Size (in pixels, optional)"
+                },
+                {
+                  "type": "select",
+                  "id": "footer_info_caption_weight",
+                  "label": "Font Weight",
+				  "options": [
+					  {
+                          "value": "100",
+                          "label": "100"
+                      },
+                      {
+                          "value": "200",
+                          "label": "200"
+                      },
+                      {
+                          "value": "300",
+                          "label": "300"
+                      },
+                      {
+                          "value": "400",
+                          "label": "400"
+                      },
+                      {
+                          "value": "500",
+                          "label": "500"
+                      },
+                      {
+                          "value": "600",
+                          "label": "600"
+                      },
+                      {
+                          "value": "700",
+                          "label": "700"
+                      },
+                      {
+                          "value": "800",
+                          "label": "800"
+                      }
+					]
+                },
+				{
+                  "type": "header",
+                  "content": "Content"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_info_content_size",
+                  "label": "Font Size (in pixels, optional)"
+                },
+				{
+                  "type": "select",
+                  "id": "footer_info_content_weight",
+                  "label": "Font Weight",
+				  "options": [
+                      {
+                          "value": "100",
+                          "label": "100"
+                      },
+                      {
+                          "value": "200",
+                          "label": "200"
+                      },
+                      {
+                          "value": "300",
+                          "label": "300"
+                      },
+                      {
+                          "value": "400",
+                          "label": "400"
+                      },
+                      {
+                          "value": "500",
+                          "label": "500"
+                      },
+                      {
+                          "value": "600",
+                          "label": "600"
+                      },
+                      {
+                          "value": "700",
+                          "label": "700"
+                      },
+                      {
+                          "value": "800",
+                          "label": "800"
+                      }
+					]
+                },
+				{
+                  "type": "header",
+                  "content": "--- Columns ---"
+                },
+                {
+                  "type": "header",
+                  "content": "Column #1"
+                },
+                {
+                  "type": "select",
+                  "id": "footer_info_cell1_align",
+                  "label": "Alignment",
+                  "options": [
+                    {
+                      "value": "center",
+                      "label": "Center"
+                    },
+                    {
+                      "value": "left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "right",
+                      "label": "Right"
+                    }
+                  ],
+				  "default": "center"
+                },
+                {
+                    "type": "select",
+                    "id": "footer_info_cell1_icon",
+                    "label": "Use Icon",
+                    "options": [
+						{
+                            "value": "",
+                            "label": "None"
+                        },
+                        {
+                            "value": "svg",
+                            "label": "SVG Content"
+                        },
+                        {
+                            "value": "icon",
+                            "label": "Image"
+                        }
+                    ]
+                },
+                {
+                    "type": "html",
+                    "id": "footer_info_svg_cell1",
+                    "label": "SVG content"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "footer_info_cell1",
+                  "label": "Pick an Icon"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_info_cell1_caption",
+                  "label": "Caption",
+				  "default": "Your Caption"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_info_cell1_content",
+                  "label": "Content",
+				  "default": "Your Text Goes Here"
+                },
+                {
+                  "type": "checkbox",
+                  "id": "footer_info_cell1_inline",
+                  "label": "Inline Caption & Content",
+				  "default": false
+                },
+                {
+                  "type": "select",
+                  "id": "footer_info_cell1_decor",
+                  "label": "Highlighting",
+                  "options": [
+                    {
+                      "value": "default",
+                      "label": "Default"
+                    },
+                    {
+                      "value": "caption",
+                      "label": "Caption"
+                    },
+                    {
+                      "value": "content",
+                      "label": "Content"
+                    }
+                  ],
+				  "default": "default"
+                },
+                {
+                  "type": "color",
+                  "id": "footer_info_cell1_decor_color",
+                  "label": "Highlight Color",
+				  "default": "#d42f37"
+                },
+                {
+                  "type": "header",
+                  "content": "Column #2"
+                },
+                {
+                  "type": "select",
+                  "id": "footer_info_cell2_align",
+                  "label": "Alignment",
+                  "options": [
+                    {
+                      "value": "center",
+                      "label": "Center"
+                    },
+                    {
+                      "value": "left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "right",
+                      "label": "Right"
+                    }
+                  ],
+          		  "default": "center"
+                },
+                {
+                    "type": "select",
+                    "id": "footer_info_cell2_icon",
+                    "label": "Use Icon",
+                    "options": [
+						{
+                            "value": "",
+                            "label": "None"
+                        },
+                        {
+                            "value": "svg",
+                            "label": "SVG Content"
+                        },
+                        {
+                            "value": "icon",
+                            "label": "Image"
+                        }
+                    ]
+                },
+                {
+                    "type": "html",
+                    "id": "footer_info_svg_cell2",
+                    "label": "SVG content"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "footer_info_cell2",
+                  "label": "Pick an Icon"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_info_cell2_caption",
+                  "label": "Caption",
+          		  "default": "Your Caption"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_info_cell2_content",
+                  "label": "Content",
+          		  "default": "Your Text Goes Here"
+                },
+                {
+                  "type": "checkbox",
+                  "id": "footer_info_cell2_inline",
+                  "label": "Inline Caption & Content",
+          		  "default": false
+                },
+                {
+                  "type": "select",
+                  "id": "footer_info_cell2_decor",
+                  "label": "Highlighting",
+                  "options": [
+                    {
+                      "value": "default",
+                      "label": "Default"
+                    },
+                    {
+                      "value": "caption",
+                      "label": "Caption"
+                    },
+                    {
+                      "value": "content",
+                      "label": "Content"
+                    }
+                  ],
+          		  "default": "default"
+                },
+                {
+                  "type": "color",
+                  "id": "footer_info_cell2_decor_color",
+                  "label": "Hightlight Color",
+          		  "default": "#d42f37"
+                },
+                {
+                  "type": "header",
+                  "content": "Column #3"
+                },
+                {
+                  "type": "select",
+                  "id": "footer_info_cell3_align",
+                  "label": "Alignment",
+                  "options": [
+                    {
+                      "value": "center",
+                      "label": "Center"
+                    },
+                    {
+                      "value": "left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "right",
+                      "label": "Right"
+                    }
+                  ],
+          		  "default": "center"
+                },
+                {
+                    "type": "select",
+                    "id": "footer_info_cell3_icon",
+                    "label": "Use Icon",
+                    "options": [
+						{
+                            "value": "",
+                            "label": "None"
+                        },
+                        {
+                            "value": "svg",
+                            "label": "SVG Content"
+                        },
+                        {
+                            "value": "icon",
+                            "label": "Image"
+                        }
+                    ]
+                },
+                {
+                    "type": "html",
+                    "id": "footer_info_svg_cell3",
+                    "label": "SVG content"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "footer_info_cell3",
+                  "label": "Pick an Icon"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_info_cell3_caption",
+                  "label": "Caption",
+          		  "default": "Your Caption"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_info_cell3_content",
+                  "label": "Content",
+          		  "default": "Your Text Goes Here"
+                },
+                {
+                  "type": "checkbox",
+                  "id": "footer_info_cell3_inline",
+                  "label": "Inline Caption & Content",
+          		  "default": false
+                },
+                {
+                  "type": "select",
+                  "id": "footer_info_cell3_decor",
+                  "label": "Highlighting",
+                  "options": [
+                    {
+                      "value": "default",
+                      "label": "Default"
+                    },
+                    {
+                      "value": "caption",
+                      "label": "Caption"
+                    },
+                    {
+                      "value": "content",
+                      "label": "Content"
+                    }
+                  ],
+          		  "default": "default"
+                },
+                {
+                  "type": "color",
+                  "id": "footer_info_cell3_decor_color",
+                  "label": "Highlight Color",
+          		  "default": "#d42f37"
+                }
+			]
+		},
+		{
+            "type": "info_block_3",
+            "name": "Info Block 3",
+            "settings": [
+                {
+                    "type": "header",
+                    "content": "--- Styling ---"
+                },
+                {
+                    "type": "header",
+                    "content": "Caption"
+                },
+                {
+                    "type": "text",
+                    "id": "footer_info_caption_size",
+                    "label": "Font Size (in pixels, optional)"
+                },
+                {
+                    "type": "select",
+                    "id": "footer_info_caption_weight",
+                    "label": "Font Weight",
+                    "options": [
+                        {
+                            "value": "100",
+                            "label": "100"
+                        },
+                        {
+                            "value": "200",
+                            "label": "200"
+                        },
+                        {
+                            "value": "300",
+                            "label": "300"
+                        },
+                        {
+                            "value": "400",
+                            "label": "400"
+                        },
+                        {
+                            "value": "500",
+                            "label": "500"
+                        },
+                        {
+                            "value": "600",
+                            "label": "600"
+                        },
+                        {
+                            "value": "700",
+                            "label": "700"
+                        },
+                        {
+                            "value": "800",
+                            "label": "800"
+                        }
+                    ]
+                },
+                {
+                    "type": "header",
+                    "content": "Content"
+                },
+                {
+                    "type": "text",
+                    "id": "footer_info_content_size",
+                    "label": "Font Size (in pixels, optional)"
+                },
+                {
+                    "type": "select",
+                    "id": "footer_info_content_weight",
+                    "label": "Font Weight",
+                    "options": [
+                        {
+                            "value": "100",
+                            "label": "100"
+                        },
+                        {
+                            "value": "200",
+                            "label": "200"
+                        },
+                        {
+                            "value": "300",
+                            "label": "300"
+                        },
+                        {
+                            "value": "400",
+                            "label": "400"
+                        },
+                        {
+                            "value": "500",
+                            "label": "500"
+                        },
+                        {
+                            "value": "600",
+                            "label": "600"
+                        },
+                        {
+                            "value": "700",
+                            "label": "700"
+                        },
+                        {
+                            "value": "800",
+                            "label": "800"
+                        }
+                    ]
+                },
+                {
+                    "type": "header",
+                    "content": "--- Columns ---"
+                },
+                {
+                    "type": "header",
+                    "content": "Column #1"
+                },
+                {
+                    "type": "select",
+                    "id": "footer_info_cell1_align",
+                    "label": "Alignment",
+                    "options": [
+                        {
+                            "value": "center",
+                            "label": "Center"
+                        },
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                    ],
+                    "default": "center"
+                },
+                {
+                    "type": "select",
+                    "id": "footer_info_cell1_icon",
+                    "label": "Use Icon",
+                    "options": [
+						{
+                            "value": "",
+                            "label": "None"
+                        },
+                        {
+                            "value": "svg",
+                            "label": "SVG Content"
+                        },
+                        {
+                            "value": "icon",
+                            "label": "Image"
+                        }
+                    ]
+                },
+                {
+                    "type": "html",
+                    "id": "footer_info_svg_cell1",
+                    "label": "SVG content"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "footer_info_cell1",
+                    "label": "Pick an Icon"
+                },
+                {
+                    "type": "text",
+                    "id": "footer_info_cell1_caption",
+                    "label": "Caption",
+                    "default": "Your Caption"
+                },
+                {
+                    "type": "text",
+                    "id": "footer_info_cell1_content",
+                    "label": "Content",
+                    "default": "Your Text Goes Here"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "footer_info_cell1_inline",
+                    "label": "Inline Caption & Content",
+                    "default": false
+                },
+                {
+                    "type": "select",
+                    "id": "footer_info_cell1_decor",
+                    "label": "Highlighting",
+                    "options": [
+                        {
+                            "value": "default",
+                            "label": "Default"
+                        },
+                        {
+                            "value": "caption",
+                            "label": "Caption"
+                        },
+                        {
+                            "value": "content",
+                            "label": "Content"
+                        }
+                    ],
+                    "default": "default"
+                },
+                {
+                    "type": "color",
+                    "id": "footer_info_cell1_decor_color",
+                    "label": "Highlight Color",
+                    "default": "#d42f37"
+                },
+                {
+                    "type": "header",
+                    "content": "Column #2"
+                },
+                {
+                    "type": "select",
+                    "id": "footer_info_cell2_align",
+                    "label": "Alignment",
+                    "options": [
+                        {
+                            "value": "center",
+                            "label": "Center"
+                        },
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                    ],
+                    "default": "center"
+                },
+                {
+                    "type": "select",
+                    "id": "footer_info_cell2_icon",
+                    "label": "Use Icon",
+                    "options": [
+						{
+                            "value": "",
+                            "label": "None"
+                        },
+                        {
+                            "value": "svg",
+                            "label": "SVG Content"
+                        },
+                        {
+                            "value": "icon",
+                            "label": "Image"
+                        }
+                    ]
+                },
+                {
+                    "type": "html",
+                    "id": "footer_info_svg_cell2",
+                    "label": "SVG content"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "footer_info_cell2",
+                    "label": "Pick an Icon"
+                },
+                {
+                    "type": "text",
+                    "id": "footer_info_cell2_caption",
+                    "label": "Caption",
+                    "default": "Your Caption"
+                },
+                {
+                    "type": "text",
+                    "id": "footer_info_cell2_content",
+                    "label": "Content",
+                    "default": "Your Text Goes Here"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "footer_info_cell2_inline",
+                    "label": "Inline Caption & Content",
+                    "default": false
+                },
+                {
+                    "type": "select",
+                    "id": "footer_info_cell2_decor",
+                    "label": "Highlighting",
+                    "options": [
+                        {
+                            "value": "default",
+                            "label": "Default"
+                        },
+                        {
+                            "value": "caption",
+                            "label": "Caption"
+                        },
+                        {
+                            "value": "content",
+                            "label": "Content"
+                        }
+                    ],
+                    "default": "default"
+                },
+                {
+                    "type": "color",
+                    "id": "footer_info_cell2_decor_color",
+                    "label": "Hightlight Color",
+                    "default": "#d42f37"
+                },
+                {
+                    "type": "header",
+                    "content": "Column #3"
+                },
+                {
+                    "type": "select",
+                    "id": "footer_info_cell3_align",
+                    "label": "Alignment",
+                    "options": [
+                        {
+                            "value": "center",
+                            "label": "Center"
+                        },
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                    ],
+                    "default": "center"
+                },
+                {
+                    "type": "select",
+                    "id": "footer_info_cell3_icon",
+                    "label": "Use Icon",
+                    "options": [
+						{
+                            "value": "",
+                            "label": "None"
+                        },
+                        {
+                            "value": "svg",
+                            "label": "SVG Content"
+                        },
+                        {
+                            "value": "icon",
+                            "label": "Image"
+                        }
+                    ]
+                },
+                {
+                    "type": "html",
+                    "id": "footer_info_svg_cell3",
+                    "label": "SVG content"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "footer_info_cell3",
+                    "label": "Pick an Icon"
+                },
+                {
+                    "type": "text",
+                    "id": "footer_info_cell3_caption",
+                    "label": "Caption",
+                    "default": "Your Caption"
+                },
+                {
+                    "type": "text",
+                    "id": "footer_info_cell3_content",
+                    "label": "Content",
+                    "default": "Your Text Goes Here"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "footer_info_cell3_inline",
+                    "label": "Inline Caption & Content",
+                    "default": false
+                },
+                {
+                    "type": "select",
+                    "id": "footer_info_cell3_decor",
+                    "label": "Highlighting",
+                    "options": [
+                        {
+                            "value": "default",
+                            "label": "Default"
+                        },
+                        {
+                            "value": "caption",
+                            "label": "Caption"
+                        },
+                        {
+                            "value": "content",
+                            "label": "Content"
+                        }
+                    ],
+                    "default": "default"
+                },
+                {
+                    "type": "color",
+                    "id": "footer_info_cell3_decor_color",
+                    "label": "Highlight Color",
+                    "default": "#d42f37"
+                },
+				{
+                    "type": "header",
+                    "content": "Column #4"
+                },
+                {
+                    "type": "select",
+                    "id": "footer_info_cell4_align",
+                    "label": "Alignment",
+                    "options": [
+                        {
+                            "value": "center",
+                            "label": "Center"
+                        },
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                    ],
+                    "default": "center"
+                },
+                {
+                    "type": "text",
+                    "id": "footer_info_cell4_button",
+                    "label": "Button Text",
+                    "default": "Contact Form"
+                },
+                {
+                    "type": "text",
+                    "id": "footer_info_cell4_link",
+                    "label": "Button Link",
+                    "default": "#"
+                }
+            ]
+        },
+		{
+			"type":"newsletter",
+			"name": "Newsletter",
+			"settings": [
+				{
+					"type" :"select",
+					"id": "type",
+					"label": "Type",
+					"options": [
+						{
+							"value": "default",
+							"label": "Default"
+						},
+						{
+							"value": "oneline",
+							"label": "One Line"
+						}
+					]
+				},
+                {
+                  "type": "text",
+                  "id": "footer_newsletter_heading",
+                  "label": "Heading",
+				  "default": "Newsletter"
+                },
+                {
+                  "type": "textarea",
+                  "id": "footer_newsletter_caption",
+                  "label": "Caption",
+				  "default": "Your Caption Goes Here"
+                }
+			]
+		},
+		{
+			"type": "social_icon",
+			"name": "Social Icon",
+			"settings": [
+                {
+                  "type": "text",
+                  "id": "footer_social_heading",
+                  "label": "Heading",
+				  "default": "Follow Us"
+                },
+                {
+                  "type": "text",
+                  "id": "footer_social_size",
+                  "label": "Icon Size (in pixels)",
+				  "default": "26"
+                }
+			]
+		}
+	]
+	
+  }
+{% endschema %}

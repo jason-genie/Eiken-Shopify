@@ -1,0 +1,357 @@
+<style>
+  {%- if section.settings.heading_active_color != blank -%}
+  #product-tab-{{section.id}}.filter-product .filter-tabs ul>li.active>a {
+    color: {{section.settings.heading_active_color}}
+  }
+  {%- endif -%}
+  {%- if section.settings.heading_active_border_color != blank -%}
+  #product-tab-{{section.id}}.filter-product .filter-tabs ul > li.active > a::before {
+    background-color: {{section.settings.heading_active_border_color}}!important
+  }
+  #product-tab-{{section.id}}.filter-product .filter-tabs ul > li > a {
+    padding-bottom:0;
+  }
+  {%- endif -%}
+  #product-tab-{{section.id}}.filter-product .filter-tabs ul>li>a {
+    {%- if section.settings.heading_color != blank -%}
+    color: {{section.settings.heading_color}};
+    {%- endif -%}
+    font-size: {{section.settings.heading_fontsize | append: "px"}};
+    font-weight: {{section.settings.heading_fontweight}}!important
+  }
+</style>
+{%- assign _skin = 'default' -%}
+{%- assign producstabs_snippet = 'section-productstabs-' | append: _skin -%}
+{%- include producstabs_snippet -%}
+{% schema %}
+  {
+    "name": "Products Tabs",
+    "class": "index-section section-wrapper section-producttab-wrapper",
+    "settings": [
+        {
+            "type": "checkbox",
+            "id": "visible_on_mobile",
+            "label": "Show on Mobile",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "placement_fullwidth",
+            "label": "Force Full Width"
+        },
+        {
+            "type": "select",
+            "id": "tab_style",
+            "label": "Tab Style",
+            "options": [
+                {
+                    "value": "normal",
+                    "label": "Normal"
+                },
+                {
+                    "value": "with-icon",
+                    "label": "With Icon"
+                }
+            ]
+        },
+		{
+			"type" : "select",
+			"id": "tab_border",
+			"label": "Border",
+			"options": [
+				{
+					"value": "default",
+					"label": "Default"
+				},
+				{
+					"value": "none",
+					"label": "None"
+				}
+			]
+		},
+		{
+			"type" : "select",
+			"id": "arrow_position",
+			"label": "Arrow Position",
+			"options": [
+				{
+					"value": "default",
+					"label": "Default"
+				},
+				{
+					"value": "beside",
+					"label": "Beside"
+				}
+			]
+		},
+		{
+			"type" :"header",
+			"content": "Styling"
+		},
+		{
+			"type" :"header",
+			"content": "- Heading"
+		},
+		{
+            "type": "color",
+            "id": "heading_color",
+            "label": "Color"
+        },
+		{
+            "type": "color",
+            "id": "heading_active_color",
+            "label": "Active Color"
+        },
+		{
+            "type": "color",
+            "id": "heading_active_border_color",
+            "label": "Border Active Color"
+        },
+        {
+          "type": "range",
+          "id": "heading_fontsize",
+          "min": 10,
+          "max": 70,
+          "step": 1,
+          "unit": "px",
+          "label": "FontSize",
+          "default": 25
+        },
+        {
+          "type": "range",
+          "id": "heading_fontweight",
+          "min": 100,
+          "max": 900,
+          "step": 100,
+          "label": "FontWeight",
+          "default": 400
+        }
+    ],
+    "blocks": [
+        {
+            "type": "ptab_collection",
+            "name": "Collection",
+            "settings": [
+                {
+                    "type": "header",
+                    "content": "Image"
+                },
+                {
+                  "type": "checkbox",
+                  "id": "visible_on_mobile",
+                  "label": "Show on Mobile",
+                  "default": true
+                },
+				{
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                },
+                {
+                    "type": "url",
+                    "id": "image_url",
+                    "label": "CTA"
+                },
+                {
+                    "type": "select",
+                    "id": "image_width",
+                    "label": "Width",
+                    "options": [
+                        {
+                            "value": "3",
+                            "label": "25%"
+                        },
+                        {
+                            "value": "4",
+                            "label": "33.33%"
+                        },
+                        {
+                            "value": "6",
+                            "label": "50%"
+                        },
+                        {
+                            "value": "8",
+                            "label": "66.67%"
+                        },
+                        {
+                            "value": "9",
+                            "label": "75%"
+                        },
+                        {
+                            "value": "12",
+                            "label": "100%"
+                        }
+                    ]
+                },
+                {
+                    "type": "select",
+                    "id": "image_position",
+                    "label": "Position",
+                    "options": [
+                        {
+                            "value": "none",
+                            "label": "None"
+                        },
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                    ]
+                },
+                {
+                    "type": "header",
+                    "content": "Content"
+                },
+                {
+                    "type": "collection",
+                    "id": "collection",
+                    "label": "Choose a Collection"
+                },
+                {
+                    "type": "text",
+                    "id": "ptab_heading",
+                    "label": "Heading"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "ptab_icon",
+                    "label": "Icon",
+                    "info": "Only for Tab Style Icon"
+                },
+                {
+                    "type": "header",
+                    "content": "Product Image"
+                },
+                {
+                    "type": "text",
+                    "id": "ptab_img_width",
+                    "label": "Width (in pixels)"
+                },
+                {
+                    "type": "text",
+                    "id": "ptab_img_height",
+                    "label": "Height (in pixels)"
+                },
+                {
+                    "type": "header",
+                    "content": "Grid Layout"
+                },
+                {
+                    "type": "select",
+                    "id": "ptab_rows",
+                    "label": "Rows",
+                    "options": [
+                        {
+                            "value": "1",
+                            "label": "1"
+                        },
+                        {
+                            "value": "2",
+                            "label": "2"
+                        },
+                        {
+                            "value": "3",
+                            "label": "3"
+                        },
+                        {
+                            "value": "4",
+                            "label": "4"
+                        },
+                        {
+                            "value": "5",
+                            "label": "5"
+                        }
+                    ],
+                    "default": "1"
+                },
+                {
+                    "type": "select",
+                    "id": "ptab_items_per_row",
+                    "label": "Items Per Row",
+                    "options": [
+                        {
+                            "value": "1",
+                            "label": "1"
+                        },
+                        {
+                            "value": "2",
+                            "label": "2"
+                        },
+                        {
+                            "value": "3",
+                            "label": "3"
+                        },
+                        {
+                            "value": "4",
+                            "label": "4"
+                        },
+                        {
+                            "value": "5",
+                            "label": "5"
+                        },
+                        {
+                            "value": "6",
+                            "label": "6"
+                        }
+                    ],
+                    "default": "4"
+                },
+				{
+                    "type": "checkbox",
+                    "id": "ptab_carousel",
+                    "label": "Use Carousel"
+                },
+                {
+                    "type": "text",
+                    "id": "ptab_max",
+                    "label": "Carousel items load limit",
+                    "default": "8"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Products Tabs",
+            "category": "Content",
+            "settings": {
+                "visible_on_mobile": true
+            },
+            "blocks": [
+                {
+                    "type": "ptab_collection",
+                    "settings": {
+						"image_position": "left",
+						"image_width": "3",
+                        "collection": "",
+                        "ptab_heading": "Your Collection",
+                        "ptab_img_width": "500",
+                        "ptab_img_height": "500",
+                        "ptab_carousel": true,
+                        "ptab_max": "8",
+                        "ptab_rows": "1",
+                        "ptab_items_per_row": "4"
+                    }
+                },
+                {
+                    "type": "ptab_collection",
+                    "settings": {
+                        "collection": "",
+                        "ptab_heading": "Your Collection",
+                        "ptab_img_width": "500",
+                        "ptab_img_height": "500",
+                        "ptab_carousel": true,
+                        "ptab_max": "8",
+                        "ptab_rows": "1",
+                        "ptab_items_per_row": "4"
+                    }
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

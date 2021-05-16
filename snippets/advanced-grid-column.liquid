@@ -1,0 +1,66 @@
+{%- assign ac_use 		= 'ac_use_' 	| append: i | append: '_' | append: j -%}
+{%- assign ac_width 		= 'ac_clw_' 	| append: i | append: '_' | append: j -%}
+{%- assign ac_advanced 	= 'ac_clw_adv_' | append: i | append: '_' | append: j -%}
+{%- assign ac_mobile 	= 'ac_mobile_' 	| append: i | append: '_' | append: j -%}
+
+{%- assign _ac_use 		= settings[ac_use] 	-%}
+{%- assign _ac_width 	= settings[ac_width] 	-%}
+{%- assign _ac_advanced 	= settings[ac_advanced] -%}
+{%- assign _ac_mobile 	= settings[ac_mobile] 	-%}
+
+{%- if _ac_use -%}
+{%- if _ac_advanced -%}
+<!-- advanced mode -->
+{%- assign _ac_width_html = '' -%}
+{%- assign _ac_widths = _ac_width | split: '-' -%}
+
+{%- assign _ac_width_xs = _ac_widths[0] | plus: 0 -%}
+{%- assign _ac_width_sm = _ac_widths[1] | plus: 0 -%}
+{%- assign _ac_width_md = _ac_widths[2] | plus: 0 -%}
+{%- assign _ac_width_lg = _ac_widths[3] | plus: 0 -%}
+
+{%- if _ac_width_lg != 0 -%}
+{%- assign _row = _row | plus: ac_width_lg -%}
+{%- if _row > 12 -%}
+</div><div class="row">
+{%- assign _row = _ac_width_lg -%}
+{%- endif -%}
+{%- endif -%}
+
+{%- assign _ac_width_html = _ac_width_html | append: 'col-lg-' | append: _ac_width_lg | append: ' col-md-' | append: _ac_width_md | append: ' col-sm-' | append: _ac_width_sm | append: ' col-xs-' | append: _ac_width_xs -%}
+{%- if _ac_width_lg == 0 -%}
+{%- assign _ac_width_html = _ac_width_html | append: ' hidden-lg' -%}
+{%- endif -%}
+
+{%- if _ac_width_md == 0 -%}
+{%- assign _ac_width_html = _ac_width_html | append: ' hidden-md' -%}
+{%- endif -%}
+
+{%- if _ac_width_sm == 0 -%}
+{%- assign _ac_width_html = _ac_width_html | append: ' hidden-sm' -%}
+{%- endif -%}
+
+{%- if _ac_width_xs == 0 -%}
+{%- assign _ac_width_html = _ac_width_html | append: ' hidden-xs' -%}
+{%- endif -%}
+
+{%- else -%}
+<!-- normal mode -->
+{%- assign _ac_width = _ac_width | plus: 0 -%}
+{%- assign _row = _row | plus: _ac_width -%}
+{%- assign _ac_width_html = 'col-sm-' | append: _ac_width -%}
+
+{%- if _ac_mobile == false -%}
+{%- assign _ac_width_html = _ac_width_html | append: ' hidden-xs' -%}
+{%- endif -%}
+{%- if _row > 12 -%}
+</div><div class="row">
+{%- assign _row = _ac_width -%}
+{%- endif -%}
+{%- endif -%}
+<div class="{{_ac_width_html}}">
+  {%- for k in (1..MAX_AG_MODULE) -%}
+  {%- include 'advanced-grid-module' -%}
+  {%- endfor -%}
+</div>
+{%- endif -%}

@@ -1,0 +1,865 @@
+<div class="product-center product clearfix">
+  <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+    <h2 class="name {% if settings.reviews_enable == false %}no-review{% endif %}">{{product.title}}</h2>
+    
+    {% include 'judgeme_widgets', widget_type: 'judgeme_preview_badge', jm_style: '', concierge_install: true %}
+    
+    {% if settings.product_info_brand %}
+    <div class="vendor">{{product.vendor | link_to_vendor}}</div>
+    {% endif %}
+    <div class="review">
+      {%- if settings.reviews_enable -%}
+      <a class="smoothscroll" href="#product-reviews-a">
+        {% comment %}<span class="shopify-product-reviews-badge" data-id="{{product.id}}"></span>{% endcomment %}
+      </a>
+      {%- endif -%}
+      {%- if settings.product_social_share and settings.product_design != "compact2" -%}
+      <div class="share">
+        {%- include "add-this" -%}
+      </div>
+      {%- endif -%}
+    </div>
+    {%- comment -%}  INFO AND STOCK  {%- endcomment -%}
+
+    {% if settings.product_info_sku or settings.product_info_status %}
+    <div class="description {%- if settings.product_info_status == false and settings.product_info_brand == false and settings.product_info_sku == false -%}{{- " hide" -}}{%- endif -%}">
+      <p id="product_sku" class="variant-sku sku_wrapper{%- if current_variant.sku == blank or settings.product_info_sku == false-%}{{- " hide" -}}{%- endif -%}">
+		<span>{{'products.product.sku' | t}}</span> 
+        <span class="sku" itemprop="sku">{{ current_variant.sku }}</span>
+      </p>
+      <p class="variation-availability{%- if settings.product_info_status == false -%}{{- " hide" -}}{%- endif -%}">
+        <span>{{- 'products.product.stock' | t}}</span>
+        {%- if current_variant -%}
+        {%- if current_variant.available -%}
+        {%- if current_variant.inventory_management == "shopify" and current_variant.inventory_policy != "continue" -%}
+        {%- if current_variant.inventory_quantity > 0 -%}
+        <span class="stock stock-{{ section.id }} in-stock">{%- if settings.product_inventory == '1' -%}{{- current_variant.inventory_quantity  -}}{{- " " -}}{%- endif -%}{{ 'products.product.in_stock' | t | escape }}</span>
+        {%- else -%}
+        <span class="stock stock-{{ section.id }} out-of-stock">{{ 'products.product.out_of_stock' | t | escape }}</span>
+        {%- endif -%}
+        {%- else -%}
+        <span class="stock stock-{{ section.id }} in-stock">{{ 'products.product.in_stock' | t | escape }}</span>
+        {%- endif -%}
+        {%- else -%}
+        <span class="stock stock-{{ section.id }} out-of-stock">{{ 'products.product.out_of_stock' | t | escape }}</span>
+        {%- endif -%}
+        {%- else -%}
+        <span class="stock stock-{{ section.id }} out-of-stock">{{ 'products.product.unavailable' | t | escape }}</span>
+        {%- endif -%}
+      </p>
+    </div>
+    {% endif %}
+    {%- comment -%} PRICE {%- endcomment -%}
+    <div class="countdown-wrapper">
+      {%- include 'limited-offer' -%}
+    </div>
+    <div class="product-focus">
+      {%- if settings.price_range and product.price_varies -%}
+      <div class="price-range price">
+        <span class="price-new"><span class="money">{{- product.price_min | money -}}</span></span> - <span class="price-new"><span class="money">{{- product.price_max | money -}}</span></span>
+      </div>
+      {%- endif -%}
+      <div class="product-single__price-{{- section.id -}}">
+        <div id="price" class="price">
+          
+          {%- if current_variant.compare_at_price > current_variant.price -%}
+          <span  id="ProductPrice-{{- section.id -}}" class="amount price-new">
+            <span class="money">
+              {{- current_variant.price | money -}}
+            </span>
+          </span>
+          {%- else -%}
+          <span id="ProductPrice-{{- section.id -}}" class="amount price-new">
+            <span class="money">{{- current_variant.price | money -}}</span>
+          </span>
+          {%- endif -%}
+          <span id="ComparePrice-{{- section.id -}}" class="amount price-old{%- unless current_variant.compare_at_price > current_variant.price %}{{- " hide" -}}{%- endunless -%}">
+            <span class="money">
+              {%- if current_variant.compare_at_price > current_variant.price -%}
+              {{- current_variant.compare_at_price | money -}}
+              {%- endif -%}
+            </span>
+          </span>
+          <span class="hide" itemprop="price">{{- product.price | money_without_currency -}}</span>
+          <meta itemprop="priceCurrency" content="EUR" />
+          {% assign stck = product.selected_or_first_available_variant.inventory_quantity %}
+            <div class="track-quantity-here">
+			<div class="blob1 {% if product.selected_or_first_available_variant.available %}{% else %}notavail{% endif %}"></div>
+              {% if request.locale.iso_code == 'fr' %}
+               {% if product.selected_or_first_available_variant.available %}
+              {% if stck > 10 %}
+              <div id="product-stock-inventory1">Produit en stock</div>
+              {% elsif stck < 11 and stck > 1 %}
+              <div id="product-stock-inventory1">{{ stck }} produits en stock</div>
+              {% else %}
+              <div id="product-stock-inventory1">Seulement {{ stck }} produit restant</div>
+              {% endif %}
+              {% else %}
+              <div id="product-stock-inventory1">Rupture de stock</div>
+              {% endif %}
+              {% else %}
+              {% if product.selected_or_first_available_variant.available %}
+              {% if stck > 10 %}
+              <div id="product-stock-inventory1">Product in stock</div>
+              {% elsif stck < 11 and stck > 1 %}
+              <div id="product-stock-inventory1">{{ stck }} products in stock</div>
+              {% else %}
+              <div id="product-stock-inventory1">Only {{ stck }} product remaining</div>
+              {% endif %}
+              {% else %}
+              <div id="product-stock-inventory1">Out of stock</div>
+              {% endif %}
+               {% endif %}
+			  </div>
+        </div>
+      </div>
+       <div class="espacedestop"></div>
+      {%- comment -%} SHORT DESCRIPTION {%- endcomment -%}
+{%- if instructions.short_description != blank -%}
+      <div class="short-description">{{- instructions.short_description  -}}</div>
+      {%- endif -%} 
+<script src="//cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js" type="text/javascript"></script>
+{% if request.locale.iso_code == 'fr' %}
+      <div class="dg-shipping-date">
+	  <p class="p-dg-shipping-date">
+      <img src="https://cdn.shopify.com/s/files/1/0134/7738/0153/files/satisfaction-guarantee.webp?v=1612113184" style="height:25px;float:left;margin-right:10px;padding-bottom: 4px;" alt="garantie satisfaction"> Garantie satisfaction de 14 jours
+      </p>
+      {% if stck > 0 %}
+      <p class="p-dg-shipping-date">
+        <img src="https://cdn.shopify.com/s/files/1/0134/7738/0153/files/free-shipping-worldwide.webp?v=1612113184" style="height:25px;float:left;margin-right:10px;padding-bottom: 3px;" alt="livraison gratuite">Livraison offerte estimée entre le <b><span id="fromDate">20/11</span></b> et le <b><span id="toDate">29/11</span></b>
+      </p>
+      {% else %}
+      {% endif %}
+      </div>
+{% else %}
+      <div class="dg-shipping-date">
+	  <p class="p-dg-shipping-date">
+      <img src="https://cdn.shopify.com/s/files/1/0134/7738/0153/files/satisfaction-guarantee.webp?v=1612113184" style="height:25px;float:left;margin-right:10px;padding-bottom: 4px;" alt="14 days satisfaction guarantee"> 14 days satisfaction guarantee
+      </p>
+      {% if stck > 0 %}
+      <p class="p-dg-shipping-date">
+        <img src="https://cdn.shopify.com/s/files/1/0134/7738/0153/files/free-shipping-worldwide.webp?v=1612113184" style="height:25px;float:left;margin-right:10px;padding-bottom: 3px;" alt="Free Worldwide Delivery">Estimated free delivery between <b><span id="fromDate">20/11</span></b> and <b><span id="toDate">29/11</span></b>
+       </p>
+       {% else %}
+      {% endif %}
+      </div>
+{% endif %} 
+      <div class="espacedestop2"></div>
+      {%- comment -%} QUANTITY AND ADD TO CART {%- endcomment -%}
+      <div id="product">
+        {%- if product.available -%}
+        <meta itemprop="availability" itemtype="http://schema.org/ItemAvailability" content="http://schema.org/InStock" />
+        {%- form 'product', product, id: "product-form", class: "product-form variations_form cart", data-product-id: product.id -%}
+        <div class="options{% if product.variants.size <= 1 %} none{% endif %}{%- if instructions.external_link != blank and instructions.external_btn != blank -%}{{- " hide" -}}{%- endif -%}">
+          <div class="options2">
+            {%- if product.variants.size > 1 -%}
+            <div class="optiontitle">{{'products.product.available_options' | t}}</div>
+            {%- endif -%}
+            {%- unless product.options.size == 1 and product.variants[0].title == 'Default Title' or product.variants[0].title == 'Titre par défaut' or product.variants[0].title == 'Titre par Défaut'-%}
+            <div id="variations-{{section.id}}" class="variations">
+              <div id="variations-content-{{section.id}}">
+                {%- for option in product.options_with_values -%}
+                <div class="selector-wrapper{{- " " -}}{{- option.name | handlezie -}}{{- " " -}}variation-select-{{ section.id }}-{{ forloop.index0 }}">
+                  <label {% if option.name == 'default' %} class="hide"{% endif %} for="single-option-selector-{{ forloop.index0 }}">{{- option.name -}}{%- if settings.product_swatch_color_advanced -%}:<span class="option-select-value" id="option-select-value-{{ section.id }}-{{ forloop.index0 }}">{{- option.selected_value -}}</span>{%- endif -%}</label>
+                  <select id="single-option-selector-{{ section.id }}-{{ forloop.index0 }}" class="single-option-selector single-option-selector-{{ section.id }}" data-index="option{{ forloop.index }}" data-option="option{{ forloop.index }}">
+                    {%- for value in option.values -%}
+                    <option data-inventory="titi" value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>
+                    {%- endfor -%}
+                  </select>
+                </div>
+                {%- endfor -%}
+              </div>
+            </div>
+            {%- endunless -%}
+            <div id="product-variants" class="hide">
+              <select name="id" id="ProductSelect-{{ section.id }}" data-section="{{ section.id }}" class="variation-select no-js">
+                {%- for variant in product.variants -%}
+                {%- if variant.available -%}
+                <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
+                  {{- variant.title -}}
+                </option>
+                {%- else -%}
+                <option disabled="disabled">{{ variant.title }} - {{ 'products.product.sold_out' | t | escape }}</option>
+                {%- endif -%}
+                {%- endfor -%}
+              </select>
+            </div>
+          </div>
+        </div>
+{% if request.locale.iso_code == 'fr' %}
+    <div class="line-item-property__field" id="customproduct1">
+		<label for="Monogram" id="customproduct3">Votre texte personnalisé (10 caractères max.) :</label>
+			<input required id="Monogram" style="width:220px; max-width:100%; border-radius: 6px !important; border: 1px solid #cccccc; padding: 12px 20px 11px; width: 100%; height: 45px; margin: 5px 0; color: grey; font-size: 15px;" name="properties[Emboss Text ]" maxlength="10" onkeyup="this.value = this.value.toUpperCase();" > <br>
+				<p id="notecustom"><i>Note : Nous graverons exactement ce que vous avez écrit. N'oubliez pas les espaces et les points si vous voulez qu'ils apparaissent. Les produits personnalisés ne peuvent pas être retournés.</i></p>
+	</div>
+{% else %}
+    <div class="line-item-property__field" id="customproduct1">
+		<label for="Monogram" id="customproduct3">Your custom text (max. 10 characters):</label>
+			<input required id="Monogram" style="width:220px; max-width:100%; border-radius: 6px !important; border: 1px solid #cccccc; padding: 12px 20px 11px; width: 100%; height: 45px; margin: 5px 0; color: grey; font-size: 15px;" name="properties[Emboss Text ]" maxlength="10" onkeyup="this.value = this.value.toUpperCase();" > <br>
+				<p id="notecustom"><i>Note: We'll emboss exactly what you wrote down. Don't forget spaces and dots if you want them to appear.</i></p>
+	</div>
+{% endif %}
+  <div>
+        <div class="cart">
+          <div class="add_to_cart clearfix ">
+            <div class="variations_button {%- unless current_variant -%}{{" hide"}}{%- endunless -%}{%- if instructions.external_link != blank and instructions.external_btn != blank -%}{{- " hide" -}}{%- endif -%}">
+              <div class="add-cart-wrapper">
+                <div class="quantity-wrapper">
+                  <p>{{'products.product.quantity' | t}}</p>
+                  <div class="quantity">
+                    <input type="text" name="quantity" class="quantity-cart-{{product.id}}" id="quantity_wanted" size="2" value="1" />
+                    <a href="javascript:void(0);" class="q_up" data-product_id="{{product.id}}" id="q_up"><i class="fa fa-plus"></i></a>
+                    <a href="javascript:void(0);" class="q_down" data-product_id="{{product.id}}" id="q_down"><i class="fa fa-minus"></i></a>
+                  </div>
+                </div>
+                <input type="submit" value="{%- unless current_variant.available -%}{{- 'products.product.sold_out' | t | escape -}}{%- else -%}{{- 'products.product.add_to_cart' | t | escape-}}{%- endunless -%}"
+                       id="AddToCart-{{ section.id }}"
+                       class="button button-cart not-empty add-to-cart{%- unless current_variant -%}{{- " hide" -}}{%- endunless -%}" 
+                       {%- unless current_variant.available -%}{{- " " -}}disabled="disabled"{{- " " -}}{%- endunless -%} 
+                       data-loading-text="{{'products.product.loading' | t | escape}}"
+                       data-addtocart="You can {{'products.product.add_to_cart' | t | escape}}" 
+                       data-unavailable="{{'products.product.unavailable' | t | escape}}"
+                       data-soldout="{{'products.product.sold_out' | t | escape}}" />
+					 <!--   <button type="submit" id="AddToCart-{{ section.id }}"
+                       class="button button-cart not-empty add-to-cart atcbutton{%- unless current_variant -%}{{- " hide" -}}{%- endunless -%}" 
+                       {%- unless current_variant.available -%}{{- " " -}}disabled="disabled"{{- " " -}}{%- endunless -%} 
+                       data-loading-text="{{'products.product.loading' | t | escape}}"
+                       data-addtocart="You can {{'products.product.add_to_cart' | t | escape}}" 
+                       data-unavailable="{{'products.product.unavailable' | t | escape}}"
+                       data-soldout="{{'products.product.sold_out' | t | escape}}">
+                    {%- unless current_variant.available -%}<i style="margin: 0 5px;" class="fa fa-frown-o fa-lg"></i> &nbsp; {{- 'products.product.sold_out' | t | escape -}}{%- else -%}<i style="margin: 0 5px;" class="fa fa-cart-arrow-down fa-lg"></i> &nbsp; {{- 'products.product.add_to_cart' | t | escape-}}{%- endunless -%}
+                </button>-->
+              </div>
+              {%- if settings.dynamic_checkout -%}
+              {%- if settings.cart_terms_enable -%}
+              {%- assign terms_conditions_url = '#' -%}
+
+              {%- if settings.cart_terms_page != blank -%}
+              {%- assign terms_conditions_url = '/pages/' | append: settings.cart_terms_page -%}
+              {%- endif -%}
+              <div class="product-cart__condition">
+                <input type="checkbox" id="product-cart__agree-{{ section.id }}" data-message="{{ 'cart.general.terms_conditions_message' | t | escape }}" />
+                <label for="product-cart__agree-{{ section.id }}">{{ 'cart.general.terms_conditions_html' | t : terms_conditions_url: terms_conditions_url }}</label>
+              </div>
+              {%- endif -%}
+              <div class="dynamic-payment-button" id="product-buy__1click-{{ section.id }}">
+                {{- form | payment_button -}}
+              </div>
+              {%- endif -%}
+            </div>
+            {%- if instructions.external_link != blank and instructions.external_btn != blank -%}
+            {%- include 'product-external-btn' -%}
+            {%- endif -%}
+            <div class="clearfix"></div>
+            {%- if settings.product_question -%}
+            <a href="javascript:void(0);" class="button btn-default button-product-question"><i class="fa fa-envelope" style="margin-right: 5px;"></i>{{'products.product.ask_about_this_product' | t}}</a>
+            {%- endif -%}
+          </div>
+        </div>
+        {%- endform -%}
+        {%- else -%}
+        <div class="cart">
+          <div class="add_to_cart clearfix">
+            {%- if instructions.external_link != blank and instructions.external_btn != blank -%}
+            <div class="hide">
+              {%- endif -%}
+              <div class="add-cart-wrapper">
+                <input type="button" value="{{'products.product.sold_out' | t | escape}}" id="button-cart" data-loading-text="{{'products.product.loading' | t | escape}}" class="button button-cart button-cart-sold-out" disabled/>
+              </div>
+              {%- if instructions.external_link != blank and instructions.external_btn != blank -%}
+            </div>
+            {%- include 'product-external-btn' -%}
+            {%- endif -%}
+            <div class="clearfix"></div>
+            {%- if settings.product_question -%}
+            <a href="javascript:void(0);" class="button btn-default button-product-question"><i class="fa fa-envelope" style="margin-right: 5px;"></i>{{'products.product.ask_about_this_product' | t}}</a>
+            {%- endif -%}
+          </div>
+        </div>
+        <meta itemprop="availability" itemtype="http://schema.org/ItemAvailability" content="http://schema.org/OutOfStock" />
+        {%- endif -%}
+
+        {%- comment -%} WISHLIT COMPARE QUESTIONS SIZECHART{%- endcomment -%} 
+        {%- if settings.wishlist_enable or settings.compare_enable or settings.product_size_chart -%}
+        <div class="links clearfix">
+          {%- if settings.wishlist_enable -%}
+          <div class="ex-link">
+            {%- assign my_product = product -%}
+            {%- include 'wishlist' -%}
+          </div>
+          {%- endif -%}
+          {%- if settings.compare_enable -%}
+          <div class="ex-link">
+            {%- assign my_product = product -%}
+            {%- include 'compare' with true -%}
+          </div>
+          {%- endif -%}
+          {%- if settings.product_size_chart and settings.product_size_chart_page != '' -%}
+          <div class="ex-link">
+            <a data-_qid="#quickview-btn-{{- product.id -}}" class="button-product-sizechart"  href="javascript:void(0)" data-sizechart="#popup-product-sizechart">{{'products.product.size_chart' | t}}</a>
+          </div>
+          {%- endif -%}
+        </div>
+        {%- endif -%}
+      </div>
+    </div>
+    <div class="trust-sale-img">
+          <img class="b-lazy" data-src="https://cdn.shopify.com/s/files/1/0134/7738/0153/files/secure-checkout-payment-1.jpg?v=1603994544" alt="environmental pledge" loading="lazy">
+    {%- include 'product-question' -%}
+    {%- include 'product-sizechart' -%}
+  </div>
+      
+{% if request.locale.iso_code == 'fr' %}
+{% if product.metafields.global.size != blank %}
+<div class="product-general-info">
+        <p class="product-general-info-h3"><b>Caractéristiques principales</b></p>
+        	<table style="width:100%">
+              <tr>
+                <td class="pdi-tab"><img class="img-pdi" src="https://cdn.shopify.com/s/files/1/0134/7738/0153/files/size_1.png?v=1604598972" style="height:25px;margin-right:10px;padding-bottom: 4px;" alt="taille"><span class= "pdi-1"> <b>Taille</b> : {{product.metafields.global.size }}</span></td>
+                <td class="pdi-tab"><img class="img-pdi" src="https://cdn.shopify.com/s/files/1/0134/7738/0153/files/measuring-jug_1.png?v=1604598972" style="height:25px;margin-right:10px;padding-bottom: 3px;" alt="volume"><span class= "pdi-1"> <b>Volume</b> : {{product.metafields.global.volume }}</span></td>
+              </tr>
+              <tr>
+                <td class="pdi-tab"><img class="img-pdi" src="https://cdn.shopify.com/s/files/1/0134/7738/0153/files/weight_1.png?v=1604598972" style="height:25px;margin-right:10px;padding-bottom: 3px;" alt="weight"><span class= "pdi-1">  <b>Poids</b> : {{product.metafields.global.weight }}</span></td>
+                <td class="pdi-tab"><img class="img-pdi" src="https://cdn.shopify.com/s/files/1/0134/7738/0153/files/laptop_1.png?v=1604598972" style="height:25px;margin-right:10px;padding-bottom: 3px;" alt="laptop"><span class= "pdi-1"> <b>Taille ordinateur</b> : {{product.metafields.global.laptop }}</span></td>
+			  </tr>
+        	</table>
+</div> 
+{% endif %}
+{% else %}
+{% if product.metafields.global.size != blank %}
+<div class="product-general-info">
+        <p class="product-general-info-h3"><b>Product features</b></p>
+        	<table style="width:100%">
+              <tr>
+                <td class="pdi-tab"><img class="img-pdi" src="https://cdn.shopify.com/s/files/1/0134/7738/0153/files/size_1.png?v=1604598972" style="height:25px;margin-right:10px;padding-bottom: 4px;" alt="size"><span class= "pdi-1"> <b>Size</b>: {{product.metafields.global.size }}</span></td>
+                <td class="pdi-tab"><img class="img-pdi" src="https://cdn.shopify.com/s/files/1/0134/7738/0153/files/measuring-jug_1.png?v=1604598972" style="height:25px;margin-right:10px;padding-bottom: 3px;" alt="volume"><span class= "pdi-1"> <b>Volume</b>: {{product.metafields.global.volume }}</span></td>
+              </tr>
+              <tr>
+                <td class="pdi-tab"><img class="img-pdi" src="https://cdn.shopify.com/s/files/1/0134/7738/0153/files/weight_1.png?v=1604598972" style="height:25px;margin-right:10px;padding-bottom: 3px;" alt="weight"><span class= "pdi-1">  <b>Weight</b>: {{product.metafields.global.weight }}</span></td>
+                <td class="pdi-tab"><img class="img-pdi" src="https://cdn.shopify.com/s/files/1/0134/7738/0153/files/laptop_1.png?v=1604598972" style="height:25px;margin-right:10px;padding-bottom: 3px;" alt="laptop"><span class= "pdi-1"> <b>Laptop size</b>: {{product.metafields.global.laptop }}</span></td>
+			  </tr>
+        	</table>
+</div> 
+{% endif %}
+{% endif %}    
+</div>
+<script>
+    
+	window.addEventListener("DOMContentLoaded", (event) => {
+      
+      function affichertext() {
+        document.getElementById("customproduct1").style.display = "block";
+      }   
+
+      function cachertext() {
+        document.getElementById("customproduct1").style.display = "none";
+      }
+
+      function getSelectValue(selectId){
+        var selectElmt = document.getElementById(selectId);
+        if(selectElmt){
+          return selectElmt.options[selectElmt.selectedIndex].value;
+        }
+      }
+
+      var inputValue = getSelectValue('single-option-selector-product-template-1');              
+
+      if(inputValue == 'Non'||inputValue == 'No' || inputValue == undefined){
+          cachertext();
+      }
+      
+          if(document.getElementById('single-option-selector-product-template-1')){
+          document.getElementById('single-option-selector-product-template-1').onchange = function() {
+            inputValue = getSelectValue('single-option-selector-product-template-1');
+            if(inputValue == 'Yes'||inputValue == 'Oui'){
+              affichertext();
+            }else{
+              cachertext();
+            }
+          }
+          }
+      
+    });     
+</script>
+<style>
+  .sale {
+    display: none;
+  }
+  
+  .img-pdi {
+    vertical-align: middle;
+        }
+  .track-quantity-here {
+    display: flex;
+    padding: 5px;
+    padding-top: 10px;
+    height: 35px;
+    margin-top: 15px;
+    border-top: solid 1px;
+    border-color: #e5e5e5;
+}
+  div#product-stock-inventory1 {
+    font-weight: 300 !important;
+    color: #4a4a4b !important;
+    line-height: 5px;
+    text-transform: uppercase;
+    padding-left: 15px;
+    font-size: 11px;
+        margin-top: 10px;
+    margin-bottom: 10px;
+}
+.blob1 {
+    background: #5aa646;
+    margin-top: 7px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+    height: 10px;
+    width: 10px;
+    transform: scale(1);
+    animation: pulse-black 3s infinite;
+}
+   .track-quantity-here .blob1.notavail {
+    background: indianred;
+    margin-top: 7px;
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+    animation: unset;
+}
+        
+        .pdi-tab {
+   		 padding-left: 5px;
+         padding-top: 3px;
+    	 padding-bottom: 3px;
+         width: 50%;
+        }
+        
+        .pdi-tab-1 {
+         width: 100%;
+   		 padding-left: 5px;
+         padding-top: 3px;
+    	 padding-bottom: 3px;
+        }
+        
+        .product-general-info {
+   		 padding-top: 5px;
+   		 margin-top: 5px;
+   		 border-top: solid 1px;
+  		  border-color: #e5e5e5;        
+        }
+        
+        .pdi-1 {
+          margin-bottom: 5px ;
+          color: #4a4a4b;;
+    	  font-size: 11px;
+   		  text-transform: uppercase;
+    	  line-height: 22px;
+    	  font-weight: 300 !important;
+        }
+        
+        .product-general-info-h3 {
+   		  margin-bottom: 5px;
+   		  margin-top: 10px;		  
+          color: #4a4a4b;;
+   		  font-size: 13px;
+   		  text-transform: uppercase;
+   		  line-height: 22px;
+   		  font-weight: 300 !important;
+        }
+        
+        
+         .dg-shipping-date-1 {
+    	 padding-top: 20px;
+     	 margin: 10px 0 10px 0;
+    	 text-transform: uppercase;
+    	 border-top: solid 1px;
+    	 border-color: #e5e5e5 !important;
+         }
+         
+        .p-dg-shipping-date-1{
+            margin-bottom: 12px;
+           	text-transform: uppercase;
+    		color: #4a4a4b;    		
+           	font-size: 11px;
+    		line-height: 22px;
+    		font-weight: 300 !important;
+         }
+  
+  .text-outofstock {
+    font-size: 11px;
+    line-height: 22px;
+    font-weight: 300 !important;
+    display: flex;
+    margin-left: 15px;
+    height: 30px;
+    margin-top: 2px;
+    text-transform: uppercase;
+    color: #333;
+  }
+  
+  .blobs-container {
+    display: flex;
+    padding: 5px;
+    padding-top: 10px;
+    height: 35px;
+    margin-top: 20px;
+    border-top: solid 1px;
+    border-color: #e5e5e5;
+  }
+
+.blob {
+    background: #38a21c;
+    margin-top: 7px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+    height: 10px;
+    width: 10px;
+    transform: scale(1);
+    animation: pulse-black 3s infinite;
+}
+
+  
+   .blob-2 {
+    background: indianred;
+    margin-top: 7px;
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+   }
+
+@keyframes pulse-black {
+    0% {
+        transform: scale(0.98);
+        box-shadow: 0 0 0 0 #38a21c;
+    }
+    
+    90% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+    }
+    
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+}
+  a{
+    line-height:normal !important;
+  }
+  
+  .atcbutton {
+    line-height: 1;
+    font-weight: 300;
+  }
+  
+  .pressure-cooker.custom {
+    padding-left:0px !important;
+    text-transform: uppercase;
+    font-size: 11px !important;
+    color: #333;
+    padding:0px !important;
+    margin-top: 0px !important;
+  }
+  
+  .stock-remaining-message {
+    font-family: "Inter";
+    font-weight: 300;
+    color: #333;
+  }
+
+     .megamenu.shift-up {
+        padding-bottom: 0px;
+        margin-bottom: 40px;
+          
+     }
+      
+     .product-info .cart .add_to_cart  {
+        padding-bottom: 5px
+          
+     } 
+
+      .optiontitle {
+        padding-bottom: 0px
+          
+     } 
+      
+      .product-summary h2.name {
+            padding-top: 0px;
+        	padding-bottom: 5px	
+	} 
+      
+      .product-summary h2.name.no-review {
+    		margin-bottom: 0px !important;
+    		font-size: 32px !important;
+    		font-weight: 400 !important;
+        	line-height: 1.2 !important;
+	}
+  
+  	  .jdgm-prev-badge__text {
+        	font-weight: 300 !important;
+        	font-size: 13px;
+      }
+
+      
+      .price {
+    	margin-bottom: 0px;
+        margin-top: 0px;
+
+		}
+      
+      .product-info .options {
+    	padding-top: 0px;
+        padding-bottom: 5px;
+        border-bottom: solid 1px;
+		}
+      
+      .product-info .options2 h2{
+            padding-bottom: 3px;
+            padding-top: 7px;
+            color: #fff;
+        }
+
+        .product-info .options2 .selector-wrapper label{
+            padding-top: 0;
+            text-transform: uppercase !important;
+    		font-size: 11px;
+    		color: #333;
+        }
+      
+
+        .product-info .price .price-old{
+            padding: 0px;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 7px;
+          	font-size: 17px !important;
+          	margin-top: 4px;
+        }
+
+        .product-info .review{
+            margin: 0px;
+            margin-bottom: 0px;
+        }
+      
+      
+      	.trust-sale-img {
+   			margin-top: 10px;
+		}
+      
+     	.product-accordions {
+    		margin-top: 10px;
+		}
+  
+      
+      	.product-thumbnails-bottom {
+    		padding-top: 5%;
+    		margin: 0 0px;
+    		padding-bottom: 10px;
+		}
+      
+      	.product-thumbnails-bottom .thumbnails .slick-arrow:before {
+    		font-size: 20px;
+   			line-height: 1;
+   			display: none;
+   			justify-content: center;
+   			align-items: center;
+   			padding: 8px;
+		}		
+      
+      	.product-thumbnails-bottom .thumbnails .slick-arrow {
+            bottom: -50px;
+            top: auto;
+            z-index: 7;
+            left: 0;
+            z-index: 7;
+            cursor: pointer;
+            font-size: 0;
+            line-height: 0;
+            background: none;
+            border: none;
+            width: 0px;
+            height: 0px;
+            background: #f7f8fa;
+            font-weight: bold;
+            border-radius: 50%;
+            transition: all 0.2s linear;
+            -ms-transition: all 0.2s linear;
+            -webkit-transition: all 0.2s linear;
+            -o-transition: all 0.2s linear;
+}
+      
+	    .product-info .price .price-new{
+        	display: inline-block;
+    		vertical-align: middle;
+              line-height: 1.7;
+        }
+      #price{
+	margin-bottom: 0px;
+}
+      .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-25, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12 {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+    .optiontitle{
+        display: none
+      }
+     .espacedestop{
+            margin-bottom: 0px;
+        }
+
+  	.espacedestop2{
+      padding-bottom: 10px;
+        }
+  
+ 	 .p-dg-shipping-date {
+       margin-bottom: 12px
+     }
+ 
+  
+  .quantity-wrapper {
+    display: none;
+  }
+    .btn.klaviyo-bis-trigger {
+    text-align: center !important;
+    margin-left: 0px !important;
+    margin-right:0px !important;
+    width: 100% !important;
+    font-size: 23px !important;
+    background: #333333;
+    border: 1px solid #333333;
+    box-shadow: 5px 5px 4px 0px #8c8c8c61;
+}
+  
+  #customproduct1 {
+    margin-top: 10px;
+    margin-bottom: 0px;
+  }
+  #customproduct3 {
+    font-size: 11px !important;
+    font-weight: 300 !important;
+    padding-top: 0px !important;
+    text-transform: uppercase !important;
+    color: #333;
+    line-height: 18px;
+    text-align: justify;
+  }
+  
+  #notecustom {
+    font-size: 12px !important;
+    font-weight: 300 !important;
+    margin-bottom: 0px;
+  }
+  
+  .text-default {
+    font-weight: 300 !important; 
+    color: #4a4a4b !important;
+    line-height: 5px;
+  }
+  
+  @media screen and (max-width: 767px) {
+    
+    .tab-heading {
+      display:none !important;
+}
+    
+    .track-quantity-here {
+      margin-top: 5px;
+}
+
+    .blobs-container {
+      margin-top: 10px;
+      height: 30px;
+
+}
+
+    .pdi-1 {
+      font-size: 10px;
+      letter-spacing: -0.3px;
+}
+           
+    .dg-shipping-date {
+      display: none;
+    }
+    
+         .dg-shipping-date-1 {
+   		 	display: block;
+    	 	padding-top: 20px;
+     	 	margin: 10px 0 10px 0;
+    	 	text-transform: uppercase;
+    	 	border-top: solid 1px;
+    	 	border-color: #e5e5e5 !important;
+         }
+       
+         .p-dg-shipping-date-1{
+            margin-bottom: 12px;
+           	text-transform: uppercase;
+    		color: #4a4a4b;    		
+           	font-size: 11px;
+    		line-height: 22px;
+    		font-weight: 300 !important;
+         }
+           
+          .pdi-tab {
+         	width: 60%
+          }
+    
+    .blob {
+      margin-top: 12px;
+      margin-left: 1px;
+    }
+    
+    .blob-2 {
+      margin-top: 12px;
+      margin-left: 1px;
+    }
+		
+    .text-default {
+    padding-left: 15px;
+    font-size: 11px !important;
+    line-height: 15px;
+}
+    
+    .text-outofstock {
+      margin-left: 15px;
+      padding-left: 0px;
+      line-height: 30px;
+    }
+    
+    .espacedestop{
+        display: none;
+        }
+    
+          #price{
+	margin-bottom: 5px;
+    padding-bottom: 0px;
+   }
+    
+    .product-summary h2.name.no-review {
+      font-size: 27px !important;
+      line-height: 30px !important;
+    }
+    
+	.price-new {
+      font-size: 24px !important;
+    }
+    
+    .price-old {
+	  font-size: 18px !important;
+    }
+    
+    .espacedestop2{
+      padding-bottom: 0px;
+        }
+    
+    .h5 {
+      font-size:18px !important;
+    }
+  }
+</style>
+    
+    <script>
+ var inv_qty = {};
+ {% for var in product.variants %}
+   inv_qty[{{- var.id -}}] = {{ var.inventory_quantity | default: 0 }};
+ {% endfor %}
+</script>

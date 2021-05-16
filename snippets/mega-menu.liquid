@@ -1,0 +1,110 @@
+{%- assign mmenu_fullwidth = 'mmenu_fullwidth_' | append: i -%}
+{%- assign mmenu_orientation = 'mmenu_orientation_' | append: i -%}
+{%- assign mmenu_mobile = 'mmenu_mobile_' | append: i -%}
+{%- assign mmenu_navigation_text = 'mmenu_navigation_text_' | append: i -%}
+{%- assign mmenu_order = 'mmenu_order_' | append:i -%}
+
+{%- assign mmenu_animation_type = 'mmenu_animation_type_' | append: i -%}
+{%- assign mmenu_animation_time = 'mmenu_animation_time_' | append: i -%}
+{%- assign _mmenu_sub_ct_animate_time = '300'-%}
+{%- assign _animation_time = settings[mmenu_animation_time] | plus: 0 -%}
+
+{%- if _animation_time > 0 and _animation_time < 5000 -%}
+{%- assign mmenu_sub_ct_animate_time = _animation_time -%}
+{%- endif -%}
+
+{%- assign mmenu_home_icon 		= 'mmenu_home_icon_' 	| append: i -%}
+{%- assign mmenu_home_text 		= 'mmenu_home_text_' 	| append: i -%}
+{%- assign mmenu_searchbar 		= 'mmenu_searchbar_' 	| append: i -%}
+{%- assign mmenu_content_type 	= 'mmenu_content_' 		| append: i -%}
+
+{%- assign mmenu_class = '' -%}
+{%- capture mmenu_class -%}{%- if settings[mmenu_fullwidth] -%}{{' '}}container{%- endif -%}{%- if settings[mmenu_orientation] == '0' -%}{{' '}}horizontal{%- elsif settings[mmenu_orientation] == '1'-%}{{' '}}vertical{%- elsif settings[mmenu_orientation] == '2'-%}{{' '}}horizontal horizontal-type-2{%- else -%}{{' '}}horizontal horizontal-type-3{%- endif -%}{%- if settings[mmenu_mobile] == false -%}{{' '}}mobile-disabled{%- endif -%}{%- endcapture -%}
+<div id="megamenu_{{i}}" data-order="{{settings[mmenu_order]}}" class="container-megamenu{{mmenu_class}}">
+  {%- if settings[mmenu_orientation] == '1' -%}
+  <div id="menuHeading">
+    <div class="megamenuToogle-wrapper">
+      <div class="megamenuToogle-pattern">
+        <div class="container">
+          {{settings[mmenu_navigation_text]}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="megaMenuToggle">
+    <div class="megamenuToogle-wrapper">
+      <div class="megamenuToogle-pattern">
+        <div class="container">
+          {{settings[mmenu_navigation_text]}}
+        </div>
+      </div>
+    </div>
+  </div>
+  {%- else -%}
+  <div class="megaMenuToggle">
+    <div class="megamenuToogle-wrapper">
+      <div class="megamenuToogle-pattern">
+        <div class="container">
+          <div><span></span><span></span><span></span></div>
+          {{settings[mmenu_navigation_text]}}
+        </div>
+      </div>
+    </div>
+  </div>
+  {%- endif -%}
+  <div class="megamenu-wrapper">
+    <div class="megamenu-pattern">
+      <div class="container">
+        <ul class="megamenu{{' '}}{%- if settings[mmenu_animation_type] != 'none' -%}{{settings[mmenu_animation_type]}}{%- endif -%}">
+          {%- if settings[mmenu_home_icon] or settings[mmenu_home_text] != empty -%}
+          <li class="home">
+            <a href="{{shop.url}}">
+              {%- if settings[mmenu_home_icon] -%}
+              <i class="fa fa-home"></i>
+              {%- else -%}
+              <span><strong>{{settings[mmenu_home_text]}}</strong></span>
+              {%- endif -%}
+            </a>
+          </li>
+          {%- endif -%}
+          {%- if settings[mmenu_searchbar] -%}
+          <li class="search pull-right">
+            <!-- Search -->
+            <form action="/search" method="get" role="search" class="search_form">
+              <div class="button-search2"></div>
+              <input type="search" name="q" class="input-block-level search-query" placeholder="{{ 'search.general.placeholder' | t }}" id="search_query2" value="" />
+              <div id="autocomplete-results2" class="autocomplete-results"></div>
+              <input type="hidden" name="type" value="product" />
+            </form>
+          </li>
+          {%- endif -%}
+
+		  {%- if settings[mmenu_content_type] == '0' -%}
+		  {%- for j in (1..MAX_MENU_ITEM) -%}
+          {%- include 'mega-menu-item' -%}
+          {%- endfor -%}
+          {%- else -%}
+          {%- if settings.page_direction == 'LTR'-%}
+          {%- include 'mega-menu-content-linklist' -%}
+          {%- else -%}
+          {%- include 'mega-menu-content-linklist-rtl' -%}
+          {%- endif -%}
+          {%- endif -%}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(window).load(function(){
+    var css_tpl = '<style type="text/css">';
+    css_tpl += '#megamenu_{{i}} ul.megamenu > li > .sub-menu > .content {';
+    css_tpl += '-webkit-transition: 	all {{_mmenu_sub_ct_animate_time}}ms ease-out !important;';
+    css_tpl += '-moz-transition: 		all {{_mmenu_sub_ct_animate_time}}ms ease-out !important;';
+    css_tpl += '-o-transition: 			all {{_mmenu_sub_ct_animate_time}}ms ease-out !important;';
+    css_tpl += '-ms-transition: 		all {{_mmenu_sub_ct_animate_time}}ms ease-out !important;';
+    css_tpl += 'transition: 			all {{_mmenu_sub_ct_animate_time}}ms ease-out !important;';
+    css_tpl += '}</style>'
+    $("head").append(css_tpl);
+  });
+</script>

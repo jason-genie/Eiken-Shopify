@@ -1,0 +1,174 @@
+{%-capture image_size-%}{{block.settings.banner_image_quality}}{%- endcapture -%}
+{%-assign fx_class = ''-%}
+{%-if block.settings.banner_fx == true-%}
+{%-assign _t = block.settings.banner_fx_type | plus: 0-%}
+{%-assign fx_class = ' ' | append: fx_classes[_t]-%}
+{%-endif-%}
+
+{%-assign borders_class = ' '-%}
+{%-if block.settings.banner_borders == '1'-%}
+{%-assign borders_class = borders_class | append: ' has-borders' -%}
+{%-if block.settings.banner_borders_top == true-%}
+{%-assign borders_class = borders_class | append: ' border-top' -%}
+{%-endif-%}
+{%-if block.settings.banner_borders_bottom == true-%}
+{%-assign borders_class = borders_class | append: ' border-bottom' -%}
+{%-endif-%}
+{%-if block.settings.banner_borders_left == true-%}
+{%-assign borders_class = borders_class | append: ' border-left' -%}
+{%-endif-%}
+{%-if block.settings.banner_borders_right == true-%}
+{%-assign borders_class = borders_class | append: ' border-right' -%}
+{%-endif-%}
+{%-assign borders_class = borders_class | append: ' ' -%}
+{%-endif-%}
+{%-assign borders_mobile_class = ' '-%}
+{%-if block.settings.banner_mobile_borders == '1'-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' has-mobile-borders' -%}
+{%-if block.settings.banner_mobile_borders_top == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-top' -%}
+{%-endif-%}
+{%-if block.settings.banner_mobile_borders_bottom == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-bottom' -%}
+{%-endif-%}
+{%-if block.settings.banner_mobile_borders_left == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-left' -%}
+{%-endif-%}
+{%-if block.settings.banner_mobile_borders_right == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-right' -%}
+{%-endif-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' ' -%}
+{%-endif-%}
+
+{%-capture class_for_banner-%}rich-banner-wrapper col-rb-{{ block.settings.banner_width }}{{' '}}col-rbm-{{ block.settings.banner_mobile_width }}{{borders_class}}{{borders_mobile_class}}{%-endcapture-%}
+{%-if block.settings.banner_link != blank and block.settings.banner_head == blank and block.settings.banner_cap == blank and block.settings.banner_linklist == blank and block.settings.banner_cta == blank-%}
+<a href="{{block.settings.banner_link}}" class="{{class_for_banner}}">
+{%-else-%}
+<div class="{{class_for_banner}}">
+{%-endif-%}
+  <div id="rich-banner-{{block.id}}" class="background-load {%if block.settings.banner_rounded_edge == true%} has--rounded-edge {%endif%}{%if block.settings.banner_shadow == true%} has--box-shadow rt-image-shadow {%endif%}{%if block.settings.banner_tilt == true%} rt-tilt-container {%endif%}rich-banner-{{block.id}} {{' rich-banner '}}{{block.settings.banner_text_pos}}{%-if block.settings.banner_fx == true-%}{{' has-text-fx '}}{%-endif-%}{%- if block.settings.banner_image != blank and settings.image_lazy_loading_used -%}{{' b-lazy '}}{%-endif-%}" {{ block.shopify_attributes }} data-fx="{{block.settings.banner_fx}}" data-fx-type="{{block.settings.banner_fx_type}}"
+       style="background-color:{{block.settings.banner_bg_color}};" {% if block.settings.banner_image != blank -%}{%- assign img_url = block.settings.banner_image | img_url: image_size, crop: 'center' -%}data-src="{{img_url}}"{% endif %}>
+    {%-if block.settings.banner_head != blank or block.settings.banner_cap != blank or block.settings.banner_linklist != blank or block.settings.banner_cta != blank-%}
+    {%-if block.settings.banner_cta != blank or block.settings.banner_linklist != blank or block.settings.banner_link == blank-%}
+    <div class="banner-content-wrapper{{' '}}{{block.settings.banner_text_vpos}}">
+      {%-else-%}
+      <a href="{{block.settings.banner_link}}" class="banner-content-wrapper{{' '}}{{block.settings.banner_text_vpos}}">
+      {%-endif-%}
+        {%-if block.settings.banner_head != blank or block.settings.banner_cap != blank or block.settings.banner_linklist != blank or block.settings.banner_cta-%}
+        <div class="banner-texting{{' '}}{{block.settings.banner_text_align}}{%-if block.settings.banner_fx == false-%}{{' without--fx '}}{%-endif-%}{%-if block.settings.banner_cta == blank-%}{{' without--cta '}}{%-endif-%}{%-if block.settings.banner_linklist == blank-%}{{' without--linklist '}}{%-endif-%}">
+          {%-if block.settings.banner_head != blank-%}
+          {%-if block.settings.banner_fx == true and block.settings.banner_fx_for !='1'-%}
+          <div class="b-heading self-fontsize-adj{{fx_class}}{%-if block.settings.banner_head_shadow == true -%}{{' has--text-shadow '}}{%-endif-%}" data-ori-fontsize="{{block.settings.banner_head_size}}px" style="font-weight:{{block.settings.banner_head_weight}};font-size:{{block.settings.banner_head_size}}px;color:{{block.settings.banner_head_color}};">
+            {%-include 'section-richbanners-banner-fx-text', fx_type: block.settings.banner_fx_type, texting: block.settings.banner_head, _color: block.settings.banner_head_color-%}
+          </div>
+          {%-else-%}
+          <div class="b-heading self-fontsize-adj{%-if block.settings.banner_head_shadow == true -%}{{' has--text-shadow '}}{%-endif-%}" data-ori-fontsize="{{block.settings.banner_head_size}}px" style="font-weight:{{block.settings.banner_head_weight}};font-size:{{block.settings.banner_head_size}}px;color:{{block.settings.banner_head_color}};">
+            {{block.settings.banner_head}}
+          </div>
+          {%-endif-%}
+          {%-endif-%}
+
+          {%-if block.settings.banner_cap != blank-%}
+          {%-if block.settings.banner_fx == true and block.settings.banner_fx_for !='0'-%}
+          <div class="b-caption self-fontsize-adj{{fx_class}}{%-if block.settings.banner_cap_shadow == true -%}{{' has--text-shadow '}}{%-endif-%}" data-ori-fontsize="{{block.settings.banner_cap_size}}px" style="font-weight:{{block.settings.banner_cap_weight}};font-size:{{block.settings.banner_cap_size}}px;color:{{block.settings.banner_cap_color}};">
+            {%-include 'section-richbanners-banner-fx-text', fx_type: block.settings.banner_fx_type, texting: block.settings.banner_cap, _color: block.settings.banner_cap_color-%}
+          </div>
+          {%-else-%}
+          <div class="b-caption self-fontsize-adj{%-if block.settings.banner_cap_shadow == true -%}{{' has--text-shadow '}}{%-endif-%}" data-ori-fontsize="{{block.settings.banner_cap_size}}px" style="font-weight:{{block.settings.banner_cap_weight}};font-size:{{block.settings.banner_cap_size}}px;color:{{block.settings.banner_cap_color}};">
+            {{block.settings.banner_cap}}
+          </div>	
+          {%-endif-%}
+          {%-endif-%}
+		  
+          {%-if block.settings.banner_linklist != blank-%}
+          {%-assign _linklist = linklists[block.settings.banner_linklist]-%}
+          <ul class="richbanner-linklist">
+            {%-for _link in _linklist.links-%}
+            <li>
+              <a href="{{_link.url}}">{{_link.title}}</a>
+            </li>
+            {%-endfor-%}
+          </ul>
+          {%-endif-%}
+          
+          {%-if block.settings.banner_cta != blank-%}
+          <a class="btn cta self-fontsize-adj" data-ori-fontsize="{{block.settings.banner_cta_size}}px" href="{{block.settings.banner_link}}" style="font-weight:{{block.settings.banner_cta_weight}};font-size:{{block.settings.banner_cta_size}}px;color:{{block.settings.banner_cta_color}}!important;background-color:{{block.settings.banner_cta_bgcolor}}!important;">{{block.settings.banner_cta}}</a>
+          {%-endif-%}
+        </div>
+        {%-endif-%}
+      {%-if block.settings.banner_cta == blank and block.settings.banner_linklist == blank and block.settings.banner_link != blank-%}
+      </a>
+      {%-else-%}
+    </div>
+    {%-endif-%}
+    {%-else-%}
+    <div class="banner-content-wrapper"></div>
+    {%-endif-%}
+  </div>
+{%-if block.settings.banner_link == blank or block.settings.banner_head != blank or block.settings.banner_cap != blank or block.settings.banner_linklist != blank or block.settings.banner_cta != blank-%}
+</div>
+{%-else-%}
+</a>
+{%-endif-%}
+<style>
+  @media (max-width: 767px) {
+    .rich-banners#rich-banners-{{section.id}} .rich-banner.rich-banner-{{block.id}} .banner-content-wrapper {
+      min-height:{{block.settings.banner_mobile_height | append: 'px'}}
+    }
+    {%-if block.settings.banner_image_full_visible_mobile-%}
+    .rich-banners#rich-banners-{{section.id}} .rich-banner.rich-banner-{{block.id}} {
+      background-size:contain;
+    }
+    {%-else-%}
+    .rich-banners#rich-banners-{{section.id}} .rich-banner.rich-banner-{{block.id}} {
+      background-size:cover;
+    }
+    {%-endif-%}
+  }
+  @media (min-width: 768px) {
+    .rich-banners#rich-banners-{{section.id}} .rich-banner.rich-banner-{{block.id}} .banner-content-wrapper {
+      min-height:{{block.settings.banner_height | append: 'px'}}
+    }
+    .rich-banners#rich-banners-{{section.id}} .rich-banner.rich-banner-{{block.id}} ul.richbanner-linklist {
+      width:{{block.settings.banner_linklist_width}}px;
+    }
+    {%-assign li_w = 'auto,100%,50%,33.3%,25%,20%'%}
+  	{%-assign li_w_o = li_w | split: ','-%}
+    .rich-banners#rich-banners-{{section.id}} .rich-banner.rich-banner-{{block.id}} ul.richbanner-linklist li{
+      flex: 0 0 {{li_w_o[block.settings.banner_linklist_col]}};
+    }
+    {%-if block.settings.banner_image_full_visible-%}
+    .rich-banners#rich-banners-{{section.id}} .rich-banner.rich-banner-{{block.id}} {
+      background-size:contain;
+    }
+    {%-else-%}
+    .rich-banners#rich-banners-{{section.id}} .rich-banner.rich-banner-{{block.id}} {
+      background-size:cover;
+    }
+    {%-endif-%}
+  }
+
+  .rich-banners#rich-banners-{{section.id}} .rich-banner.rich-banner-{{block.id}}.text-pos-left .banner-content-wrapper{
+    margin-left:{{block.settings.banner_side_padding_hori}}%;
+  }
+
+  .rich-banners#rich-banners-{{section.id}} .rich-banner.rich-banner-{{block.id}}.text-pos-right .banner-content-wrapper{
+    margin-right:{{block.settings.banner_side_padding_hori}}%;
+  }
+
+  .rich-banners#rich-banners-{{section.id}} .rich-banner.rich-banner-{{block.id}} .banner-content-wrapper.text-vpos-top{
+    padding-top:{{block.settings.banner_side_padding_vert}}%;
+  }
+
+  .rich-banners#rich-banners-{{section.id}} .rich-banner.rich-banner-{{block.id}} .banner-content-wrapper.text-vpos-bottom{
+    padding-bottom:{{block.settings.banner_side_padding_vert}}%;
+  }
+  .rich-banners#rich-banners-{{section.id}} .rich-banner.rich-banner-{{block.id}} ul.richbanner-linklist li a {
+    color:{{block.settings.banner_linklist_color}};
+    font-size:{{block.settings.banner_linklist_size}}px;
+    font-weight:{{block.settings.banner_linklist_weight}};
+  }
+  .rich-banners#rich-banners-{{section.id}} .rich-banner.rich-banner-{{block.id}} ul.richbanner-linklist li a:hover {
+    color:{{block.settings.banner_linklist_color_hover}};
+  }
+</style>

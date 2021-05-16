@@ -1,0 +1,13 @@
+{%- assign _allow_cart = false -%}
+{%- if product.available -%}
+{%- assign _allow_cart = true -%}
+{%- endif -%}
+<div>
+</div>  
+{% schema %}
+  {
+    "name": "Product Variants Mobile",
+	"class": "product-variant-mobile-section",
+    "settings": []
+  }
+{% endschema %}

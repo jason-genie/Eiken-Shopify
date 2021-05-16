@@ -1,0 +1,168 @@
+{%- assign _slider_layout = '1' -%}{%- comment -%}SHOULD LOAD FROM SETTINGS IN NEXT VERSION!!!{%- endcomment -%}
+{%- if _slider_layout == '0' or _slider_layout == CURRENT_LAYOUT -%}
+
+{%- assign _pos = home-slider -%}
+{%- if _pos != '' and _pos == settings.slider_pos -%}
+
+{%- if settings.slider_use == true -%}
+{%- if settings.slider_placement == 'within-container' -%}
+<div class="container{%- if settings.slider_overflow and settings.slideshow_layout == '1' and settings.slider_placement == 'within-container' -%}{{' '}}slider-overflow{%- endif -%}" data-order="{{settings.slider_order}}">
+  {%- endif -%}
+  <div class="row-fluid"{%- if settings.slider_placement != 'within-container'-%}{{' '}}data-order="{{settings.slider_order}}"{%- endif -%}>
+    {%- if settings.slider_absolute_bg -%}
+    <img class="asolute-bg visible-lg visible-md" src="{{'slider_absolute_bg.png' | asset_url }}" alt=""/>
+    {%- endif -%}
+    {%- assign afx_heading = settings.slider_afx_head | default: 'fadeIn' -%}
+    {%- assign afx_caption = settings.slider_afx_cap | default: 'fadeIn' -%}
+    {%- assign afx_cta = settings.slider_afx_cta | default: 'fadeIn' -%}
+    {%- assign afx_sticker = settings.slider_afx_sticker | default: 'fadeIn' -%}
+    {%- assign dfx_heading = settings.slider_dfx_head | default: 'fadeOut' -%}
+    {%- assign dfx_caption = settings.slider_dfx_cap | default: 'fadeOut' -%}
+    {%- assign dfx_cta = settings.slider_dfx_cta | default: 'fadeOut' -%}
+    {%- assign dfx_sticker = settings.slider_dfx_sticker | default: 'fadeOut' -%}
+
+    {%- assign valid_afxs = 'bounce,bounceIn,bounceInDown,bounceInLeft,bounceInRight,bounceInUp,fadeIn,fadeInDown,fadeInDownBig,fadeInLeft,fadeInLeftBig,fadeInRight,fadeInRightBig,fadeInUp,fadeInUpBig,flash,flipInX,flipInY,headShake,jello,lightSpeedIn,pulse,rotateIn,rotateInDownLeft,rotateInDownRight,rotateInUpLeft,rotateInUpRight,rollIn,rubberBand,shake,slideInDown,slideInLeft,slideInRight,slideInUp,swing,tada,wobble,zoomIn,zoomInDown,zoomInLeft,zoomInRight,zoomInUp' | split: ',' -%}
+    {%- unless valid_afxs contains afx_heading -%}
+    {%- assign afx_heading = 'fadeIn' -%}
+    {%- endunless -%}
+    {%- unless valid_afxs contains afx_caption -%}
+    {%- assign afx_caption = 'fadeIn' -%}
+    {%- endunless -%}
+    {%- unless valid_afxs contains afx_cta -%}
+    {%- assign afx_cta = 'fadeIn' -%}
+    {%- endunless -%}
+    {%- unless valid_afxs contains afx_sticker -%}
+    {%- assign afx_sticker = 'fadeIn' -%}
+    {%- endunless -%}
+    
+    {%- assign valid_dfxs = 'bounceOut,bounceOutDown,bounceOutLeft,bounceOutRight,bounceOutUp,fadeOut,fadeOutDown,fadeOutDownBig,fadeOutLeft,fadeOutLeftBig,fadeOutRight,fadeOutRightBig,fadeOutUp,fadeOutUpBig,flipOutX,flipOutY,hinge,lightSpeedOut,rotateOut,rotateOutDownLeft,rotateOutDownRight,rotateOutUpLeft,rotateOutUpRight,rollOut,slideOutDown,slideOutLeft,slideOutRight,slideOutUp,zoomOut,zoomOutDown,zoomOutLeft,zoomOutRight,zoomOutUp' | split: ',' -%}
+    {%- unless valid_dfxs contains dfx_heading -%}
+    {%- assign dfx_heading = 'fadeOut' -%}
+    {%- endunless -%}
+    {%- unless valid_dfxs contains dfx_caption -%}
+    {%- assign dfx_caption = 'fadeOut' -%}
+    {%- endunless -%}
+    {%- unless valid_dfxs contains dfx_cta -%}
+    {%- assign dfx_cta = 'fadeOut' -%}
+    {%- endunless -%}
+    {%- unless valid_dfxs contains dfx_sticker -%}
+    {%- assign dfx_sticker = 'fadeOut' -%}
+    {%- endunless -%}
+    
+    <div id="home-slider" data-afx-head="{{afx_heading}}" data-afx-cap="{{afx_caption}}" data-afx-cta="{{afx_cta}}" data-afx-sticker="{{afx_sticker}}" data-dfx-head="{{dfx_heading}}" data-dfx-cap="{{dfx_caption}}" data-dfx-cta="{{dfx_cta}}" data-dfx-sticker="{{dfx_sticker}}" class="{{settings.slider_placement}} flexslider{%- if settings.slider_scale -%}{{' '}}scale{%- endif -%}">
+      <div class="container"><div class="container-slider"></div></div>
+      <ul class="slides">
+        {%- assign count = 0 -%}
+        {%- for i in (1..MAX_SLIDES) -%}
+        {%- assign show = 'slide_use_' | append: i -%}
+
+        {%- if settings[show] -%}
+        {%- assign count = count | plus:1 -%}
+        {%- assign url = 'slide_url_' | append: i -%}
+        {%- assign image_use = 'slide_img_use_' | append: i -%}
+        {%- assign image = 'slide_img_' | append: i -%}
+        {%- assign video = 'slide_vid_' | append: i -%}
+        {%- assign title = 'slide_head_' | append: i -%}
+        {%- assign title_color = 'slide_head_color_' | append: i -%}
+        {%- assign title_size = 'slide_head_size_' | append: i -%}
+        {%- assign caption = 'slide_capt_' | append: i -%}
+        {%- assign caption_color = 'slide_capt_color_' | append: i -%}
+        {%- assign caption_size = 'slide_capt_size_' | append: i -%}
+        {%- assign cta = 'slide_cta_' | append: i -%}
+        {%- assign position = 'slide_pos_' | append: i -%}
+        {%- assign swap = 'slide_swap_' | append: i -%}
+        {%- assign sticker = 'slide_sticker_' | append: i -%}
+        {%- assign cta_between = 'slide_cta_btw_' | append: i -%}
+
+        <li>
+          <div class="slide-body"{%- if settings.slider_auto_height == false -%}{{' '}}data-height="{{settings.slider_height | default:500 | plus:0}}"{%- endif -%}>
+            <div class="slide-banner"{{' '}}{%- if settings[image_use] -%}style="background-image:url({{ image | append: '.png' | asset_url }});"{%- endif -%}>
+              {%- if settings[cta] == empty -%}
+              <a href="{{settings[url]}}">
+                {%- endif -%}
+                {%- if settings.slider_mask -%}
+                <span class="slider-mask"></span>
+                {%- endif -%}
+                {%- if settings[image_use] -%}<img class="slide-img" src="{{ image | append: '.png' | asset_url }}" alt="{{settings[title] | strip_html}}" />{%- endif -%}
+                {%- if settings[video] != blank -%}
+                <video class="slide-video" poster="{{ image | append: '.png' | asset_url }}" preload="auto" autoplay="" loop="loop" muted="muted">
+                  <source src="{{settings[video]}}" type="video/mp4">
+                </video>
+                {%- endif -%}
+                {%- if settings[cta] == empty -%}
+              </a>
+              {%- endif -%}
+
+              {%- if settings[position] -%}
+              {%- assign temp = 'slide_posver_' | append: i -%}
+              {%- assign pos_vertical = settings[temp] -%}
+              {%- assign temp = 'slide_posver_type_' | append: i -%}
+              {%- assign pos_vertical_type = settings[temp] -%}
+              {%- assign temp = 'slide_poshor_' | append: i -%}
+              {%- assign pos_horizon = settings[temp] -%}
+              {%- assign temp = 'slide_poshor_type_' | append: i -%}
+              {%- assign pos_horizon_type = settings[temp] -%}
+              {%- assign temp = 'slide_align_' | append: i -%}
+              {%- assign pos_align = settings[temp] -%}
+              {%- endif -%}
+              {%- assign temp = 'slide_width_' | append: i -%}
+              {%- assign pos_width = settings[temp] -%}
+              <div class="slide-caption caption header"{%- if settings[position] -%}{{' '}}data-position="1" data-{{pos_vertical_type}}="{% if pos_vertical contains '%' %}{{pos_vertical}}{% else %}{{pos_vertical | plus:0}}{% endif %}" data-{{pos_horizon_type}}="{% if pos_horizon contains '%' %}{{pos_horizon}}{% else %}{{pos_horizon | plus:0}}{% endif %}" data-width="{{pos_width | plus:0}}" data-align="{{pos_align}}"{%- endif -%}>
+                {%- if settings[sticker] -%}
+                <div class="slide-sticker-wrapper">
+                  <a href="{{settings[url]}}">
+                  	<img src="{{ 'slide_sticker_' | append: i | append: '.png' | asset_url }}" alt="" />
+                  </a>
+                </div>
+                {%- else -%}
+                {%- if settings[cta] != '' or settings[title] != '' or settings[caption] != '' -%}
+                <div class="caption sub"{%- if settings[position] == false and pos_width != '' -%}{{' '}}style="max-width:{{pos_width}}px"{%- endif -%}>
+                  {%- if settings[swap] == true and settings[title] != empty -%}
+                  <h2 class="caption-content" data-min="13" data-max="{{settings[title_size] | plus:0}}" style="color:{{settings[title_color]}};font-size:{{settings[title_size] | plus:0}}px">
+                    {{ settings[title] }}
+                  </h2>
+                  {%- if settings[cta] != empty and settings[cta_between] == true -%}
+                  <div class="caption-link">
+                    <a class="btn" href="{{settings[url]}}">{{settings[cta]}}</a>
+                  </div>
+                  {%- endif -%}
+                  {%- endif -%}
+                  {%- if settings[caption] != '' -%}
+                  <div class="caption-content real-caption" data-min="13" data-max="{{settings[caption_size] | plus:0}}" style="color:{{settings[caption_color]}};font-size:{{settings[caption_size] | plus:0}}px;">
+                    {{ settings[caption] }}
+                  </div>
+                  {%- endif -%}
+                  {%- if settings[swap] == false and settings[title] != '' -%}
+                  {%- if settings[cta] != '' and settings[cta_between] == true -%}
+                  <div class="caption-link">
+                    <a class="btn" href="{{settings[url]}}">{{settings[cta]}}</a>
+                  </div>
+                  {%- endif -%}
+                  <h2 class="caption-content" data-min="13" data-max="{{settings[title_size] | plus:0}}" style="color:{{settings[title_color]}};font-size:{{settings[title_size] | plus:0}}px;">
+                    {{ settings[title] }}
+                  </h2>
+                  {%- endif -%}
+                  {%- if settings[cta] != '' and settings[cta_between] == false -%}
+                  <div class="caption-link">
+                    <a class="btn" href="{{settings[url]}}">{{settings[cta]}}</a>
+                  </div>
+                  {%- endif -%}
+                </div>
+                {%- endif -%}
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        </li>
+        {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+  {%- if settings.slider_placement == 'within-container' -%}
+</div>
+{%- endif -%}
+{%- endif -%}
+
+{%- endif -%}
+{%- endif -%}

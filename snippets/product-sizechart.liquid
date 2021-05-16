@@ -1,0 +1,7 @@
+{%- if settings.product_size_chart and settings.product_size_chart_page != '' -%}
+{%- assign my_page = pages[settings.product_size_chart_page] -%}
+<div id="popup-product-sizechart" class="popup mfp-hide">
+  <h4>{{'products.product.size_chart' | t}}</h4>
+  {{my_page.content}}
+</div>
+{%- endif -%}

@@ -1,0 +1,186 @@
+{%- if settings.sb_blog_placement == 'left' -%}
+<div id="sidebar" class="col-md-3 col-sm-12{% if settings.sb_blog_mobile %} hidden-sm hidden-xs{% endif %}">
+  {%- include 'sidebar-blog' -%}
+</div>
+{%- endif -%}
+
+<div id="col-main" class="center-column content-with-background blog-article{% if settings.sb_blog_placement != '' %} col-md-9{% else %} col-md-12{% endif %} col-sm-12">
+  <div class="post">
+    <div class="post-entry">
+      {%- if article.image -%}
+      <div class="post-media">
+        <img alt="{{article.title | escape}}" src="{{article.image.src | img_url: 'master'}}" />
+      </div>
+      {%- endif -%}
+      <div class="post-content" style="line-height:2">{{article.content}}</div>
+      <ul class="meta">
+        <li>{{article.published_at | date: "%b %d, %Y"}}</li>
+        <li class="post-categories"><span>{{'blogs.general.category' | t}}: </span><a href="{{blog.url}}">{{blog.title}}</a></li>
+        <li> {{article.comments_count | pluralize: 'blogs.general.comment', 'blogs.general.comments' | t }}: {{article.comments_count }}</li>
+      </ul>
+      {%- if article.tags.size > 0 -%}
+      <div class="tags">
+        {%- for tag in article.tags -%}
+        {{tag | link_to_add_tag: tag}}
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+      {%- if blog.comments_enabled? -%}
+      {%- if article.comments != blank -%}
+      <div class="box box-no-advanced comments">
+        <div class="box-heading">Comments</div>
+        <div class="box-content">
+          {%- paginate article.comments by 4 -%}
+          <div class="comments-list">
+            {%- comment -%}Loop through approved comments:{%- endcomment -%}
+            {%- for comment in article.comments reversed -%}
+            <div class="author">
+              <span class="name">{{comment.author | escape}}</span>
+              <span class="date">{{comment.created_at | date: "%B %d, %Y"}}</span>
+            </div>
+            <div class="text">{{comment.content}}</div>
+            {%- endfor -%}
+
+            {%- comment -%}Show a comment that was *just* submitted{%- endcomment -%}
+            {%- if comment and comment.created_at -%}
+            <div class="author">
+              <span class="name">{{comment.author | escape}}</span>
+              <span class="date">{{comment.created_at | date: "%B %d, %Y"}}</span>
+            </div>
+            <div class="text">{{comment.content}}</div>
+            {%- endif -%}
+
+            {%- include 'pagination' -%}
+          </div>
+          {%- endpaginate -%}
+        </div>
+      </div>
+      {%- endif -%}
+      {%- endif -%}
+      <div class="box box-no-advanced leave-reply" id="reply-block">
+        <div class="box-heading">Post a comment</div>
+        <div class="box-content">
+          {%- form article -%}
+          {%- if blog.moderated? -%}
+          <p>
+            {{'blogs.comments.moderated' | t}}
+          </p>
+          {%- endif -%}
+          {%- if form.posted_successfully? -%}
+          {%- if blog.moderated? -%}
+          <div class="success">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            {{'blogs.comments.success_moderated' | t}}
+          </div>
+          {%- else -%}
+          <div class="warning">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            {{'blogs.comments.success' | t}}
+          </div>
+          {%- endif -%}
+          {%- endif -%}
+          {%- if form.errors -%}
+          <div class="warning">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            {{ form.errors | default_errors }}
+          </div>
+          {%- endif -%}
+          <div class="form-horizontal">
+            <div class="form-group required">
+              <div class="col-xs-12 col-sm-6">
+                <label class="control-label" for="input-name">{{'blogs.comments.name' | t}}</label>
+                <input required="required" type="text" id="input-name" class="form-control" name="comment[author]" value="{%- if form.author -%}{{form.author}}{%- elsif customer -%}{{customer.first_name}} {{customer.last_name}}{%- endif -%}" />
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <label class="control-label" for="input-email">{{'blogs.comments.email' | t}}</label>
+                <input required="required" type="email" id="input-email" class="form-control" name="comment[email]" value="{%- if form.email -%}{{form.email}}{%- elsif customer -%}{{customer.email}}{%- endif -%}" />
+              </div>
+            </div>
+            <div class="form-group required">
+              <div class="col-xs-12">
+                <label class="control-label" for="input-content">{{'blogs.comments.message' | t}}</label>
+                <textarea required="required" id="input-content" name="comment[body]" rows="10" class="form-control">{{form.body}}</textarea>
+              </div>
+            </div>
+            <div class="text-center">
+              <button class="button button-large button-comment" id="button-comment" type="submit">{{'blogs.comments.post' | t}}</button>
+            </div>
+          </div>
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%- if settings.sb_blog_placement == 'right' -%}
+<div id="sidebar" class="col-md-3 col-sm-12{% if settings.sb_blog_mobile %} hidden-sm hidden-xs{% endif %}">
+  {%- include 'sidebar-blog' -%}
+</div>
+{%- endif -%}
+
+<style>
+  
+  .center-column.content-with-background.blog-article a:link {
+  color: #660000;
+  font-weight: bold;
+  text-decoration: underline;
+}
+  
+  .center-column.content-with-background.blog-article {
+    padding-left: 90px;
+    padding-right: 90px;
+  }
+  @media screen and (max-width: 767px) {
+  .center-column.content-with-background.blog-article {
+  	padding-left: 8%;
+    padding-right: 8%;
+  }
+.breadcrumb .container ul {
+    display:none;
+  }}
+     
+@media (min-width: 992px) {
+.col-md-3 {
+    width: 20% !important;
+}    
+  }
+  
+  
+  	.p {
+     margin-bottom: 1.6rem !important;
+   }
+  
+	.post-content h2, .h2{
+     font-size: 30px !important;
+     color: #660000 !important;
+   }
+  
+ 	.menu-heading {
+     font-size: 27px !important;
+     color: black !important;
+   }
+  
+  	.post-content h3, .h3{
+     font-size: 25px !important;
+     color: #b45f06 !important;
+   }
+  
+   .post-content  h4, .h4{
+     font-size: 20px !important;
+     color: #783f04 !important;
+   }
+  
+  	.img {
+	border:0px !important;
+	border-color: gray !important;
+    padding:0px !important;
+	box-shadow:5px 5px 20px gray !important;
+	}
+  
+  	center-column, a:hover {
+  	color: #660000 !important;
+	}
+  	
+    
+</style>

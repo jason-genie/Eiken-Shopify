@@ -1,0 +1,55 @@
+{%- assign instructions = product.metafields.info -%}
+{%- if instructions.video != blank -%}
+<div class="product-video-button">
+  <a href="{{- instructions.video -}}" class="fastor-tooltip"><span class="fastor-tooltip-label" title="{{- 'products.product.video_btn' | t | escape -}}">{{- 'products.product.video_btn' | t | escape -}}</span></a>
+</div>
+{%- endif -%}
+
+{%- assign roar360 = product.metafields.roar360 -%}
+{%- if roar360.roar360view_enabled == '1' -%}
+<div class="product-360-button">
+  <a href="#product-360-view" class="fastor-tooltip"><span class="fastor-tooltip-label" title="{{- 'products.product.360_btn' | t | escape -}}">{{- 'products.product.360_btn' | t | escape -}}</span></a>
+</div>
+<div id="product-360-view" class="product-360-view-wrapper mfp-hide">
+  <div class="fastor-threed-view threed-id-{{- section.id -}}">
+    <ul class="threed-view-images"></ul>
+    <div class="spinner"><span>0%</span></div>
+  </div>
+  <script type="text/javascript">
+    jQuery(document).ready(function( $ ) {
+      var json_str = '{{- roar360.roar360view_json -}}';
+      if(json_str != '') {
+        var frames_json = JSON.parse(json_str);
+        var images_arr = new Array();
+        for(var i = 1 ; i <= 72 ; i++) {
+          var _key = "f" + i;
+          if(frames_json[_key]) {
+            images_arr.push(frames_json[_key]);
+          }
+        }
+
+        $('.threed-id-{{- section.id -}}').ThreeSixty({
+          totalFrames: images_arr.length,
+          endFrame: images_arr.length, 
+          currentFrame: 1, 
+          imgList: '.threed-view-images', 
+          progress: '.spinner',
+          imgArray: images_arr,
+          height: null,
+          width: null,
+          responsive: true,
+          navigation: true
+        });
+      }
+    });
+  </script>
+</div>
+{%- endif -%}
+{% schema %}
+  {
+    "name": "Video - 360 Degree",
+	"class": "product-additional-galleries",
+    "settings": [
+	]
+  }
+{% endschema %}

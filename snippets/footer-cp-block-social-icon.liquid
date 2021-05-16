@@ -1,0 +1,21 @@
+{% if section.settings.footer_social_size != '' %}
+<style>
+  .footer .social-icons li {
+    font-size:{{section.settings.footer_social_size | plus:0}}px;
+  }
+</style>
+{% endif %}
+{%- if section.settings.footer_social_heading != '' -%}
+<h4 class="title">{{section.settings.footer_social_heading}}</h4>
+<div class="strip-line"></div>
+{%- endif -%}
+{%- assign social_icons = "twitter|facebook|google-plus|pinterest|instagram|tumblr|youtube-play|vimeo|behance|github|flickr|rss" | split: "|" | uniq -%}
+<ul class="social-icons">
+  {%- assign social_number = social_icons.size | minus:1 -%}
+  {%- for i in (0..social_number) -%}
+  {%- assign social_name = 'social_icon_' | append:social_icons[i] -%}
+  {%- if settings[social_name] != '' -%}
+  <li><a href="{{settings[social_name]}}"><i class="fa fa-{{social_icons[i]}}"></i></a></li>
+  {%- endif -%}
+  {%- endfor -%}
+</ul>

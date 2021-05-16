@@ -1,0 +1,340 @@
+<link href="//fonts.googleapis.com/css?family=Playfair+Display%3A400" rel="stylesheet" property="stylesheet" type="text/css" media="all" />
+<link href="//fonts.googleapis.com/css?family=Roboto%3A300%2C700%2C500" rel="stylesheet" property="stylesheet" type="text/css" media="all" />
+
+<div data-placement_fullwidth="{%- if section.settings.placement_fullwidth -%}1{%- else -%}0{%- endif -%}" data-section-id="{{section.id}}"
+   data-section-type="rvsproducts" id="rvsproducts-{{section.id}}_wrapper" data-delaytime="{{section.settings.delay_time}}"
+     class="roarvslider rev_slider_wrapper fullwidthbanner-container {%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}" data-alias="woobig{{section.id}}" data-source="gallery" style="margin:0px auto;background-color:transparent;padding:0px;margin-top:0px;margin-bottom:0px;">
+  <div id="rvsproducts-{{section.id}}" class="rev_slider fullwidthabanner" style="display:none;" data-version="5.4.1">
+    <ul>	
+      <!-- SLIDE  -->
+      {%-assign _onepone = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='-%}
+      {%-for block in section.blocks limit: section.blocks.size-%}
+      {%-assign img_url = 'https://via.placeholder.com/640x480/ECB39F/ffffff?text=Your%20Preview%20Image.'-%}
+      {%- assign thumb_img_url = 'https://via.placeholder.com/250x100/ECB39F/ffffff?text=Image.' -%}
+      {%- if block.settings.slide_image != blank -%}
+      {%-capture image_size-%}{{block.settings.slide_image_quality}}{%- endcapture -%}
+      {%- assign img_url = block.settings.slide_image | img_url: image_size, crop: 'center' -%}
+      {%- assign thumb_img_url = block.settings.slide_image | img_url: '250x100', crop: 'center' -%}
+      {%- endif -%}
+      <li data-index="rs-{{section.id}}{{block.id}}" data-transition="slideremovehorizontal" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="default" data-easeout="default" data-masterspeed="default"  
+          data-thumb="{{thumb_img_url}}"  data-rotate="0"  data-fstransition="fade" data-fsmasterspeed="1000" data-fsslotamount="7" data-saveperformance="off"  
+          data-title="Slide" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
+        <!-- MAIN IMAGE -->
+        <img src="{%-if settings.image_lazy_loading_used -%}{{_onepone}}{%-else-%}{{img_url}}{%-endif-%}"  alt=""  data-lazyload="{{img_url}}" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
+        <!-- LAYERS -->
+        {%-assign _product = all_products[block.settings.slide_product]-%}
+        {%-if _product.empty?-%}
+        <h2>Please choose a Product first.</h2>
+        {%-else-%}
+        <!-- LAYER NR. 1 -->
+        <div class="tp-caption tp-shape tp-shapewrapper  tp-resizeme" 
+             id="slide-{{section.id}}{{block.id}}-layer-1" 
+             data-x="['left','left','left','left']" data-hoffset="['30','30','30','30']" 
+             data-y="['top','top','top','top']" data-voffset="['30','30','30','30']" 
+                        data-width="['430','430','430','420']"
+            data-height="540"
+            data-whitespace="nowrap"
+ 
+            data-type="shape" 
+            data-responsive_offset="on" 
+
+            data-frames='[{"from":"z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;","speed":1500,"to":"o:{{block.settings.slide_product_opacity}};","delay":500,"ease":"Power3.easeOut"},{"delay":"wait","speed":1200,"to":"x:left;","ease":"Power3.easeInOut"}]'
+            data-textAlign="['left','left','left','left']"
+            data-paddingtop="[0,0,0,0]"
+            data-paddingright="[0,0,0,0]"
+            data-paddingbottom="[0,0,0,0]"
+            data-paddingleft="[0,0,0,0]"
+
+            style=";z-index: 5;text-transform:left;background-color:rgba(255, 255, 255, 1.00);border-color:rgba(0, 0, 0, 0);border-width:0px;"> </div>
+
+        <!-- LAYER NR. 2 -->
+        <div class="tp-caption Woo-TitleLarge   tp-resizeme" 
+             id="slide-{{section.id}}{{block.id}}-layer-2" 
+             data-x="['left','left','left','left']" data-hoffset="['60','60','60','55']" 
+             data-y="['top','top','top','top']" data-voffset="['60','60','60','60']" 
+                        data-width="370"
+            data-height="none"
+            data-whitespace="normal"
+ 
+            data-type="text" 
+            data-responsive_offset="on" 
+
+            data-frames='[{"from":"z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;","speed":1500,"to":"o:1;","delay":600,"ease":"Power3.easeOut"},{"delay":"wait","speed":1000,"to":"x:left;","ease":"Power3.easeInOut"}]'
+            data-textAlign="['center','center','center','center']"
+            data-paddingtop="[0,0,0,0]"
+            data-paddingright="[0,0,0,0]"
+            data-paddingbottom="[0,0,0,0]"
+            data-paddingleft="[0,0,0,0]"
+
+            style="z-index: 6; min-width: 370px; max-width: 370px; white-space: normal;text-transform:left;">{{_product.title}}</div>
+
+        <!-- LAYER NR. 3 -->
+        <div class="tp-caption Woo-Rating   tp-resizeme" 
+             id="slide-{{section.id}}{{block.id}}-layer-6" 
+             data-x="['left','left','left','left']" data-hoffset="['60','60','60','55']" 
+             data-y="['top','top','top','top']" data-voffset="['160','160','160','160']" 
+                        data-width="370"
+            data-height="none"
+            data-whitespace="normal"
+ 			data-fontsize="['17','17','17','17']"
+            data-type="text" 
+            data-responsive_offset="on" 
+
+            data-frames='[{"from":"z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;","speed":1500,"to":"o:1;","delay":700,"ease":"Power3.easeOut"},{"delay":"wait","speed":1000,"to":"x:left;","ease":"Power3.easeInOut"}]'
+            data-textAlign="['center','center','center','center']"
+            data-paddingtop="[0,0,0,0]"
+            data-paddingright="[0,0,0,0]"
+            data-paddingbottom="[0,0,0,0]"
+            data-paddingleft="[0,0,0,0]"
+
+            style="z-index: 7; min-width: 370px; max-width: 370px; white-space: normal; line-height: 22px;text-transform:left;">
+          <div class="product-item-rating" data-url="{{- _product.url -}}">
+            <span class="shopify-product-reviews-badge" data-id="{{- _product.id -}}"></span>
+          </div>
+        </div>
+
+        <!-- LAYER NR. 4 -->
+        <div class="tp-caption Woo-Rating   tp-resizeme" 
+             id="slide-{{section.id}}{{block.id}}-layer-9" 
+             data-x="['left','left','left','left']" data-hoffset="['60','60','60','55']" 
+             data-y="['top','top','top','top']" data-voffset="['225','225','225','225']" 
+                        data-width="370"
+            data-height="none"
+            data-whitespace="normal"
+ 
+            data-type="text" 
+            data-responsive_offset="on" 
+
+            data-frames='[{"from":"z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;","speed":1500,"to":"o:1;","delay":800,"ease":"Power3.easeOut"},{"delay":"wait","speed":1000,"to":"x:left;","ease":"Power3.easeInOut"}]'
+            data-textAlign="['center','center','center','center']"
+            data-paddingtop="[0,0,0,0]"
+            data-paddingright="[0,0,0,0]"
+            data-paddingbottom="[0,0,0,0]"
+            data-paddingleft="[0,0,0,0]"
+
+            style="z-index: 8; min-width: 370px; max-width: 370px; white-space: normal; line-height: 22px;text-transform:left;">
+          {{_product.description | strip_html | truncate: 200}}
+         </div>
+
+        <!-- LAYER NR. 5 -->
+        <div class="tp-caption Woo-SubTitle   tp-resizeme" 
+             id="slide-{{section.id}}{{block.id}}-layer-10" 
+             data-x="['left','left','left','left']" data-hoffset="['60','59','59','55']" 
+             data-y="['top','top','top','top']" data-voffset="['350','350','350','350']" 
+                        data-width="370"
+            data-height="none"
+            data-whitespace="normal"
+ 
+            data-type="text" 
+            data-responsive_offset="on" 
+
+            data-frames='[{"from":"z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;","speed":1500,"to":"o:1;","delay":900,"ease":"Power3.easeOut"},{"delay":"wait","speed":1000,"to":"x:left;","ease":"Power3.easeInOut"}]'
+            data-textAlign="['center','center','center','center']"
+            data-paddingtop="[0,0,0,0]"
+            data-paddingright="[0,0,0,0]"
+            data-paddingbottom="[0,0,0,0]"
+            data-paddingleft="[0,0,0,0]"
+
+            style="z-index: 9; min-width: 370px; max-width: 370px; white-space: normal;text-transform:left;">{{section.settings.price_prefix}}</div>
+
+        <!-- LAYER NR. 6 -->
+        <div class="tp-caption Woo-PriceLarge   tp-resizeme" 
+             id="slide-{{section.id}}{{block.id}}-layer-11" 
+             data-x="['left','left','left','left']" data-hoffset="['60','60','60','55']" 
+             data-y="['top','top','top','top']" data-voffset="['380','380','380','380']" 
+                        data-width="370"
+            data-height="none"
+            data-whitespace="normal"
+ 
+            data-type="text" 
+            data-responsive_offset="on" 
+
+            data-frames='[{"from":"z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;","speed":1500,"to":"o:1;","delay":1000,"ease":"Power3.easeOut"},{"delay":"wait","speed":1000,"to":"x:left;","ease":"Power3.easeInOut"}]'
+            data-textAlign="['center','center','center','center']"
+            data-paddingtop="[0,0,0,0]"
+            data-paddingright="[0,0,0,0]"
+            data-paddingbottom="[0,0,0,0]"
+            data-paddingleft="[0,0,0,0]"
+
+            style="z-index: 10; min-width: 370px; max-width: 370px; white-space: normal; font-size: 40px; line-height: 40px;text-transform:left;">{{_product.price_min | money}}</div>
+
+        <!-- LAYER NR. 7 -->
+        <a href="{{_product.url}}" class="tp-caption btn  tp-resizeme" 
+             id="slide-{{section.id}}{{block.id}}-layer-14" 
+             data-x="['left','left','left','left']" data-hoffset="['151','151','151','136']" 
+             data-y="['top','top','top','top']" data-voffset="['449','449','449','450']" 
+                        data-width="180px"
+            data-height="none"
+            data-whitespace="nowrap"
+ 
+            data-type="button" 
+            data-responsive_offset="on" 
+
+            data-frames='[{"from":"z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;","speed":500,"to":"o:1;","delay":1100,"ease":"Power3.easeOut"},{"delay":"wait","speed":1000,"to":"x:left;","ease":"Power3.easeInOut"},{"frame":"hover","speed":"200","ease":"Power1.easeInOut","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgba(0, 0, 0, 1.00);bg:rgba(243, 168, 71, 1.00);bw:1px 1px 1px 1px;"}]'
+            data-textAlign="['center','center','center','center']"
+           	
+
+            style="font-size:12px;background-color:#000000;z-index: 11; white-space: nowrap;text-transform:left;outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;">
+          {{'products.product.show_details' | t}} </a>
+
+        <!-- LAYER NR. 8 -->
+        <form action="/cart/add" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="quantity" value="1" />
+          {%-assign _variant = _product.selected_or_first_available_variant-%}
+          <input type="hidden" name="id" value="{{_variant.id}}" />
+          <button type="submit" class="tp-caption btn addtocart-item-js add-to-cart  tp-resizeme"
+                  id="slide-{{section.id}}{{block.id}}-layer-13" 
+                  data-x="['left','left','left','left']" data-hoffset="['151','151','151','136']" 
+                  data-y="['top','top','top','top']" data-voffset="['500','500','500','500']" 
+                  data-width="180px"
+                  data-height="none"
+                  data-whitespace="nowrap"
+				  data-fontsize="['13','13','13','13']"
+                  data-type="button" 
+                  data-responsive_offset="on" 
+
+                  data-frames='[{"from":"z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;","speed":500,"to":"o:1;","delay":1200,"ease":"Power3.easeOut"},{"delay":"wait","speed":1000,"to":"x:left;","ease":"Power3.easeInOut"},{"frame":"hover","speed":"200","ease":"Power1.easeInOut","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgba(0, 0, 0, 1.00);bg:rgba(243, 168, 71, 1.00);bw:1px 1px 1px 1px;"}]'
+                  data-textAlign="['center','center','center','center']"
+
+                  style="z-index: 12; white-space: nowrap;text-transform:left;outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;" data-loading-text="{{'products.product.loading' | t | escape}}" title="{{'products.product.add_to_cart' | t | escape}}" {% unless _product.available %}disabled{% endunless %}>
+            {% if _product.available %}<i class="fa fa-cart-plus" style="line-height:20px;font-size:20px; float: left; margin-top: -2px; margin-right: 6px;"></i>{% endif %}<span>{%- if _product.available -%}{{'products.product.add_to_cart' | t | escape}}{%- else -%}{{'products.product.sold_out' | t}}{%- endif -%}</span></button>
+</form>
+        {%-endif-%}
+      </li>
+      {%-endfor-%}
+    </ul>
+    <div class="tp-bannertimer tp-bottom" style="visibility: hidden !important;"></div>	
+  </div>
+</div>
+
+<style>
+  @media (min-width: 768px) {
+    .templateIndex #rvsproducts-{{section.id}}_wrapper {
+      margin-top:{{section.settings.margin_top}}px!important;
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "Products Slider",
+  "class": "rvsproducts section-wrapper",
+  "max_blocks": 5,
+  "settings": [
+	{
+	  "type": "paragraph",
+	  "content": "(!!!)WARNING: To use this slider, you must turn on the Revolution Slider in general settings tab: Theme Settings > Revolution Slider > Enabled"
+	},
+    {
+      "type": "checkbox",
+      "id": "placement_fullwidth",
+      "label": "Force Full Width",
+      "default": false
+    },
+	{
+      "type": "checkbox",
+      "id": "visible_on_mobile",
+      "label": "Show on Mobile",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Margin",
+      "default": 0
+    },
+	{
+      "type": "range",
+      "label": "Delay (in milliseconds)",
+      "id": "delay_time",
+      "min": 2000,
+      "max": 9000,
+      "step": 1000,
+      "unit": "ms",
+      "default": 4000
+    },
+	{
+	  "type": "text",
+	  "id": "price_prefix",
+	  "label": "Price Prefix",
+	  "default": "Starting From"
+	}
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "header",
+          "content": "General"
+        },
+		{
+          "type": "image_picker",
+          "id": "slide_image",
+          "label": "Pick a Preview Image"
+		},
+		{
+          "type": "select",
+          "id": "slide_image_quality",
+          "label": "Image Quality",
+          "options": [
+            {
+              "value": "500x",
+              "label": "Low"
+            },
+            {
+              "value": "1200x",
+              "label": "Normal"
+            },
+            {
+              "value": "1920x",
+              "label": "High"
+            }
+          ],
+          "default": "1920x"
+        },
+		{
+		  "type": "product",
+		  "id": "slide_product",
+		  "label": "Choose a Product"
+		},
+		{
+          "type": "range",
+          "label": "Product Opacity",
+          "id": "slide_product_opacity",
+          "min": 0,
+          "max": 1,
+          "step": 0.1,
+          "default": 0.4
+	  	}
+      ]
+	}
+  ],
+  "presets": [
+	{
+      "name": "Products Slider",
+      "category": "Revolution Sliders",
+      "settings": {
+      },
+  	  "blocks": [
+		{
+          "type": "slide"
+        },
+		{
+          "type": "slide"
+        }
+  	  ]
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

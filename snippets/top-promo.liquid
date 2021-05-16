@@ -1,0 +1,47 @@
+{%- if settings.tpro_use -%}
+<div class="tpro-wrapper{% unless settings.tpro_mobile %} row hidden-xs{% endunless %}"> 
+  <div class="standard-body">
+    <div class="full-width">
+      <div class="container">
+        <div class="tpro row">
+          {%- if settings.tpro_cls == '1' -%}
+          {%- assign _colClass = 'col-sm-12' -%}
+          {%- elsif settings.tpro_cls == '2' -%}
+          {%- assign _colClass = 'col-sm-6' -%}
+          {%- else -%}
+          {%- assign _colClass = 'col-sm-4' -%}
+          {%- endif -%}
+          <div class="{{_colClass}}{% unless settings.tpro_cls == '3' %} text-center{% endunless %}">
+            <div class="background">
+              {%- if settings.tpro_img_use_1 -%}
+              <img src="{{ 'tpro_img_1.png' | asset_url }}" alt="{{ settings.tpro_text_1 | strip_html }}" />
+              {%- endif -%}
+              <p>{{settings.tpro_text_1}}</p>
+            </div>
+          </div>
+          {%- if settings.tpro_cls == '2' or settings.tpro_cls == '3' -%}
+          <div class="{{_colClass}} text-center">
+            <div class="background">
+              {%- if settings.tpro_img_use_2 -%}
+              <img src="{{ 'tpro_img_2.png' | asset_url }}" alt="{{ settings.tpro_text_2 | strip_html }}" />
+              {%- endif -%}
+              <p>{{settings.tpro_text_2}}</p>
+            </div>
+          </div>
+          {%- endif -%}
+          {%- if settings.tpro_cls == '3' -%}
+          <div class="{{_colClass}} text-right">
+            <div class="background">
+              {%- if settings.tpro_img_use_3 -%}
+              <img src="{{ 'tpro_img_3.png' | asset_url }}" alt="{{ settings.tpro_text_3 | strip_html }}" />
+              {%- endif -%}
+              <p>{{settings.tpro_text_3}}</p>
+            </div>
+          </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endif -%}

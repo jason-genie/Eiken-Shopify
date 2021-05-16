@@ -1,0 +1,12 @@
+<script>
+  var weketingShop = {
+    shop: {{- shop.permanent_domain | json -}},
+    moneyFormat: {{- shop.money_format | json -}},
+    {%- if template contains 'cart' and cart != empty -%}
+    cartJson: {{- cart | json -}},
+    {%- endif -%}
+    {%- if template contains 'product' and product != empty -%}
+    productJson: {{- product | json -}},
+    {%- endif -%}
+  };
+</script>

@@ -1,0 +1,22 @@
+{%- assign tooltip = false -%}
+{%- if wishlist == true -%}
+  {%- assign tooltip = true -%}
+{%- endif -%}
+
+{%- if customer -%}
+  {%- assign wishlist_products = customer.metafields.wishlist | json -%}
+
+  {%- if wishlist_products contains my_product.id -%}
+  <a class="btn-action{% if tooltip %} btooltip{% endif %} add-to-wishlist added wishlist{{ my_product.id }}" href="{{ pages[settings.wishlist_page].url }}" title="{{ 'wishlist.general.browse_wishlist' | t | escape }}"><i class="fa fa-heart"></i><span>{{ 'wishlist.general.browse_wishlist' | t }}</span></a>
+  {%- else -%}
+  <form method="post" action="/a/wishlist" class="wishlist-form">
+    <input type="hidden" name="customer" value="{{ customer.id }}" />
+    <input type="hidden" name="shop" value="{{ shop.permanent_domain }}" />
+    <input type="hidden" name="handle" value="{{ my_product.handle }}" />
+    <input type="hidden" name="id" value="{{ my_product.id }}" />
+    <a class="btn-action{% if tooltip %} btooltip{% endif %} add-to-wishlist wishlist{{ my_product.id }}" href="{{ pages[settings.wishlist_page].url }}" title="{{ 'wishlist.general.add_to_wishlist' | t | escape }}" data-title="{{ 'wishlist.general.add_to_wishlist' | t | escape }}" data-added="{{ 'wishlist.general.browse_wishlist' | t | escape }}" data-loading-text="{{ 'wishlist.general.loading' | t | escape }}"><i class="fa fa-heart"></i><span>{{ 'wishlist.general.add_to_wishlist' | t }}</span></a>
+  </form>
+  {%- endif -%}
+{%- else -%}
+<a class="btn-action{% if tooltip %} btooltip{% endif %} add-to-wishlist need-login" href="/account" title="{{ 'wishlist.general.add_to_wishlist' | t | escape }}"><i class="fa fa-heart"></i><span>{{ 'wishlist.general.add_to_wishlist' | t | escape }}</span></a>
+{%- endif -%}

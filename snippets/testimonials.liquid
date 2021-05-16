@@ -1,0 +1,77 @@
+{%- assign _pos = testimonials -%}
+{%- if _pos != empty -%}
+{%- comment -%}
+<!-- Layout config is hidden in current version. 
+For now, use '0' as 'ALL PAGES' and '1' as 'HOMEPAGE' -->
+{%- assign _testi_layout = settings.testi_layout -%}
+{%- endcomment -%}
+{%- assign _testi_layout = '1' -%}
+{%- if _pos == 'top_block' -%}
+{%- assign _testi_layout = '0' -%}
+{%- endif -%}
+{%- if _testi_layout == '0' or _testi_layout == CURRENT_LAYOUT -%}
+{%- if settings.testi_use and settings.testi_pos == _pos -%}
+<div class="box box-with-products box-carousel" data-order="{{settings.testi_order}}">
+  <!-- Carousel nav -->
+  <a class="next" href="#myCarousel_testi" id="myCarousel_testi_next"><span></span></a>
+  <a class="prev" href="#myCarousel_testi" id="myCarousel_testi_prev"><span></span></a>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var owl_testi = $(".box #myCarousel_testi .carousel-inner");
+      $("#myCarousel_testi_next").click(function(){
+        owl_testi.trigger('next.owl.carousel');
+        return false;
+      })
+      $("#myCarousel_testi_prev").click(function(){
+        owl_testi.trigger('prev.owl.carousel');
+        return false;
+      });
+      owl_testi.owlCarousel({
+        slideSpeed : 500,
+        items : 1,
+        direction: window.rtl
+      });
+    });
+  </script>
+  <div class="box-heading">{{settings.testi_head}}</div>
+  <div class="strip-line"></div>
+  <div class="clear"></div>
+  <div class="box-content products">
+    <div id="myCarousel_testi" class="carousel slide">
+      <div class="carousel-inner">
+        {%- for i in (1..MAX_TESTIMONIAL_ITEMS) -%}
+        {%- assign item_use = 'testi_use_' | append: i -%}
+        {%- assign _item_use = settings[item_use] -%}
+        {%- if _item_use -%}
+        <div class="item{% if i == 1 %} active{% endif %}">
+          {%- assign item_type = 'testi_type_' | append: i -%}
+          {%- assign _item_type = settings[item_type] -%}
+          {%- if _item_type == '1' -%}
+          {%- assign item_page = 'testi_page_' | append: i -%}
+          {{pages[settings[item_page]].content}}
+          {%- else -%}
+          {%- assign item_img = 'testi_img_' | append: i | append: '.png' -%}
+          {%- assign item_author = 'testi_author_' | append: i -%}
+          {%- assign item_title = 'testi_tit_' | append: i -%}
+          {%- assign item_desc = 'testi_desc_' | append: i -%}
+          <div class="testimonial clearfix">     
+            <img src="{{ item_img | asset_url }}" align="left" alt="Avatar" />          
+            <div class="author">          
+              <span>{{settings[item_author]}}</span>          
+              <p>{{settings[item_title]}}</p>
+            </div>
+            <div class="description">
+              {{settings[item_desc]}}
+            </div>
+          </div>			
+          {%- endif -%}
+        </div>
+        {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+{%- endif -%}
+{%- endif -%}
+{%- endif -%}

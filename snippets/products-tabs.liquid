@@ -1,0 +1,454 @@
+{%- assign _pos = products-tabs -%}
+{%- if _pos != empty -%}
+
+{%- for i in (1..MAX_PRODUCTS_TABS) -%}
+{%- assign ptab_use		= 'ptab_use_'		| append: i -%}
+{%- assign ptab_pos		= 'ptab_pos_' 		| append: i -%}
+
+{%- assign _ptab_use		= settings[ptab_use] -%}
+{%- assign _ptab_pos		= settings[ptab_pos] -%}
+
+{%- comment -%}
+<!-- Layout config is hidden in current version. 
+For now, use '0' as 'ALL PAGES' and '1' as 'HOMEPAGE' -->
+{%- assign ptab_layout = 'ptab_layout_' | append: i -%}
+{%- assign _ptab_layout = settings[ptab_layout] -%}
+{%- endcomment -%}
+
+{%- assign _ptab_layout = '1' -%}
+
+{%- if _ptab_layout == '0' or _ptab_layout == CURRENT_LAYOUT -%}
+{%- if _ptab_use and _ptab_pos == _pos -%}
+
+{%- assign ptab_llist			= 'ptab_llist_'		| append: i -%}
+{%- assign ptab_carousel		= 'ptab_carousel_'	| append: i -%}
+{%- assign ptab_dim				= 'ptab_imgdim_'	| append: i -%}
+{%- assign ptab_maxitem			= 'ptab_max_'		| append: i -%}
+{%- assign ptab_maxcol			= 'ptab_maxcol_'	| append: i -%}
+{%- assign ptab_carousel_limit	= 'ptab_limit_'		| append: i -%}
+{%- assign ptab_order			= 'ptab_order_'		| append: i -%}
+
+{%- assign _ptab_tabs 			= linklists[settings[ptab_llist]].links -%}
+{%- assign _ptab_carousel 		= settings[ptab_carousel] -%}
+{%- assign _ptab_maxitem		= settings[ptab_maxitem] | plus: 0 -%}
+{%- assign _ptab_maxcol			= settings[ptab_maxcol] | plus: 0 -%}
+{%- assign _ptab_carousel_limit	= settings[ptab_carousel_limit] | plus: 0 -%}
+{%- assign _ptab_order			= settings[ptab_order] -%}
+
+{%- assign _ptab_dim			= settings[ptab_dim] | split: ' ' -%}
+{%- assign _ptab_width			= _ptab_dim[0] -%}
+{%- assign _ptab_height			= _ptab_dim[1] -%}
+
+{%- if _ptab_width == blank -%}
+{%- assign _ptab_width = '240' -%}
+{%- endif -%}
+{%- if _ptab_height == blank -%}
+{%- assign _ptab_height = '240' -%}
+{%- endif -%}
+{%- assign _ptab_url_imgdim = _ptab_width | append: 'x' | append: _ptab_height -%}
+
+{%- assign _tabcount = _ptab_tabs | size -%}
+{%- assign _all = _ptab_maxcol | times: _ptab_carousel_limit -%}
+
+{%- assign _class = 3 -%}
+{%- assign _row = _ptab_carousel_limit -%}
+
+{%- if _ptab_carousel_limit == 1 -%}
+{%- assign _class = 12 -%}
+{%- endif -%}
+{%- if _ptab_carousel_limit == 2 -%}
+{%- assign _class = 6 -%}
+{%- endif -%}
+{%- if _ptab_carousel_limit == 3 -%}
+{%- assign _class = 4 -%}
+{%- endif -%}
+{%- if _ptab_carousel_limit == 4 -%}
+{%- assign _class = 3 -%}
+{%- endif -%}
+{%- if _ptab_carousel_limit == 5 -%}
+{%- assign _class = 25 -%}
+{%- endif -%}
+{%- if _ptab_carousel_limit == 6 -%}
+{%- assign _class = 2 -%}
+{%- endif -%}
+
+{%- if _ptab_carousel %}
+{%- assign _master_class = 'GTorE-1200' -%}
+{%- assign _slave_class = 'LT-1200' -%}
+{%- else %}
+{%- assign _master_class = 'GTorE-768' -%}
+{%- assign _slave_class = 'LT-768' -%}
+{%- endif %}
+
+{%- assign _id  = 'ptab' | append: i -%}
+
+{%- if _tabcount > 1 -%}
+<div class="filter-product" data-order="{{_ptab_order}}">
+  <div class="filter-tabs">
+    <div class="bg-filter-tabs"><div class="bg-filter-tabs2 clearfix">
+      <ul id="tab{{_id}}">
+        {%- for _item in  _ptab_tabs -%}
+        {%- if _item.type == 'collection_link' -%}
+        <li{%- if forloop.index0 == 0 -%}{{' '}}class="active"{%- endif -%}>
+          <a href="#{{_item.title|handle}}{{_id}}-{{forloop.index0}}">{{_item.title}}</a>
+        </li>
+        {%- endif -%}
+        {%- endfor -%}
+      </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content clearfix">
+    {%- for _item in _ptab_tabs -%}
+    {%- if _item.type == 'collection_link' -%}
+    <div class="tab-pane{%- if forloop.index0 == 0 -%}{{' '}}active{%- endif -%}" id="{{_item.title|handle}}{{_id}}-{{forloop.index0}}">
+      {%- if _ptab_carousel -%}
+      <!-- Carousel nav -->
+      <a class="next-button {{_master_class}}" href="#myCarousel{{_id}}-{{forloop.index0}}" id="myCarousel{{_id}}-{{forloop.index0}}_next"><span></span></a>
+      <a class="prev-button {{_master_class}}" href="#myCarousel{{_id}}-{{forloop.index0}}" id="myCarousel{{_id}}-{{forloop.index0}}_prev"><span></span></a>
+      <script type="text/javascript">
+        $(document).ready(function(){
+          var owl{{_id}}_{{forloop.index0}} = $(".filter-product #myCarousel{{_id}}-{{forloop.index0}} .carousel-inner");
+		  $("#myCarousel{{_id}}-{{forloop.index0}}_next").click(function(){
+          	owl{{_id}}_{{forloop.index0}}.trigger('next.owl.carousel');
+          	return false;
+          });
+          $("#myCarousel{{_id}}-{{forloop.index0}}_prev").click(function(){
+            owl{{_id}}_{{forloop.index0}}.trigger('prev.owl.carousel');
+            return false;
+          });
+          owl{{_id}}_{{forloop.index0}}.owlCarousel({
+            slideSpeed : 500,
+            items:1,
+            rtl: window.rtl
+          });
+        });
+      </script>
+	  {%- endif -%}
+      
+      <a class="next-button {{_slave_class}}" href="#myCarousel{{_id}}s-{{forloop.index0}}" id="myCarousel{{_id}}s-{{forloop.index0}}_next"><span></span></a>
+      <a class="prev-button {{_slave_class}}" href="#myCarousel{{_id}}s-{{forloop.index0}}" id="myCarousel{{_id}}s-{{forloop.index0}}_prev"><span></span></a>
+
+      <script type="text/javascript">
+        $(document).ready(function(){
+          var owl{{_id}}s_{{forloop.index0}} = $(".filter-product #myCarousel{{_id}}s-{{forloop.index0}} .carousel-inner");
+		  $("#myCarousel{{_id}}s-{{forloop.index0}}_next").click(function(){
+          	owl{{_id}}s_{{forloop.index0}}.trigger('next.owl.carousel');
+          	return false;
+          });
+          $("#myCarousel{{_id}}s-{{forloop.index0}}_prev").click(function(){
+            owl{{_id}}s_{{forloop.index0}}.trigger('prev.owl.carousel');
+            return false;
+          });
+          owl{{_id}}s_{{forloop.index0}}.owlCarousel({
+            slideSpeed : 500,
+            rtl: window.rtl,
+            {%- if _ptab_pos == 'column_left' %}    
+            responsive: {
+              0: {
+                items: 1
+              },
+              320: {
+                items: 1
+              },
+              479: {
+                items: 1
+              },
+              767: {
+                items: 1
+              },
+              979: {
+                items: 1
+              },
+              1199: {
+                items: 1
+              }
+            }
+            {%- else -%}                       
+            responsive: {
+              0: {
+                items: 1
+              },
+              320: {
+                items: 1
+              },
+              479: {
+                items: 2
+              },
+              767: {
+                items: 3
+              },
+              979: {
+                items: 4
+              },
+              1199: {
+                items: 5
+              }
+            }
+            {%- endif -%}                                         
+          });
+        });
+      </script>
+      
+      <div class="box-product">
+        <div id="myCarousel{{_id}}-{{forloop.index0}}"{{' '}}class="{{_master_class}}{{' '}}{%- if _ptab_carousel -%}carousel slide{%- endif -%}">
+          <!-- Carousel items -->
+          <div class="carousel-inner">
+            {%- assign _i = 0 -%}
+            {%- assign _row_fluid = 0 -%}
+
+            {%- for product in _item.object.products -%}{{' '}}
+            {%- if forloop.index > _ptab_maxitem -%}
+            {%- break -%}
+            {%- endif -%}
+            {%- assign _row_fluid = _row_fluid | plus: 1 -%}
+
+            {%- if _i == 0 -%}
+            <div class="active item">
+              <div class="product-grid">
+                <div class="row">
+                  {%- endif -%}
+
+                  {%- assign _r = _row_fluid | divided_by: _all -%}
+                  {%- assign _r = _r | times: _all -%}
+                  {%- assign _r = _row_fluid | minus: _r -%}
+
+                  {%- if _row_fluid > _all and _r == 1 -%}{{' '}}
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="product-grid">
+                <div class="row">
+                  {%- else -%}
+
+                  {%- assign _r = _row_fluid | divided_by: _row -%}
+                  {%- assign _r = _r | times: _row -%}
+                  {%- assign _r = _row_fluid | minus: _r -%}
+
+                  {%- if _row_fluid > _row and _r == 1 -%}{{' '}}
+                </div>
+                <div class="row">
+                  {%- endif -%}
+                  {%- endif -%}
+                  <div class="col-sm-{{_class}} col-xs-6{%- if _class == 2 -%}{{' '}}col-md-25 col-lg-2 col-sm-3{%- endif -%}{%- if _class == 2 and _r == 0 -%}{{' '}}hidden-md hidden-sm{%- endif -%}{%- if _class == 2 and _r == 5 -%}{{' '}}hidden-sm{%- endif -%}{%- if _class == 25 -%}{{' '}}col-md-25 col-lg-25 col-sm-3{%- endif -%}{%- if _class == 25 and _r == 0 -%}{{' '}}hidden-sm{%- endif -%}">
+                    {%- include 'product-item' with _ptab_url_imgdim -%}
+                  </div>
+                  {%- assign _i = _i | plus: 1 -%}
+                  {%- endfor -%}
+                  {%- if _i > 0 -%}
+                </div>
+              </div>
+            </div>
+            {%- endif -%}
+          </div>
+        </div>
+        
+        <div id="myCarousel{{_id}}s-{{forloop.index0}}" class="{{_slave_class}} carousel slide">
+          <!-- Carousel items -->
+          <div class="carousel-inner">
+            {%- for product in _item.object.products -%}{{' '}}
+          	{%- if forloop.index > _ptab_maxitem -%}
+            {%- break -%}
+            {%- endif -%}
+            <div class="item">
+              <div class="product-grid">
+                  {%- include 'product-item' -%}
+              </div>
+            </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+    {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+<script type="text/javascript">
+  $('#tab{{_id}} a').click(function (e) {
+    e.preventDefault();
+  	$(this).tab('show');
+  })
+</script>
+{%- else -%}
+{%- for _item in _ptab_tabs -%}
+<div class="box clearfix box-with-products{%- if _ptab_carousel -%}{{' '}}with-scroll{%- endif -%}{{' '}}box-no-advanced" data-order="{{_ptab_order}}">
+  {%- if _ptab_carousel -%}
+  <!-- Carousel nav -->
+  <a class="next {{_master_class}}" href="#myCarousel{{_id}}" id="myCarousel{{_id}}_next"><span></span></a>
+  <a class="prev {{_master_class}}" href="#myCarousel{{_id}}" id="myCarousel{{_id}}_prev"><span></span></a>
+  
+  <script type="text/javascript">
+  $(document).ready(function() {
+    var ptab_owl{{_id}} = $(".box #myCarousel{{_id}} .carousel-inner");
+    $("#myCarousel{{_id}}_next").click(function(){
+      ptab_owl{{_id}}.trigger('next.owl.carousel');
+      return false;
+    });
+    $("#myCarousel{{_id}}_prev").click(function(){
+      ptab_owl{{_id}}.trigger('prev.owl.carousel');
+      return false;
+    });
+    ptab_owl{{_id}}.owlCarousel({
+      slideSpeed : 500,
+      items:1,
+      rtl: window.rtl
+    });
+  });
+  </script>
+  {%- endif -%}
+  <a class="next {{_slave_class}}" href="#myCarousel{{_id}}s" id="myCarousel{{_id}}s_next"><span></span></a>
+  <a class="prev {{_slave_class}}" href="#myCarousel{{_id}}s" id="myCarousel{{_id}}s_prev"><span></span></a>
+  
+  <script type="text/javascript">
+  $(document).ready(function() {  
+    var ptab_owl{{_id}}s = $(".box #myCarousel{{_id}}s .carousel-inner");
+    ptab_owl{{_id}}s.owlCarousel({
+      slideSpeed : 500,
+      rtl: window.rtl,
+      {%- if _ptab_pos == 'column_left' %}    
+      responsive: {
+        0: {
+          items: 1
+        },
+        320: {
+          items: 1
+        },
+        479: {
+          items: 1
+        },
+        767: {
+          items: 1
+        },
+        979: {
+          items: 1
+        },
+        1199: {
+          items: 1
+        }
+      }
+      {%- else -%}                       
+      responsive: {
+        0: {
+          items: 1
+        },
+        320: {
+          items: 1
+        },
+        479: {
+          items: 2
+        },
+        767: {
+          items: 3
+        },
+        979: {
+          items: 4
+        },
+        1199: {
+          items: 5
+        }
+      }
+      {%- endif -%}
+    });                         
+    $("#myCarousel{{_id}}s_next").click(function(){
+      ptab_owl{{_id}}s.trigger('next.owl.carousel');
+      return false;
+    });
+    $("#myCarousel{{_id}}s_prev").click(function(){
+      ptab_owl{{_id}}s.trigger('prev.owl.carousel');
+      return false;
+    });
+  });
+  </script>
+  
+  <div class="box-heading">{{_item.title}}</div>
+  <div class="strip-line"></div>
+  <div class="clear"></div>
+  <div class="box-content products">
+    <div class="box-product">
+      <div id="myCarousel{{_id}}"{{' '}}class="{{_master_class}}{{' '}}{%- if _ptab_carousel -%}carousel slide{%- endif -%}">
+        <!-- Carousel items -->
+        <div class="carousel-inner">
+
+          {%- assign _i = 0 -%}
+          {%- assign _row_fluid = 0 -%}
+
+          {%- for product in _item.object.products -%}{{' '}}
+          {%- if forloop.index > _ptab_maxitem -%}
+          {%- break -%}
+          {%- endif -%}
+          {%- assign _row_fluid = _row_fluid | plus: 1 -%}
+
+          {%- if _i == 0 -%}
+          <div class="active item">
+            <div class="product-grid">
+              <div class="row">
+                {%- endif -%}
+
+                {%- assign _r = _row_fluid | divided_by: _all -%}
+                {%- assign _r = _r | times: _all -%}
+                {%- assign _r = _row_fluid | minus: _r -%}
+
+                {%- if _row_fluid > _all and _r == 1 or _all == 1 -%}{{' '}}
+                {%- if _ptab_carousel -%}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="product-grid">
+              <div class="row">
+                {%- else -%}
+              </div>
+              <div class="row">
+                {%- endif -%}
+                {%- else -%}
+
+                {%- assign _r = _row_fluid | divided_by: _row -%}
+                {%- assign _r = _r | times: _row -%}
+                {%- assign _r = _row_fluid | minus: _r -%}
+
+                {%- if _row_fluid > _row and _r == 1 -%}{{' '}}
+              </div>
+              <div class="row">
+                {%- endif -%}
+                {%- endif -%}
+                <div class="col-sm-{{_class}} col-xs-6{%- if _class == 2 -%}{{' '}}col-md-25 col-lg-2 col-sm-3{%- endif -%}{%- if _class == 2 and _r == 0 -%}{{' '}}hidden-md hidden-sm{%- endif -%}{%- if _class == 2 and _r == 5 -%}{{' '}}hidden-sm{%- endif -%}{%- if _class == 25 -%}{{' '}}col-md-25 col-lg-25 col-sm-3{%- endif -%}{%- if _class == 25 and _r == 0 -%}{{' '}}hidden-sm{%- endif -%}">
+                  {%- include 'product-item' with _ptab_url_imgdim -%}
+                </div>
+                {%- assign _i = _i | plus: 1 -%}
+                {%- endfor -%}
+                {%- if _i > 0 -%}
+              </div>
+            </div>
+          </div>
+          {%- endif -%}
+        </div>
+      </div>
+      
+      <div id="myCarousel{{_id}}s"{{' '}}class="{{_slave_class}} carousel slide">
+        <!-- Carousel items -->
+        <div class="carousel-inner">
+          {%- for product in _item.object.products -%}{{' '}}
+          {%- if forloop.index > _ptab_maxitem -%}
+          {%- break -%}
+          {%- endif -%}
+          <div class="item">
+            <div class="product-grid">
+            	{%- include 'product-item' -%}
+            </div>
+          </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endfor -%}
+{%- endif -%}
+
+{%- endif -%}
+{%- endif -%}
+{%- endfor -%}
+
+{%- endif -%}

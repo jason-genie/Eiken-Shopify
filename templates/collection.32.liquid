@@ -1,0 +1,70 @@
+{%- if settings.sb_collection_placement == 'left' -%}
+<div id="sidebar" class="col-md-3 col-sm-12{% if settings.sb_collection_mobile %} hidden-sm hidden-xs{% endif %}">
+  {%- include 'sidebar-collection' -%}
+</div>
+{%- endif -%}
+
+{%- paginate collection.products by 32 -%}
+<div id="col-main" class="center-column content-without-background collection-page{% if settings.sb_collection_placement != '' %} col-md-9{% else %} col-md-12{% endif %} col-sm-12">
+  <div id="mfilter-content-container" class="{%- if settings.collection_list_grid == '0' -%}list{%- else -%}grid{%- endif -%}">
+    {%- include 'collection-filter' -%}
+    <div id="sandbox">
+      {%- if collection.products.size > 0 -%}
+      <div class="product-list">
+        {%- for product in collection.products -%}
+        {%- include 'product-item2' -%}
+        {%- endfor -%}
+      </div>
+      {%- if settings.ctemplate_type == "promo" -%}
+      <div class="product-grid">
+        <div class="row">
+          {%- for product in collection.products -%}
+          <div class="col-sm-4 col-xs-6">
+            {%- include 'product-item' -%}
+          </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- else -%}
+      {%- assign grid_row = settings.collection_product_per_pow2 | plus:0 -%}
+      {%- assign grid_class = 3 -%}
+      {%- if settings.collection_product_per_pow2 == '6' -%}{%- assign grid_class = 2 -%}{%- elsif settings.collection_product_per_pow2 == '5' -%}{%- assign grid_class = 25 -%}{%- elsif settings.collection_product_per_pow2 == '3' -%}{%- assign grid_class = 4 -%}{%- endif -%}
+      <div class="product-grid">
+        <div class="row">
+          {%- assign row_fluid = 0 -%}
+          {%- for product in collection.products -%}
+          {%- assign row_fluid = row_fluid | plus:1 -%}
+          {%- assign row_temp = row_fluid | divided_by:grid_row | floor | times:grid_row -%}
+          {%- assign grid_r = row_fluid | minus:row_temp -%}
+          {%- if row_fluid > grid_row and grid_r == 1 -%}{{'</div><div class="row">'}}{%- endif -%}
+          <div class="col-sm-{{grid_class}} col-xs-6">
+            {%- include 'product-item' -%}
+          </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- endif -%}
+      {%- else -%}
+      <p class="empty">{{ 'collections.general.no_products' | t }}</p>
+      <div class="buttons">
+        <div class="pull-right"><a href="{{shop.url}}" class="btn btn-primary">{{'collections.general.continue' | t}}</a></div>
+      </div>
+      {%- endif -%}
+    </div>
+    {%- include 'pagination' -%}
+    {%- include 'spinner' -%}
+       	{%- if collection.image or collection.description != blank -%}
+    <div class="category-info clearfix">
+      {%- if collection.image -%}<div class="image"><img src="{{collection.image | img_url: 'small'}}" alt="{{collection.title | escape}}" /></div>{%- endif -%}
+      {%- if collection.description -%}{{collection.description}}{%- endif -%}
+    </div>
+      	 {%- endif -%}
+  </div>
+</div>
+{%- endpaginate -%}
+
+{%- if settings.sb_collection_placement == 'right' -%}
+<div id="sidebar" class="col-md-3 col-sm-12{% if settings.sb_collection_mobile %} hidden-sm hidden-xs{% endif %}">
+  {%- include 'sidebar-collection' -%}
+</div>
+{%- endif -%}

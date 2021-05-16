@@ -1,0 +1,33 @@
+{%- if settings.shipping_calculator != '' -%}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title"><a href="#collapse-shipping-calculator" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion">{{'cart.shipping.title' | t}} <i class="fa fa-caret-down"></i></a></h4>
+  </div>
+  <div id="collapse-shipping-calculator" class="panel-collapse collapse" style="height:0px;">
+    <div class="panel-body">
+      <div id="shipping__calculator-{{ section.id }}" class="form-horizontal shipping__calculator">
+        <div class="form-group required">
+          <label class="col-sm-2 control-label" for="address_country-{{ section.id }}">{{'cart.shipping.country' | t}}</label>
+          <div class="col-sm-10">
+            <div class="select"><select id="address_country-{{ section.id }}" class="form-control" name="address[country]" data-default="{%- if shop.customer_accounts_enabled and customer -%}{{customer.default_address.country}}{%- elsif settings.shipping_calculator_default_country != '' -%}{{settings.shipping_calculator_default_country}}{%- endif -%}">{{country_option_tags}}</select></div>
+          </div>
+        </div>
+        <div id="address_province_container-{{ section.id }}"  class="form-group required" style="display:none;">
+          <label class="col-sm-2 control-label" for="address_province-{{ section.id }}" id="address_province_label-{{ section.id }}">{{'cart.shipping.state' | t}}</label>
+          <div class="col-sm-10">
+            <div class="select"><select id="address_province-{{ section.id }}" class="form-control" name="address[province]" data-default="{%- if shop.customer_accounts_enabled and customer and customer.default_address.province != '' -%}{{customer.default_address.province}}{%- endif -%}"></select></div>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-sm-2 control-label" for="address_zip-{{ section.id }}">{{'cart.shipping.zip' | t}}</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="address[zip]" id="address_zip-{{ section.id }}" {% if shop.customer_accounts_enabled and customer %} value="{{customer.default_address.zip}}"{% endif %} />
+          </div>
+        </div>
+        <input id="shipping__calculator-btn-{{ section.id }}"  type="button" value="{{'cart.shipping.submit_button' | t}}" class="btn btn-primary get-rates" />
+        <div id="shipping__calculator-response-{{ section.id }}" class="shipping__calculator-response"></div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endif -%}

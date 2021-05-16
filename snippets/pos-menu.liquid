@@ -1,0 +1,43 @@
+{%- if settings.pos_menu_use -%}
+
+{%- comment -%}--- MENU ---{%- endcomment -%}
+{%- assign _active_count = 0 -%}
+{%- for i in (1..MAX_MENU) -%}
+{%- assign m_use 		= 'mmenu_use_' 		| append: i -%}
+{%- assign m_pos 		= 'mmenu_pos_' 		| append: i -%}
+{%- assign m_layout 		= 'mmenu_layout_' 	| append: i -%}
+{%- assign _layout		= settings[m_layout] -%}
+{%- assign _layout		= '0' -%}
+
+{%- if _layout == '0' or _layout == CURRENT_LAYOUT -%}
+{%- if settings[m_use] and settings[m_pos] == 'menu' -%}
+{%- assign _active_count = _active_count | plus: 1 -%}
+{%- endif -%}
+{%- endif -%}
+{%- endfor -%}
+
+<div class="megamenu-background">
+  <div class="">
+    <div class="overflow-megamenu container">
+      {%- if _active_count > 1 -%}
+      <div class="row mega-menu-modules">
+        {%- endif -%}
+        {%- include 'mega-menus' with 'menu' -%}
+    </div>
+  </div>
+</div>
+
+{%- comment -%}--- HOME SLIDER ---{%- endcomment -%}
+{%- include 'home-slider' with 'menu' -%}
+{%- comment -%}--- ADVANCED GRID ---{%- endcomment -%}
+{%- include 'advanced-grid' with 'menu' -%}
+{%- comment -%}--- LATEST BLOG ---{%- endcomment -%}
+{%- include 'latest-blogs' with 'menu' -%}
+{%- comment -%}--- CUSTOM WIDGET ---{%- endcomment -%}
+{%- include 'custom-widgets' with 'menu' -%}
+{%- comment -%}--- PRODUCTS TABS ---{%- endcomment -%}
+{%- include 'products-tabs' with 'menu' -%}
+{%- comment -%}--- TESTIMONIALS ---{%- endcomment -%}
+{%- include 'testimonials' with 'menu' -%}
+
+{%- endif -%}

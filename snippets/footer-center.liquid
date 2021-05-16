@@ -1,0 +1,23 @@
+{%- if settings.footer_section_column_layout != '' -%}
+{%- assign column_grid_version = settings.footer_section_column_layout | split: '_' -%}
+{%- assign column_version = '' -%}
+{%- if column_grid_version.size > 1 -%}{%- assign column_version = column_grid_version.last -%}{%- endif -%}
+{%- assign column_grid = settings.footer_section_column_layout | remove: '_2' | split: '-' -%}
+<div class="row">
+  {%- for i_grid in (1..column_grid.size) -%}
+    {% case i_grid %}
+    {% when 1 %}
+    {%- section 'footer-center-column1' -%}
+    {% when 2 %}
+    {%- section 'footer-center-column2' -%}
+    {% when 3 %}
+    {%- section 'footer-center-column3' -%}
+    {% when 4 %}
+    {%- section 'footer-center-column4' -%}
+    {% when 5 %}
+    {%- section 'footer-center-column5' -%}
+    {% else %}
+    {% endcase %}
+  {%- endfor -%}
+</div>
+{%- endif -%}

@@ -1,0 +1,184 @@
+<style>
+  /* Home Instafeed */
+  #home-instagram-widget-{{section.id}} {
+    background-color: {{section.settings.home_instafeed_bgcolor}};
+  }
+  #home-instagram-widget-{{section.id}} .title{
+    color: {{section.settings.home_instafeed_color}};
+    {% if settings.body_font_size != '' %}
+    font-size: {{settings.body_font_size | plus: 5}}px;
+    {% endif %}
+  }
+  
+  #home-instagram-widget-{{section.id}}.home-instagram-widget-content .title{
+    {%- if section.settings.heading_color != blank -%}
+    color: {{section.settings.heading_color}};
+    {%- endif -%}
+    font-size: {{section.settings.heading_fontsize | append: "px"}};
+    font-weight: {{section.settings.heading_fontweight}}!important
+  }
+  {%- if section.settings.heading_border_color != blank -%}
+  #home-instagram-widget-{{section.id}}.home-instagram-widget-content .title:before{
+    background-color: {{section.settings.heading_border_color}};
+  }
+  {%- endif -%}
+  
+  
+  #home-instagram-widget-{{section.id}} .title .caption{
+    color: {{section.settings.home_instafeed_color}};
+    {% if settings.body_font_size != '' %}
+    font-size: {{settings.body_font_size | plus:0}}px;
+    {% endif %}
+    font-family: {{GENERAL_FONT}};
+  }
+  #home-instagram-widget-{{section.id}} .home-instafeed .hover_border:hover{
+    -webkit-box-shadow: 0 0 0 5px {{settings.button_background_color}} inset;
+    -moz-box-shadow: 0 0 0 5px {{settings.button_background_color}} inset;
+    box-shadow: 0 0 0 5px {{settings.button_background_color}} inset;
+  }
+  @media(min-width: 768px){
+    #home-instagram-widget-{{section.id}} .home-instafeed .wrap{
+      width: {% if section.settings.home_instafeed_row_limit != blank %}{{100.0 | divided_by: section.settings.home_instafeed_row_limit }}{% else %}{{100.0 | divided_by: 8 }}{% endif %}%;
+    }
+  }
+</style>
+<div data-placement_fullwidth="{%- if section.settings.placement_fullwidth -%}1{%- else -%}0{%- endif -%}"
+     id="home-instagram-widget-{{section.id}}" class="home-instagram-{{ settings.social_instagram_layout }} home-instagram-widget-content {%-if section.settings.home_instafeed_bgcolor == blank-%}{{' box'}}{%-endif-%}{%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}" data-section-id="{{ section.id }}" data-section-type="instafeed">
+  <div class="{%- if section.settings.placement_fullwidth == false -%}container{%- endif -%}">
+    <div class="title">
+      {{section.settings.home_instafeed_head}}
+      <div class="caption">{{section.settings.home_instafeed_text}}</div>
+    </div>
+    {%- assign my_instagram = settings.social_instagram_token | split: '.' -%}
+    <div 
+         data-social_instagram_token="{{settings.social_instagram_token}}"
+         data-user_id = "{{my_instagram.first}}"
+         data-home_instafeed_limit = "{{section.settings.home_instafeed_limit}}"
+         id="instagram_home_{{section.id}}" 
+         class="home-instafeed list-inline">
+      {%- if settings.social_instagram_layout == "modern" and section.settings.home_instafeed_button != blank -%}
+      <a target="_blank" class="btn" href="https://instagram.com/{{settings.social_instagram_username}}">{{section.settings.home_instafeed_button}}</a>
+     {%- endif -%}
+    </div>
+      {%- if settings.social_instagram_layout == "default" and section.settings.home_instafeed_button != blank -%}
+      <a target="_blank" class="btn" href="https://instagram.com/{{settings.social_instagram_username}}">{{section.settings.home_instafeed_button}}</a>
+     {%- endif -%}
+    
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Instagram Feed",
+	"class":"index-section section-wrapper",
+    "settings": [
+		{
+          "type": "header",
+          "content": "Layout"
+        },
+  		{
+          "type": "checkbox",
+          "id": "placement_fullwidth",
+          "label": "Force Full Width"
+        },
+ 		{
+          "type": "checkbox",
+          "id": "visible_on_mobile",
+          "label": "Show on Mobile",
+          "default": true
+        },
+		{
+          "type": "header",
+          "content": "Content"
+        },
+       	{
+          "type": "text",
+          "id": "home_instafeed_head",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "home_instafeed_text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "home_instafeed_button",
+          "label": "Button"
+        },
+		{
+          "type": "header",
+          "content": "Styling"
+        },
+        {
+          "type": "color",
+          "id": "home_instafeed_color",
+          "label": "Text Color"
+        },
+        {
+          "type": "color",
+          "id": "home_instafeed_bgcolor",
+          "label": "Background Color"
+        },
+        {
+          "type": "text",
+          "id": "home_instafeed_limit",
+          "label": "Images Limit"
+        },
+        {
+          "type": "text",
+          "id": "home_instafeed_row_limit",
+          "label": "Images Per Row"
+        },
+		{
+			"type" :"header",
+			"content": "- Heading"
+		},
+		{
+            "type": "color",
+            "id": "heading_color",
+            "label": "Color"
+        },
+		{
+            "type": "color",
+            "id": "heading_border_color",
+            "label": "Border Color"
+        },
+        {
+          "type": "range",
+          "id": "heading_fontsize",
+          "min": 10,
+          "max": 70,
+          "step": 1,
+          "unit": "px",
+          "label": "FontSize",
+          "default": 25
+        },
+        {
+          "type": "range",
+          "id": "heading_fontweight",
+          "min": 100,
+          "max": 900,
+          "step": 100,
+          "label": "FontWeight",
+          "default": 400
+        }
+	],
+    "presets": [
+      {
+        "name": "Instagram Feed",
+        "category": "Social",
+        "settings": {
+			"visible_on_mobile": true,
+            "home_instafeed_head": "@FASTOR ON INSTAGRAM",
+            "home_instafeed_text": "Kick your resolutions into high gear with our performance wear & tag us @FASTOR on Instagram",
+            "home_instafeed_button": "Follow Us On Instagram",
+            "home_instafeed_color": "#000000",
+            "home_instafeed_bgcolor": "#ffffff",
+            "home_instafeed_limit": "20",
+            "home_instafeed_row_limit": "10"
+        }
+      }
+    ]
+	
+  }
+{% endschema %}

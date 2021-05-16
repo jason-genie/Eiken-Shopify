@@ -1,0 +1,105 @@
+{%- if my_layout == 'grid' -%}
+<div class="image{% if settings.product_img_fx == '1' %} image-swap-effect{% endif %}{% if settings.image_layout != "" %} aspect-ratio-{{ settings.image_layout }}{% if settings.image_layout_crop %} aspect-ratio-crop{% endif %}{% endif %}">
+  {%- if settings.image_layout != "" -%}
+  <a href="{{product.url | within: collection}}" class="aspect-product__wrapper">
+    {%- if settings.image_layout != "" -%}
+    <div class="aspect-product__spacer"><div class="aspect-product__spacer-inner"></div></div>
+    {%- endif -%}
+    <div class="aspect-product__images">
+      <div data-class="reveal" class="b-loading main-images-wrapper">
+        {%-include 'lazy-preloader'-%}
+        {%- if settings.product_img_fx == '1' and product.images.size > 1 -%}
+        	{% comment %}<img class="mpt-image swap-image{{_onepone}}src="{{product.images[1] | img_url: _dim , format: 'pjpg'}}" alt="{{product.images[1].alt | escape}}"/>{% endcomment %}
+        {%- endif -%}
+        {%- assign img_url = _dim -%}
+        <img class="mpt-image {% if settings.product_img_fx == '2' %} zoom-image-effect{% endif %}{{_onepone}}src="{{featured_image | img_url: img_url, format: 'pjpg'}}" alt="{{product.title | escape}}" alt="image"/>
+        <img class="top-image" style="display:none" src=""/>
+      </div>
+    </div>
+  </a>
+  {%- else -%}
+  <a href="{{product.url | within: collection}}">
+    <div data-class="reveal" class="b-loading main-images-wrapper">
+      {%-include 'lazy-preloader'-%}
+      {%- if settings.product_img_fx == '1' and product.images.size > 1 -%}
+      <img class="mpt-image swap-image{{_onepone}}src="{{product.images[1] | img_url: _dim, format: 'pjpg'}}" alt="{{product.images[1].alt | escape}}"/>
+      {%- endif -%}
+      {%- assign img_url = _dim -%}
+      <img class="mpt-image {% if settings.product_img_fx == '2' %} zoom-image-effect{% endif %}{{_onepone}}src="{{featured_image | img_url: img_url, format: 'pjpg'}}" alt="{{product.title | escape}}" alt="image"/>
+    </div>
+  </a>
+  {%- endif -%}
+  {% if settings.product_item_advanced_thumb_type == "dots" %}
+  {%- if settings.product_countdown_show -%}{%- include 'limited-offer' -%}{%- endif -%}
+  {%- endif -%}
+  <div class="product-item-buttons">
+    {%- if settings.wishlist_enable and settings.product_wishlist_show -%}<div class="right-wishlist wishlist">{% assign my_product = product %}{%- include 'wishlist' with true -%}</div>{%- endif -%}
+    {%- if settings.product_item_type != "" and settings.compare_enable and settings.product_compare_show -%}<div class="right-compare compare">{% assign my_product = product %}{%- include 'compare' -%}</div>{%- endif -%}
+    {%- if settings.product_item_type != "" and settings.quickshop_type != "" and settings.product_quickview_show -%}
+    <div class="quickview right-quickview">
+      <a href="{{- product.url -}}?view=quickview" id="quickview-btn-{{- product.id -}}" class="btn-action quick_view btooltip" title="{{'products.product.quick_shop' | t | escape}}"><i class="fa fa-search"></i></a>
+    </div>
+    {%- if roar360.roar360view_enabled == '1' -%}
+    <div id="product-360-view-{{- section.id -}}" class="product-360-view-wrapper mfp-hide">
+      <div class="fastor-threed-view threed-id-{{- section.id -}}" 
+           data-_script_id="threed-id-{{- section.id -}}">
+        <ul class="threed-view-images"></ul>
+        <div class="spinner"><span>0%</span></div>
+      </div>
+      {%- unless roar360.roar360view_json == blank -%}
+      <script type="application/json" id="threed-id-{{- section.id -}}">
+          {{- roar360.roar360view_json -}}
+      </script>
+      {%- endunless -%}
+    </div>
+    {%- endif -%}
+    {%- endif -%}
+  </div>
+  <!--<div class="items-image-buttons">
+    <a class="prev" href="#">
+      <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#global__symbols-prev"></use></svg>
+    </a>
+    <a class="next" href="#">
+      <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#global__symbols-next"></use></svg>
+    </a>
+  </div> -->
+</div>
+{%- elsif my_layout == 'list' -%}
+<div class="col-sm-3">
+  <div class="image{% if settings.product_img_fx == '1' %} image-swap-effect{% endif %}{% if settings.image_layout != "" %} aspect-ratio-{{ settings.image_layout }}{% if settings.image_layout_crop %} aspect-ratio-crop{% endif %}{% endif %}">
+    {%- if current_variant.compare_at_price > current_variant.price and settings.product_sale_badge != '' -%}
+    <div class="sale">
+      {%- if settings.product_sale_badge == '0' -%}
+      {{'products.product.sale' | t}}
+      {%- else -%}
+      -{{current_variant.compare_at_price | minus:current_variant.price | times:100.0 | divided_by:current_variant.compare_at_price | ceil }}%
+      {%- endif -%}
+    </div>
+    {%- elsif settings.product_new_badge and product.tags contains 'latest' -%}
+    <div class="new">{{'products.product.new' | t}}</div>
+    {%- endif -%}
+    {%- assign _dim = product-item -%}
+    {%- if _dim == empty or _dim == blank -%}
+    {%- if settings.collection_product_size == "custom" and settings.collection_product_img_width != blank and settings.collection_product_img_height != blank -%}
+    {%- assign _dim = settings.collection_product_img_width | append: "x" | append : settings.collection_product_img_height -%}
+    {%- else -%}
+    {%- assign _dim = settings.collection_product_size -%}
+    {%- endif -%}
+    {%- endif -%}
+    <a href="{{product.url | within: collection}}">
+      {%- if settings.image_layout != "" -%}
+      <div class="aspect-product__spacer"><div class="aspect-product__spacer-inner"></div></div>
+      {%- endif -%}
+      <div data-class="reveal" class="b-loading main-images-wrapper">
+        {%-include 'lazy-preloader'-%}
+        {%- if settings.product_img_fx == '1' and product.images.size > 1 -%}
+        	{% comment %}<img class="mpt-image swap-image{{_onepone}}src="{{product.images[1] | img_url: _dim, format: 'pjpg'}}" alt="{{product.images[1].alt | escape}}"/>{% endcomment %}
+        {%- endif -%}
+        {%- assign img_url = _dim -%}
+        <img class="mpt-image {% if settings.product_img_fx == '2' %} zoom-image-effect{% endif %}{{_onepone}}src="{{featured_image | img_url: img_url, format: 'pjpg'}}" alt="{{product.title | escape}}" alt="image"/>
+      </div>
+    </a>
+    {%- if settings.product_countdown_show -%}{%- include 'limited-offer' -%}{%- endif -%}
+  </div>
+</div>
+{%- endif -%}

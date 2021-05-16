@@ -1,0 +1,110 @@
+{%-capture image_size-%}{{block.settings.promotion_image_quality}}{%- endcapture -%}
+{%-assign fx_class = ''-%}
+{%-if block.settings.promotion_fx == true-%}
+{%-assign _t = block.settings.promotion_fx_type | plus: 0-%}
+{%-assign fx_class = ' ' | append: fx_classes[_t]-%}
+{%-endif-%}
+
+{%-assign borders_class = ' '-%}
+{%-if block.settings.promotion_borders == '1'-%}
+{%-assign borders_class = borders_class | append: ' has-borders' -%}
+{%-if block.settings.promotion_borders_top == true-%}
+{%-assign borders_class = borders_class | append: ' border-top' -%}
+{%-endif-%}
+{%-if block.settings.promotion_borders_bottom == true-%}
+{%-assign borders_class = borders_class | append: ' border-bottom' -%}
+{%-endif-%}
+{%-if block.settings.promotion_borders_left == true-%}
+{%-assign borders_class = borders_class | append: ' border-left' -%}
+{%-endif-%}
+{%-if block.settings.promotion_borders_right == true-%}
+{%-assign borders_class = borders_class | append: ' border-right' -%}
+{%-endif-%}
+{%-assign borders_class = borders_class | append: ' ' -%}
+{%-endif-%}
+{%-assign borders_mobile_class = ' '-%}
+{%-if block.settings.promotion_mobile_borders == '1'-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' has-mobile-borders' -%}
+{%-if block.settings.promotion_mobile_borders_top == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-top' -%}
+{%-endif-%}
+{%-if block.settings.promotion_mobile_borders_bottom == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-bottom' -%}
+{%-endif-%}
+{%-if block.settings.promotion_mobile_borders_left == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-left' -%}
+{%-endif-%}
+{%-if block.settings.promotion_mobile_borders_right == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-right' -%}
+{%-endif-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' ' -%}
+{%-endif-%}
+
+<div class="col-rb-{{ block.settings.promotion_width }}{{' '}}col-rbm-{{ block.settings.promotion_mobile_width }}">
+  <div id="rich-banner-{{block.id}}" class="{{' rich-banner promotion text-pos-center '}}{%-if block.settings.promotion_fx == true-%}{{' has-text-fx '}}{%-endif-%}{{borders_class}}{{borders_mobile_class}}{%- if block.settings.promotion_image != blank and settings.image_lazy_loading_used -%}{{' b-lazy '}}{%-endif-%}" {{ block.shopify_attributes }} data-fx="{{block.settings.promotion_fx}}" data-fx-type="{{block.settings.promotion_fx_type}}"
+       style="background-color:{{block.settings.promotion_bg_color}};
+              {%- if block.settings.promotion_image != blank -%}
+              {%- assign img_url = block.settings.promotion_image | img_url: image_size, crop: 'center' -%}
+              {%-if settings.image_lazy_loading_used-%}
+              "{{' '}}data-src="{{img_url}}"
+       		  {%-else-%}
+       		  background-image:url({{img_url}})"
+              {%-endif-%}
+              {%-else-%}"{%- endif -%}>
+    {%-if block.settings.promotion_link == blank-%}
+    <div class="banner-content-wrapper text-vpos-middle">
+      {%-else-%}
+      <a href="{{block.settings.promotion_link}}" class="banner-content-wrapper text-vpos-middle">
+      {%-endif-%}
+        {%-if block.settings.promotion_text != blank or block.settings.promotion_icon != blank-%}
+        <div class="banner-texting text-align-center{%-if block.settings.promotion_icon_pos == 'left' or block.settings.promotion_icon_pos == 'right'-%}{{' icon-horizontal '}}{%-endif-%}">
+          
+          {%-if block.settings.promotion_icon != blank and block.settings.promotion_icon_pos != blank-%}
+          {%-if block.settings.promotion_icon_pos == 'left' or block.settings.promotion_icon_pos == 'top'-%}
+          <div class="b-icon self-fontsize-adj {%-if block.settings.promotion_icon_shadow == true -%}{{' has--text-shadow '}}{%-endif-%}" data-ori-fontsize="{{block.settings.promotion_icon_size}}px" style="font-size:{{block.settings.promotion_icon_size}}px;color:{{block.settings.promotion_color}};">
+          <i class="fa {{block.settings.promotion_icon}}" aria-hidden="true"></i>
+          </div>
+          {%-endif-%}
+          {%-endif-%}
+          
+          {%-if block.settings.promotion_text != blank-%}
+          {%-if block.settings.promotion_fx == true-%}
+          <div class="b-text self-fontsize-adj{{fx_class}}{%-if block.settings.promotion_text_shadow == true -%}{{' has--text-shadow '}}{%-endif-%}" data-ori-fontsize="{{block.settings.promotion_text_size}}px" style="font-size:{{block.settings.promotion_text_size}}px;color:{{block.settings.promotion_color}};">
+            {%-include 'section-richbanners-banner-fx-text', fx_type: block.settings.promotion_fx_type, texting: block.settings.promotion_text, _color: block.settings.promotion_color-%}
+          </div>
+          {%-else-%}
+          <div class="b-text self-fontsize-adj{%-if block.settings.promotion_text_shadow == true -%}{{' has--text-shadow '}}{%-endif-%}" data-ori-fontsize="{{block.settings.promotion_text_size}}px" style="font-size:{{block.settings.promotion_text_size}}px;color:{{block.settings.promotion_color}};">
+            {{block.settings.promotion_text}}
+          </div>
+          {%-endif-%}
+          {%-endif-%}
+          
+          {%-if block.settings.promotion_icon != blank and block.settings.promotion_icon_pos != blank-%}
+          {%-if block.settings.promotion_icon_pos == 'right' or block.settings.promotion_icon_pos == 'bottom'-%}
+          <div class="b-icon self-fontsize-adj {%-if block.settings.promotion_icon_shadow == true -%}{{' has--text-shadow '}}{%-endif-%}" data-ori-fontsize="{{block.settings.promotion_icon_size}}px" style="font-size:{{block.settings.promotion_icon_size}}px;color:{{block.settings.promotion_color}};">
+          <i class="fa {{block.settings.promotion_icon}}" aria-hidden="true"></i>
+          </div>
+          {%-endif-%}
+          {%-endif-%}
+          
+        </div>
+        {%-endif-%}
+      {%-if block.settings.promotion_link != blank-%}
+      </a>
+      {%-else-%}
+    </div>
+    {%-endif-%}
+  </div>
+</div>
+<style>
+  @media (max-width: 767px) {
+    .rich-banners#rich-banners-{{section.id}} .rich-banner.promotion#rich-banner-{{block.id}} .banner-content-wrapper {
+      min-height:{{block.settings.promotion_mobile_height | append: 'px'}}
+    }
+  }
+  @media (min-width: 768px) {
+    .rich-banners#rich-banners-{{section.id}} .rich-banner.promotion#rich-banner-{{block.id}} .banner-content-wrapper {
+      min-height:{{block.settings.promotion_height | append: 'px'}}
+    }
+  }
+</style>

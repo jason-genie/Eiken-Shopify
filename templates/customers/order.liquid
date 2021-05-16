@@ -1,0 +1,143 @@
+{%- if settings.sb_account_placement == 'left' -%}
+<div class="col-md-3{% if settings.sb_account_mobile %} hidden-sm hidden-xs{% endif %}">
+  {%- include 'sidebar-myaccount' -%}
+</div>
+{%- endif -%}
+<div id="content" class="{% if settings.sb_account_placement != '' %}col-md-9{% else %}col-md-12{% endif %} center-column body-other content-with-background">
+  <table id="order_detail" class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <td class="text-left" colspan="2">{{'customer.order.title' | t}}</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-left">
+          <ul class="list-unstyled">
+            <li><strong>{{'customer.order.order_number' | t}}:</strong> {{order.name}}</li>
+            <li><strong>{{'customer.order.date' | t}}:</strong> {{order.created_at | date: "%B %d, %Y %I:%M%p"}}</li>
+            {%- if order.cancelled -%}
+            <li><strong>{{'customer.order.cancelled' | t}}:</strong> {{order.cancelled_at | date: "%B %d, %Y %I:%M%p"}}</li>
+            <li><strong>{{'customer.order.cancelled_reason' | t}}:</strong> {{order.cancel_reason}}</li>
+            {%- endif -%}
+          </ul>
+        </td>
+        <td class="text-left">
+          <ul class="list-unstyled">
+            <li><strong>{{'customer.order.payment_status' | t}}:</strong> {{order.financial_status | capitalize}}</li>
+            <li><strong>{{'customer.order.fulfillment_status' | t}}:</strong> {{order.fulfillment_status | capitalize}}</li>
+          </ul>
+      </tr>
+    </tbody>
+  </table>
+  <table id="order_address" class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <td class="text-left">{{'customer.order.billing_address' | t}}</td>
+        {%- if order.shipping_address -%}
+        <td class="text-left">{{'customer.order.shipping_address' | t}}</td>
+        {%- endif -%}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-left">
+          <ul class="list-unstyled">
+            <li>{{order.billing_address.name}}</li>
+            <li>{{order.billing_address.company}}</li>
+            <li>{{order.billing_address.street}}</li>
+            <li>{{order.billing_address.city}}</li>
+            <li>{{order.billing_address.province}}</li>
+            <li>{{order.billing_address.country}}</li>
+            <li>{{order.billing_address.zip}}</li>
+            <li>{{order.billing_address.phone}}</li>
+          </ul>
+        </td>
+        {%- if order.shipping_address -%}
+        <td class="text-left">
+          <ul class="list-unstyled">
+            <li>{{order.shipping_address.name}}</li>
+            <li>{{order.shipping_address.company}}</li>
+            <li>{{order.shipping_address.street}}</li>
+            <li>{{order.shipping_address.city}}</li>
+            <li>{{order.shipping_address.province}}</li>
+            <li>{{order.shipping_address.country}}</li>
+            <li>{{order.shipping_address.zip}}</li>
+            <li>{{order.shipping_address.phone}}</li>
+          </ul>
+        </td>
+        {%- endif -%}
+      </tr>
+    </tbody>
+  </table>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <td class="text-left">{{'customer.order.details.product' | t}}</td>
+          <td class="text-left">{{'customer.order.details.sku' | t}}</td>
+          <td class="text-right">{{'customer.order.details.quantity' | t}}</td>
+          <td class="text-right">{{'customer.order.details.price' | t}}</td>
+          <td class="text-right">{{'customer.order.details.total' | t}}</td>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for line_item in order.line_items -%}
+        <tr>
+          <td class="text-left">
+            {{line_item.title | link_to: line_item.url}}
+            {%- if line_item.fulfillment -%}
+            <br/>
+            {%- assign created_at = line_item.fulfillment.created_at | date: "%b %d" -%}
+            {{'customer.order.details.fulfilled_at' | t: date: created_at}}
+            {%- if line_item.fulfillment.tracking_number -%}
+            <a href="{{line_item.fulfillment.tracking_url}}">{{line_item.fulfillment.tracking_company}} #{{line_item.fulfillment.tracking_number}}</a>
+            {%- endif -%}
+            {%- endif -%}
+          </td>
+          <td class="text-left">{{line_item.sku}}</td>
+          <td class="text-right">{{line_item.quantity}}</td>
+          <td class="text-right"><span class="money">{{line_item.price | money}}</span></td>
+          <td class="text-right"><span class="money">{{line_item.quantity | times: line_item.price | money}}</span></td>
+        </tr>
+        {%- endfor -%}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="text-right" colspan="4"><strong>{{'customer.order.details.subtotal' | t}}</strong></td>
+          <td class="text-right"><span class="money">{{order.subtotal_price | money}}</span></td>
+        </tr>   
+        {%- for discount in order.discounts -%}
+        <tr>
+          <td class="text-right" colspan="4"><strong>{{discount.code}} {{'customer.order.discount' | t}}</strong></td>
+          <td class="text-right"><span class="money">{{discount.savings | money}}</span></td>
+        </tr>
+        {%- endfor -%}
+        {%- for shipping_method in order.shipping_methods -%}
+        <tr>
+          <td class="text-right" colspan="4"><strong>{{'customer.order.shipping' | t}}</strong></td>
+          <td class="text-right"><span class="money">{{shipping_method.price | money}}</span></td>
+        </tr>
+        {%- endfor -%}
+        {%- for tax_line in order.tax_lines -%}
+        <tr>
+          <td class="text-right" colspan="4"><strong>{{'customer.order.tax' | t}} ({{tax_line.title}} {{tax_line.rate | times: 100}}%)</strong></td>
+          <td class="text-right"><span class="money">{{tax_line.price | money}}</span></td>
+        </tr>
+        {%- endfor -%}
+        <tr>
+          <td class="text-right" colspan="4"><strong>{{'customer.order.details.total' | t}}</strong></td>
+          <td class="text-right"><span class="money">{{order.total_price | money}}</span> {{order.currency}}</td>
+        </tr>   
+      </tfoot>
+    </table>
+  </div>
+  <div class="buttons clearfix">
+    <div class="pull-left"><a href="/account" class="btn btn-default">{{'customer.account.title' | t}}</a></div>
+  </div>
+</div>
+{%- if settings.sb_account_placement == 'right' -%}
+<div class="col-md-3{% if settings.sb_account_mobile %} hidden-sm hidden-xs{% endif %}">
+  {%- include 'sidebar-myaccount' -%}
+</div>
+{%- endif -%}

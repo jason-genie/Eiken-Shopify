@@ -1,0 +1,9 @@
+{%- layout none -%}
+{%- assign key = 'ra_' | append: search.terms -%}
+{
+  "metafields": {
+    "shop": {{ shop.permanent_domain | json }},
+    "settings": {{ shop.metafields[key].settings | json }},
+    "moneyFormat": {{ shop.money_format | json }}
+  }
+}

@@ -1,0 +1,135 @@
+
+{%- if section.blocks.size > 0 -%}
+<div 
+     data-placement_fullwidth="{%- if section.settings.placement_fullwidth -%}1{%- else -%}0{%- endif -%}"
+     id="testimonial-{{section.id}}" class="box box-with-products box-carousel{%- if section.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}" data-section-id="{{ section.id }}" data-section-type="testimonial">
+  <!-- Carousel nav -->
+  <a class="next" href="#myCarousel_testi_{{section.id}}" id="myCarousel_testi_next_{{section.id}}"><span></span></a>
+  <a class="prev" href="#myCarousel_testi_{{section.id}}" id="myCarousel_testi_prev_{{section.id}}"><span></span></a>
+  
+  <div class="box-heading">{{section.settings.testi_head}}</div>
+  <div class="strip-line"></div>
+  <div class="clear"></div>
+  <div class="box-content products">
+    <div id="myCarousel_testi_{{section.id}}">
+      <div class="testimonial-slide">
+        {%- for block in section.blocks limit: section.blocks.size -%}
+          {%- if block.type == 'testimonial_page' -%}
+              {{pages[block.settings.testi_page].content}}
+          {%- else -%}
+              <div class="testimonial clearfix">     
+                {%- if  block.settings.testi_img != blank -%}
+                	{%- assign img_url = block.settings.testi_img | img_url:"100x100", crop:"center" -%}
+                {%- else -%}
+                	{%- assign img_url = "noimage_100_100.png" | asset_img_url:"master" -%}
+                {%- endif -%}
+                <img src="{{ img_url }}" align="left" alt="Avatar" />          
+                <div class="author">          
+                  <span>{{block.settings.testi_author}}</span>          
+                  <p>{{block.settings.testi_tit}}</p>
+                </div>
+                <div class="description">
+                  {{block.settings.testi_desc}}
+                </div>
+              </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Testimonials",
+	"class": "index-section section-wrapper",
+    "settings": [
+		{
+          "type": "checkbox",
+          "id": "placement_fullwidth",
+          "label": "Force Full Width"
+        },
+    	{
+          "type": "checkbox",
+          "id": "visible_on_mobile",
+          "label": "Show on Mobile",
+          "default": true
+        },
+		{
+          "type": "text",
+          "id": "testi_head",
+          "label": "Heading"
+        }
+	],
+	"blocks": [
+		{
+			"type": "testimonial_page",
+            "name": "Page Content",
+            "settings": [
+                
+                {
+                  "type": "page",
+                  "id": "testi_page",
+                  "label": "Choose a Page",
+                  "info": "Load Content For Your Page"
+                }
+			]	
+		},
+		{
+			"type": "testimonial_content",
+			"name": "Testimonial Content",
+			"settings": [
+                {
+                  "type": "image_picker",
+                  "id": "testi_img",
+                  "label": "Pick an Image"
+                },
+                {
+                  "type": "text",
+                  "id": "testi_author",
+                  "label": "Name"
+                },
+                {
+                  "type": "text",
+                  "id": "testi_tit",
+                  "label": "Title"
+                },
+                {
+                  "type": "textarea",
+                  "id": "testi_desc",
+                  "label": "Comment"
+                }
+			]
+		}
+	],
+	"presets": [
+		{
+          "name": "Testimonials",
+          "category": "Banners",
+          "settings": {
+              "visible_on_mobile": true,
+              "testi_head": "Testimonials"
+          },
+          "blocks": [
+            {
+              "type": "testimonial_content",
+			  "settings": {
+				"testi_author": "Jack Doe",
+                "testi_tit": "Customer",
+                "testi_desc": "“ This Store is great. If anyone is looking for a nice and quick service, should choose it. ”"
+			  }
+            },
+            {
+              "type": "testimonial_content",
+			  "settings": {
+				"testi_author": "Tom Novak",
+                "testi_tit": "Customer",
+                "testi_desc": "“ This Store is great. If anyone is looking for a nice and quick service, should choose it. ”"
+			  }
+            }
+          ]
+		}
+	]
+  }
+{% endschema %}

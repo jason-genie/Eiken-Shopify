@@ -1,0 +1,86 @@
+{%- assign _class = 3 -%}
+{%- assign _all = 4 -%}
+{%- assign _count = _acm_prods | size -%}
+
+{%- if _acm_limit < _count -%}
+{%- assign _count = _acm_limit -%}
+{%- endif -%}
+
+{%- if _count == 6 -%}
+{%- assign _class = 2 -%}
+{%- assign _all = 6 -%}
+{%- endif -%}
+
+{%- if _count == 5 -%}
+{%- assign _class = 25 -%}
+{%- assign _all = 5 -%}
+{%- endif -%}
+
+{%- if _count == 3 -%}
+{%- assign _class = 4 -%}
+{%- assign _all = 3 -%}
+{%- endif -%}
+
+{%- if _count == 2 -%}
+{%- assign _class = 6 -%}
+{%- assign _all = 2 -%}
+{%- endif -%}
+
+{%- if _count == 1 -%}
+{%- assign _class = 12 -%}
+{%- assign _all = 1 -%}
+{%- endif -%}
+
+<div class="box clearfix box-with-products{%- if _acm_title == blank -%}{{' '}}without-heading{%- endif -%}">
+  {%- if _acm_title != blank -%}
+  <div class="box-heading">
+  {{_acm_title}}
+  </div>
+  <div class="strip-line"></div>
+  {%- endif -%}
+  <div class="clear"></div>
+  <div class="box-content products">
+    <div class="box-product">
+      <div id="myCarousel{{_id}}">
+        <div class="carousel-inner">
+          {%- assign _i = 0 -%}
+          {%- assign _row_fluid = 0 -%}
+          {%- for product in _acm_prods -%}
+
+          {%- if _i == _acm_limit -%}
+          {%- break -%}
+          {%- endif -%}
+
+          {%- assign _row_fluid = _row_fluid | plus: 1 -%}
+
+          {%- if _i == 0 -%}
+          <div class="active item">
+            <div class="product-grid">
+              <div class="row">
+                {%- endif -%}
+
+                {%- assign _r = _row_fluid | divided_by: _all -%}
+                {%- assign _r = _r | times: _all -%}
+                {%- assign _r = _row_fluid | minus: _r -%}
+
+                {%- if _row_fluid > _all and _r == 1 -%}{{' '}}
+              </div>
+              <div class="row">
+                {%- endif -%}
+
+                <div class="col-sm-{{_class}}{%- if _class != 12 -%}{{' '}}col-xs-6{%- endif -%}{%- if _class == 2 -%}{{' '}}col-md-25 col-lg-2 col-sm-3{%- endif -%}{%- if _class == 2 and _r == 0 -%}{{' '}}hidden-md hidden-sm{%- endif -%}{%- if _class == 2 and _r == 5 -%}{{' '}}hidden-sm{%- endif -%}{%- if _class == 25 -%}{{' '}}col-md-25 col-lg-25 col-sm-3{%- endif -%}{%- if _class == 25 and _r == 0 -%}{{' '}}hidden-sm{%- endif -%}">
+                  {%- include 'product-item' with _acm_url_imgdim -%}
+                </div>
+                {%- assign _i = _i | plus: 1 -%}
+                {%- endfor -%}
+
+                {%- if _i > 0 -%}
+              </div>
+            </div>
+          </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

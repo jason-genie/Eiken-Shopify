@@ -1,0 +1,35 @@
+
+
+{% if block.settings.footer_social_size != blank %}
+<style>
+  .footer #social-icons-{{block.id}}.social-icons li {
+    font-size:{{block.settings.footer_social_size | plus:0}}px;
+  }
+</style>
+{% endif %}
+<div class="social_icon_wrapper footer-accordion" {{ block.shopify_attributes }}>
+  <h4 class="title footer-accordion-heading {% if block.settings.footer_social_heading == blank %}footer-title-hide{% endif %}">
+    <span>
+      {%- if block.settings.footer_social_heading != blank -%}
+      {{block.settings.footer_social_heading}}
+      {%- else -%}
+      {{ "general.footer.social_icons" | t }}
+      {%- endif -%}
+    </span>
+    <i class="fa fa-plus-svg">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="width: 12px;"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"></path></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"  style="width: 12px;"><path d="M0 10h24v4h-24z"/></svg>
+    </i>
+  </h4>
+  <div class="strip-line {% if block.settings.footer_social_heading == blank %}footer-title-hide{% endif %}"></div>
+  {%- assign social_icons = "twitter|facebook|google-plus|pinterest|instagram|tumblr|youtube-play|vimeo|behance|github|flickr|rss" | split: "|" | uniq -%}
+  <ul class="social-icons footer-accordion-content"  id="social-icons-{{block.id}}" >
+    {%- assign social_number = social_icons.size | minus:1 -%}
+    {%- for i in (0..social_number) -%}
+    {%- assign social_name = 'social_icon_' | append:social_icons[i] -%}
+    {%- if settings[social_name] != '' -%}
+    <li><a href="{{settings[social_name]}}"><i class="fa fa-{{social_icons[i]}}"></i></a></li>
+    {%- endif -%}
+    {%- endfor -%}
+  </ul>
+</div>

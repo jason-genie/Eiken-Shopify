@@ -1,0 +1,185 @@
+{%- assign _pos = advanced-grid -%}
+{%- if _pos != empty -%}
+
+{%- for i in (1..MAX_AG) -%}
+
+{%- assign ag_use			= 'ag_use_'			| append: i -%}
+{%- assign ag_pos 			= 'ag_pos_' 		| append: i -%}
+
+{%- assign _ag_use			= settings[ag_use]				-%}
+{%- assign _ag_pos 			= settings[ag_pos] 				-%}
+
+{%- comment -%}
+<!-- Layout config is hidden in current version. 
+For now, use '0' as 'ALL PAGES' and '1' as 'HOMEPAGE' -->
+{%- assign ag_layout = 'ag_layout_' | append: i -%}
+{%- assign _ag_layout = settings[ag_layout] -%}
+{%- endcomment -%}
+
+{%- assign _ag_layout = '1' -%}
+
+{%- if _ag_layout == '0' or _ag_layout == CURRENT_LAYOUT -%}
+{%- if _ag_use and _ag_pos == _pos -%}
+
+{%- assign ag_order			= 'ag_order_'		| append: i -%}
+{%- assign ag_custom_class 	= 'ag_class_' 		| append: i -%}
+{%- assign ag_mobile 		= 'ag_mobile_' 		| append: i -%}
+{%- assign ag_margins 		= 'ag_marg_' 		| append: i -%}
+{%- assign ag_paddings 		= 'ag_padd_' 		| append: i -%}
+{%- assign ag_fullwidth 		= 'ag_fullw_' 		| append: i -%}
+
+{%- assign ag_bgtype 		= 'ag_bgtype_' 		| append: i -%}
+{%- assign ag_bgcolor 		= 'ag_bgcolor_' 	| append: i -%}
+{%- assign ag_bgimg_use 		= 'ag_bgimg_use_' 	| append: i -%}
+{%- assign ag_bgimg 			= 'ag_bg_' 			| append: i | append: '.png' -%}
+{%- assign ag_bgpos 			= 'ag_bgpos_' 		| append: i -%}
+{%- assign ag_bgrepeat 		= 'ag_repeat_' 		| append: i -%}
+{%- assign ag_bgattach 		= 'ag_attach_' 		| append: i -%}
+
+{%- assign _ag_order			= settings[ag_order] 			-%}
+{%- assign _ag_custom_class 	= settings[ag_custom_class] 	-%}
+{%- assign _ag_mobile 		= settings[ag_mobile] 			-%}
+{%- assign _ag_magins 		= settings[ag_margins] 	| split: '-' -%}
+{%- assign _ag_paddings 		= settings[ag_paddings] | split: '-' -%}
+{%- assign _ag_fullwidth 	= settings[ag_fullwidth] 		-%}
+
+{%- assign _ag_bgtype 		= settings[ag_bgtype] 			-%}
+{%- assign _ag_bgcolor 		= settings[ag_bgcolor] 			-%}
+{%- assign _ag_bgimg_use 	= settings[ag_bgimg_use] 		-%}
+{%- assign _ag_bgimg 		= ag_bgimg | asset_url 			-%}
+{%- assign _ag_bgpos 		= settings[ag_bgpos] 			-%}
+{%- assign _ag_bgrepeat 		= settings[ag_bgrepeat] 		-%}
+{%- assign _ag_bgattach 		= settings[ag_bgattach] 		-%}
+
+<div class="advanced-grid advanced-grid-{{i}} {{_ag_custom_class}} {% if _ag_mobile == false %} hidden-xs hidden-sm{% endif %}" style="margin-top: {{_ag_magins[0] | replace: 'n', '-'}}px; {% if _ag_fullwidth %}margin-left: {{_ag_magins[3] | replace: 'n', '-'}}px;margin-right: {{_ag_magins[1] | replace: 'n', '-'}}px;{% endif %}margin-bottom: {{_ag_magins[2] | replace: 'n', '-'}}px;" data-order="{{_ag_order}}">
+  {%- if _ag_bgtype == '2' -%}
+  <div class="parallax-window" style="{%- if _ag_bgcolor != '' -%}background-color:{{_ag_bgcolor}};{%- endif -%}{%- if _ag_bgimg_use -%}background-image:url({{_ag_bgimg}});{%- endif -%}" data-velocity="-0.7">
+  {%- endif -%}
+    
+  {%- if _ag_bgtype == '1' -%}
+  <div style="{%- if _ag_bgcolor != '' -%}background-color:{{_ag_bgcolor}};{%- endif -%}{%- if _ag_bgimg_use -%}background-image:url({{_ag_bgimg}});{%- endif -%}background-position:{{_ag_bgpos}};background-repeat:{{_ag_bgrepeat}};background-attachment:{{_ag_bgattach}};">
+  {%- endif -%}
+    
+  {%- if _ag_bgtype == '0' -%}
+  <div style="{%- if _ag_bgcolor != '' -%}background-color:{{_ag_bgcolor}};{%- endif -%}">
+  {%- endif -%}
+    <div class="container">
+      <div style="padding-top:{{_ag_paddings[0] | replace: 'n', '-'}}px;padding-left:{{_ag_paddings[3] | replace: 'n', '-'}}px;padding-bottom:{{_ag_paddings[2] | replace: 'n', '-'}}px;padding-right:{{_ag_paddings[1] | replace: 'n', '-'}}px;">
+        <div class="row">
+          {%- assign _row = 0 -%}
+          {%- for j in (1..MAX_AG_COLUMN) -%}
+          {%- include 'advanced-grid-column' -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- if _ag_bgtype == '2' -%}
+  <script>
+    $(document).ready(function(){
+      $('.advanced-grid-{{i}} .parallax-window').scrolly({bgParallax: true});
+    });
+  </script>
+  {%- endif -%}
+</div>
+
+{%- if _ag_fullwidth -%}
+<script type="text/javascript">
+  function force_full_width_{{i}}() {
+    var p = $(".standard-body .full-width .advanced-grid-{{i}}");
+
+    if(!window.rtl){
+      if(p.size() > 0) {
+        p.width($('body').width());
+        p.css("left", "0px");
+        var position = p.offset();
+        p.css("left", "-" + position.left + "px");
+        p.find(".container").css("padding-left", position.left);
+        p.find(".container").css("padding-right", position.left);
+
+      }
+    } else {
+      if(p.size() > 0) {
+        p.width($('body').width());
+        p.css("right", "0px");
+        var position = p.offset();
+        p.css("right", "-" + position.left * -1 + "px");
+        p.find(".container").css("padding-left", position.left * -1);
+        p.find(".container").css("padding-right", position.left * -1);
+      }
+    }
+
+    var s = $(".standard-body .fixed .advanced-grid-{{i}}");
+    if(!window.rtl){
+      if(s.size() > 0) {
+        s.width($('.standard-body .fixed .pattern').width());
+        s.css("left", "0px");
+        var position = s.offset();
+        var position2 = $('.standard-body .fixed .pattern').offset();
+        var position3 = position.left-position2.left;
+        s.css("left", "-" + position3 + "px");
+        s.find(".container").css("padding-left", position3);
+        s.find(".container").css("padding-right", position3);
+      }
+    } else {
+      if(s.size() > 0) {
+        s.width($('.standard-body .fixed .pattern').width());
+        s.css("right", "0px");
+        var position = s.offset();
+        var position2 = $('.standard-body .fixed .pattern').offset();
+        var position3 = position.left-position2.left;
+        s.css("right", "-" + position3 * -1 + "px");
+        s.find(".container").css("padding-left", position3 * -1);
+        s.find(".container").css("padding-right", position3 * -1);
+      }  
+    }
+
+    var b = $(".standard-body .fixed2 .advanced-grid-{{i}}");
+    if(b.size() > 0) {
+      b.width($('body').width());
+      b.css("left", "0px");
+      var position = b.offset();
+      b.css("left", "-" + position.left + "px");
+      b.find(".container").css("padding-left", position.left);
+      b.find(".container").css("padding-right", position.left);
+    }
+    
+    var c = $(".fixed-body .advanced-grid-{{i}}");
+    if(!window.rtl) {
+      if(c.size() > 0) {
+        c.width($('.fixed-body .main-fixed').width());
+        c.css("left", "0px");
+        var position = c.offset();
+        var position2 = $('.fixed-body .main-fixed').offset();
+        var position3 = position.left-position2.left;
+        c.css("left", "-" + position3 + "px");
+        c.find(".container").css("padding-left", position3);
+        c.find(".container").css("padding-right", position3);
+      }
+    } else {
+      if(c.size() > 0) {
+        c.width($('.fixed-body .main-fixed').width());
+        c.css("right", "0px");
+        var position = c.offset();
+        var position2 = $('.fixed-body .main-fixed').offset();
+        var position3 = position.left-position2.left;
+        c.css("right", "-" + position3 * -1 + "px");
+        c.find(".container").css("padding-left", position3 * -1);
+        c.find(".container").css("padding-right", position3 * -1);
+      }
+    }
+  }
+
+  force_full_width_{{i}}();
+
+  $(window).resize(function() {
+    force_full_width_{{i}}();
+  });
+</script>
+{%- endif -%}
+
+{%- endif -%}
+{%- endif -%}
+{%- endfor -%}
+{%- endif -%}

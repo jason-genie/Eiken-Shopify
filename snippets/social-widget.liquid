@@ -1,0 +1,74 @@
+{%- assign my_template = template | split: '.' | first -%}
+{%- assign widget_number = 3 -%}
+{%- if my_template == 'collection' and settings.sb_collection_placement != '' -%}{% assign widget_number = 3 %}{%- endif -%}
+{%- if my_template == 'product' -%}{% assign widget_number = 3 %}{%- endif -%}
+{%- if settings.wishlist_enable -%}{% assign widget_number = widget_number | plus:1 %}{%- endif -%}
+{%- if settings.scroll_top == false -%}{% assign widget_number = widget_number | minus:1 %}{%- endif -%}
+<div id="widgets" class="widget_{{widget_number}}">
+  {%- comment -%}----- Menu Sidebar -----{%- endcomment -%}
+  <div class="social_widget hide">
+    <div class="icon"><div class="mobile-nav-icon"><button type="button"><span></span></button></div></div>
+  </div>
+  {%- comment -%}----- Collection Sidebar -----{%- endcomment -%}
+  {%- if my_template == 'collection' and settings.sb_collection_placement != '' -%}
+  <div class="social_widget hide">
+    <div id="filter-sidebar" class="icon"><i><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#global__symbols-filter"></use></svg></i></div>
+  </div>
+  {%- endif -%}
+  {%- comment -%}----- Product AddtoCart -----{%- endcomment -%}
+  {%- if my_template == 'product' -%}
+  <div class="social_widget hide">
+    <div id="filter-addtocart" class="icon"><span></span><i><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#global__symbols-cart-add"></use></svg></i></div>
+  </div>
+  {%- endif -%}
+  {%- comment -%}----- Shopping Cart -----{%- endcomment -%}
+  <div class="social_widget hide">
+  {% if request.locale.iso_code == 'fr' %}
+    <a id="filter-cart" href="/fr/cart" class="icon"><span class="cart-count"><i class="fa fa-shopping-basket"></i><span class="total_count_ajax">{{ cart.item_count }}</span></span></a>
+  {% else %}
+    <a id="filter-cart" href="/cart" class="icon"><span class="cart-count"><i class="fa fa-shopping-basket"></i><span class="total_count_ajax">{{ cart.item_count }}</span></span></a>
+    {% endif %}
+  </div>
+  {%- comment -%}----- Wishlist -----{%- endcomment -%}
+  {%- if settings.wishlist_enable -%}
+  <div class="social_widget hide">
+    <a href="{{pages[settings.wishlist_page].url}}" class="icon"><i class="fa fa-heart"></i></a>
+  </div>
+  {%- endif -%}
+  {%- comment -%}----- Facebook -----{%- endcomment -%}
+  {%- if settings.social_facebook -%}
+  <div class="social_widget facebook {{settings.social_widget_position}} hidden-xs hidden-sm">
+    <div class="icon"><i class="fa fa-facebook"></i></div>
+    <div class="content">
+      <div class="fb-like-box fb_iframe_widget" data-href="{{settings.social_facebook_url}}" data-small-header="true" data-adapt-container-width="true" data-hide-cover="{{settings.social_facebook_hide_cover}}" data-show-facepile="{{settings.social_facebook_show_faces}}" data-show-posts="false"></div>
+      <script>!function(a,b,c){var d,e=a.getElementsByTagName(b)[0];a.getElementById(c)||(d=a.createElement(b),d.id=c,d.src="//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3",e.parentNode.insertBefore(d,e))}(document,"script","facebook-jssdk");</script>
+    </div>
+  </div>
+  {%- endif -%}
+  {%- comment -%}----- Twitter -----{%- endcomment -%}
+  {%- if settings.social_twitter -%}
+  <div class="social_widget twitter {{settings.social_widget_position}} hidden-xs hidden-sm">
+    <div class="icon"><i class="fa fa-twitter"></i></div>
+    <div class="content">
+      <a class="twitter-timeline" href="https://twitter.com/@{{settings.social_twitter_username}}" height="{{settings.social_twitter_height | plus:0}}" data-chrome="noborders" data-theme="light" data-related="twitterapi,twitter" data-aria-polite="assertive">Tweets by @{{settings.social_twitter_username}}</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+  </div>
+  {%- endif -%}
+  {%- comment -%}----- Instagram -----{%- endcomment -%}
+  {%- if settings.social_instagram -%}
+  <div class="social_widget instagram {{settings.social_widget_position}} hidden-xs hidden-sm">
+    <div class="icon"><i class="fa fa-instagram"></i></div>
+    <div class="content">
+      {%- assign my_instagram = settings.social_instagram_token | split: '.' -%}
+      <div id="instagram_list" class="g_thumbs" data-token="{{settings.social_instagram_token}}" data-uid="{{my_instagram.first}}" data-limit="{{settings.social_instagram_limit}}"></div>
+    </div>
+  </div>
+  {%- endif -%}
+  {%- comment -%}----- To Top -----{%- endcomment -%}
+  {%- if settings.scroll_top -%}
+  <div class="social_widget totop {{settings.social_widget_position}}">
+    <div id="scroll-top" class="icon"><i class="fa fa-chevron-up"></i></div>
+  </div>
+  {%- endif -%}
+</div>

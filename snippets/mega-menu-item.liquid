@@ -1,0 +1,172 @@
+{%- assign _is_parent = false -%}
+{%- assign item_use					= 'mi_use_'					| append: i | append: '_' | append: j -%}
+
+{%- if settings[item_use] -%}
+{%- if j == 1 -%}
+{%- assign _is_parent = true -%}
+{%- else -%}
+{%- assign item_is_sub = 'mi_sub_' | append: i | append: '_' | append: j -%}
+{%- if settings[item_is_sub] == false -%}{%- assign _is_parent = true -%}{%- endif -%}
+{%- endif -%}
+{%- endif -%}
+
+{%- if _is_parent == true -%}
+
+{%- assign item_mobile 				= 'mi_mobile_' 				| append: i | append: '_' | append: j -%}
+{%- assign item_pos_right			= 'mi_pos_right_'			| append: i | append: '_' | append: j -%}
+{%- assign item_custom_class			= 'mi_class_'				| append: i | append: '_' | append: j -%}
+{%- assign item_text 				= 'mi_text_'				| append: i | append: '_' | append: j -%}
+{%- assign item_url					= 'mi_url_'					| append: i | append: '_' | append: j -%}
+{%- assign item_icon_use				= 'mi_icon_'				| append: i | append: '_' | append: j -%}
+{%- assign item_icon 				= 'mi_icon_'				| append: i | append: '_' | append: j | append: '.png' -%}
+{%- assign item_submenu_w			= 'mi_submenu_w_' 			| append: i | append: '_' | append: j -%}
+{%- assign item_submenu_bg			= 'mi_submenu_bg_'			| append: i | append: '_' | append: j | append: '.png' -%}
+{%- assign item_submenu_bg_pos 		= 'mi_submenu_bg_pos_'		| append: i | append: '_' | append: j -%}
+{%- assign item_submenu_bg_repeat	= 'mi_submenu_bg_repeat_'	| append: i | append: '_' | append: j -%}
+
+{%- assign _icon_url = item_icon | asset_url -%}
+{%- assign _submenu_w = settings[item_submenu_w] | strip -%}
+{%- assign _submenu_bg = item_submenu_bg | asset_url -%}
+{%- assign _submenu_bg_pos = settings[item_submenu_bg_pos] -%}
+{%- assign _submenu_bg_repeat = settings[item_submenu_bg_repeat] -%}
+
+{%- assign mmenu_submenu_appear 		= 'mmenu_submenu_appear_' 		| append: i -%}
+{%- assign mmenu_new_window 			= 'mmenu_new_window_' 			| append: i -%}
+{%- assign mmenu_label_text_color 	= 'mmenu_label_text_color_' 	| append: i -%}
+{%- assign mmenu_label_bg_color 		= 'mmenu_label_bg_color_' 		| append: i -%}
+{%- assign mmenu_orientation			= 'mmenu_orientation_'			| append: i -%}
+
+{%- assign _label_color = settings[mmenu_label_text_color] -%}
+{%- assign _label_bg_color = settings[mmenu_label_bg_color] -%}
+
+{%- assign next_item_index = j | plus: 1 -%}
+{%- assign next_item_is_sub = 'mi_sub_' | append: i | append: '_' | append: next_item_index -%}
+{%- assign next_item_use = 'mi_use_' | append: i | append: '_' | append: next_item_index -%}
+{%- assign _item_has_sub = false -%}
+{%- if settings[next_item_is_sub] and settings[next_item_use] -%}
+{%- assign _item_has_sub = true -%}
+{%- endif -%}
+
+{%- assign _url = settings[item_url] -%}
+{%- assign _class = '' -%}
+{%- assign _class_link = 'clearfix' -%}
+{%- assign _title = '' -%}
+{%- assign _target = '' -%}
+{%- assign _label = '' -%}
+{%- assign _label_html = '' -%}
+
+{%- assign _mixed_text = settings[item_text] | strip -%}
+{%- assign _f_letter = _mixed_text | slice: 0 -%}
+{%- assign _l_letter = _mixed_text | slice: -1, 1 -%}
+{%- if _f_letter != '{' -%}
+{%- assign _mixed_text = _mixed_text | prepend: '{ }' -%}
+{%- endif -%}
+{%- if _l_letter != '}' -%}
+{%- assign _mixed_text = _mixed_text | append: '{ }' -%}
+{%- endif -%}
+{%- assign _texts = _mixed_text | split: '}' -%}
+{%- assign _label = _texts[0] | remove: '{' | strip -%}
+{%- assign _texts = _texts[1] | split: '{' -%}
+{%- assign _name = _texts[0] | strip -%}
+{%- assign _desc = _texts[1] | strip -%}
+
+{%- if _desc != empty -%}
+{%- assign _class_link = _class_link | append: ' description' -%}
+{%- endif -%}
+
+{%- if _item_has_sub == true -%}
+{%- assign _class = _class | append: ' with-sub-menu' -%}
+{%- if settings[mmenu_submenu_appear] == '1' -%}
+{%- assign _class = _class | append: ' click' -%}
+{%- else -%}
+{%- assign _class = _class | append: ' hover' -%}
+{%- endif -%}
+{%- endif -%}
+
+{%- if settings[item_mobile] == false -%}
+{%- assign _class = _class | append: ' mobile-disabled' -%}
+{%- endif -%}
+
+{%- if settings[item_pos_right] -%}
+{%- assign _class = _class | append: ' pull-right' -%}
+{%- endif -%}
+
+{%- if settings[mmenu_submenu_appear] == '2' -%}
+{%- assign _title = 'title="hover-intent"' -%}
+{%- endif -%}
+
+{%- if settings[mmenu_new_window] -%}
+{%- assign _target = 'target="_blank"' -%}
+{%- endif -%}
+
+{%- if settings[item_custom_class] != empty -%}
+{%- assign _class = _class | append: ' ' | append: settings[item_custom_class] -%}
+{%- endif -%}
+
+{%- assign _first_letter_of_label = _label_color | slice: 0 -%}
+{%- assign _first_letter_of_label_bg = _label_bg_color | slice: 0 -%}
+
+{%- if _first_letter_of_label != '#' -%}
+{%- assign _label_color = '' -%}
+{%- endif -%}
+{%- if _first_letter_of_label_bg != '#' -%}
+{%- assign _label_bg_color = '' -%}
+{%- endif -%}
+
+{%- if _label != empty -%}
+{%- assign _label_html = '<span class="megamenu-label" style="background:' | append: _label_bg_color | append: '!important;color:' | append: _label_color | append: ';"><span style="background:' | append: _label_bg_color | append: '!important;border-color:' | append: _label_bg_color | append: '"></span>' | append: _label | append: '</span>' -%}
+{%- endif -%}
+
+<li class='{{_class}}' {{_title}}>
+  <p class='close-menu'></p><p class='open-menu'></p>
+  <a href='{{_url | default:'#'}}' class='{{_class_link}}' {{_target}}>
+    <span>
+      <strong>{%- if settings[item_icon_use]-%}<img class="img-check-required" src='{{_icon_url}}' />{%- endif -%}{%- if _desc != empty -%}<span class="description-left">{{_name}}<br /><span class="description">{{_desc}}</span></span>{%- else -%}{{_name}}{%- endif -%}{{_label_html}}</strong>
+    </span>
+  </a>
+  {%- if _item_has_sub == true -%}
+
+  {%- if settings[mmenu_orientation] == '1' and _submenu_w == '100%' -%}
+  {%- assign _submenu_w = '350%'-%}
+  {%- endif -%}
+
+  {%- assign _submenu_bg_img = '' -%}
+  {%- assign _full_width_class = '' -%}
+
+  {%- if _submenu_bg_pos != empty -%}
+  {%- assign _submenu_bg_img = 'style="background-image:url(' | append: _submenu_bg | append: ');' -%}
+  {%- assign _submenu_bg_img = _submenu_bg_img | append: 'background-position:' | append: _submenu_bg_pos | append: ';' -%}
+  {%- assign _submenu_bg_img = _submenu_bg_img | append: ';background-repeat: ' | append: _submenu_bg_repeat | append: ';"' -%}
+  {%- endif -%}
+
+  {%- if _submenu_w == '100%' or _submenu_w == '300%' or _submenu_w == '338%' or _submenu_w == '1230px' -%}
+  {%- assign _full_width_class = 'full-width-sub-menu' -%}
+  {%- endif -%}
+
+  {%- endif -%}
+
+  <div class="sub-menu {{_full_width_class}}" style="width:{{_submenu_w}}">
+    <div class="content" {{_submenu_bg_img}}><p class="arrow"></p>
+      <div class="row">
+        {%- assign _row_fluid = 0 -%}
+        {%- for k in (next_item_index..MAX_MENU_ITEM) -%}
+
+        {%- assign sub_item_is_sub = 'mi_sub_' | append: i | append: '_' | append: k -%}
+        {%- assign sub_item_use = 'mi_use_' | append: i | append: '_' | append: k -%}
+
+        {%- if settings[sub_item_is_sub] == false -%}
+        {%- break -%}
+        {%- endif -%}
+
+        {%- if settings[sub_item_use] == false -%}
+        {%- continue -%}
+        {%- endif -%}
+
+        {%- include 'mega-menu-subitem' -%}
+
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</li>
+{%- endif -%}

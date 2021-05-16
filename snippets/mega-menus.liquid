@@ -1,0 +1,63 @@
+{%- assign _pos = mega-menus -%}
+{%- if _pos != empty -%}
+
+{%- assign menu_active_count = 0 -%}
+{%- for i in (1..MAX_MENU) -%}
+{%- assign mmenu_use = 'mmenu_use_' | append: i -%}
+{%- assign mmenu_pos = 'mmenu_pos_' | append: i -%}
+{%- assign _mmenu_layout = '0' -%}
+
+{%- if _mmenu_layout == '0' or _mmenu_layout == CURRENT_LAYOUT -%}
+{%- if settings[mmenu_use] and settings[mmenu_pos] == _pos -%}
+{%- assign menu_active_count = menu_active_count | plus: 1 -%}
+{%- endif -%}
+{%- endif -%}
+{%- endfor -%}
+
+{%- for i in (1..MAX_MENU) -%}
+{%- assign mmenu_use = 'mmenu_use_' | append: i -%}
+{%- assign mmenu_pos = 'mmenu_pos_' | append: i -%}
+
+{%- comment -%}
+<!-- Layout config is hidden in current version. 
+For now, use '0' as 'ALL PAGES' and '1' as 'HOMEPAGE' -->
+{%- assign mmenu_layout = 'mmenu_layout_' | append: i -%}
+{%- assign _mmenu_layout = settings[mmenu_layout] -%}
+{%- endcomment -%}
+
+{%- assign _mmenu_layout = '0' -%}
+
+{%- if _mmenu_layout == '0' or _mmenu_layout == CURRENT_LAYOUT -%}
+{%- if settings[mmenu_use] and settings[mmenu_pos] == _pos -%}
+
+{%- if _pos == 'menu' -%}
+
+{%- if forloop.index0 == 0 and menu_active_count > 1 -%}
+<div class="col-md-3">
+{%- endif -%}
+  
+{%- if forloop.index0 == 1 and menu_active_count > 1-%}
+<div class="col-md-9">
+{%- endif -%}
+  
+{%- include 'mega-menu' -%}
+  
+{%- if menu_active_count > 1 -%}
+{%- if forloop.index0 == 0 or forloop.index0 == 1 -%}
+</div>
+{%- endif -%}
+{%- endif -%}
+  
+{%- if menu_active_count > 1 and forloop.index0 == 1 -%}
+</div>
+{%- endif -%}
+
+{%- else -%}
+{%- include 'mega-menu' -%}
+{%- endif -%}
+
+{%- endif -%}
+{%- endif -%}
+{%- endfor -%}{{' '}}
+
+{%- endif -%}

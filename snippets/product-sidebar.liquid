@@ -1,0 +1,43 @@
+{%- if section.blocks.size > 0 -%}
+<div class="product-sidebar col-md-3 col-xs-12">
+  {%- for block in section.blocks limit: section.blocks.size -%}
+  <div class="sidebar-block-wrap{{- " " -}}{{- block.type -}}{{- " " -}}{%- if block.settings.visible_on_mobile == false -%}{{" hidden-xs"}}{%- endif-%}" {{ block.shopify_attributes }}>
+    {%- case block.type -%}
+    {%- when 'collection' -%}
+    {%- assign b_collection = collections[block.settings.collection] -%}
+    {%- if b_collection.all_products_count > 0 -%}
+    {%- if block.settings.heading != blank -%}
+      <div class="title-block">{{- block.settings.heading -}}</div>
+    {%- endif -%}
+    <div class="sidebar-slide">
+      {%- assign per_view = block.settings.per_view | plus: 0 -%}
+      {%- if per_view == 0 -%}
+      {%- assign per_view = 1 -%}
+      {%- endif -%}
+      <ul class="sidebar-slide-content sidebar-slick-vertical-{{- section.id -}}" data-per_view="{{- per_view -}}">
+        {%- for my_product_mini in b_collection.products -%}
+        <li>
+          {%- include 'product-item-mini' -%}
+        </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+    {%- endif -%}
+    {%- when 'product-block' %}
+      {%- if settings.sb_product_html_heading != '' -%}
+      <div class="title-block">{{- block.settings.heading -}}</div>
+      <div class="strip-line"></div>
+      {%- endif -%}
+      <div class="block-content">
+        {{- block.settings.html -}}
+      </div>
+    {%- when 'banners' %}
+      <div class="clearfix">
+        <a href="{{settings.sb_product_banner_link}}"><img src="{{- block.settings.image | img_url: "master" -}}"></a>
+      </div>
+    {%- else -%}
+    {%- endcase -%}
+  </div>
+  {%- endfor -%}
+</div>
+{%- endif -%}

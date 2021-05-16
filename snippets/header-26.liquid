@@ -1,0 +1,82 @@
+<header class="header-type-26">
+  <div class="background-header"></div>
+  <div class="slider-header">
+    <!-- Top of pages -->
+    <div id="top" class="{%- if settings.header_layout == '1' -%}full-width{%- elsif settings.header_layout == '4' -%}fixed3 fixed2{%- elsif settings.header_layout == '3' -%}fixed2{%- else -%}fixed{%- endif -%}">
+      <div class="background-top"></div>
+      <div class="background">
+        <div class="shadow"></div>
+        <div class="pattern">
+          <div class="container">
+            <div class="row">
+              <!-- Header Left -->
+              <div class="col-sm-4 orderable" id="header-left">
+                {%- section 'header-top-block' -%}
+                <!-- Links -->
+                <ul class="menu">
+                  {%- if customer -%}
+                  {%- if settings.wishlist_enable -%}
+                  <li><a href="{{pages[settings.wishlist_page].url}}" id="wishlist-total">{{ 'general.top.wishlist' | t }}</a></li>
+                  {%- endif -%}
+                  <li><a href="/account/logout">{{ 'general.top.logout' | t }}</a></li>
+                  {%- else -%}
+                  <li><a href="/account/register">{{ 'general.top.register' | t }}</a></li>
+                  <li><a href="/account/login">{{ 'general.top.login' | t }}</a></li>
+                  {%- if settings.wishlist_enable -%}
+                  <li><a href="{{pages[settings.wishlist_page].url}}" id="wishlist-total">{{ 'general.top.wishlist' | t }}</a></li>
+                  {%- endif -%}
+                  {%- endif -%}
+                </ul>
+              </div>
+              <!-- Header Center -->
+              <div class="col-sm-4" id="header-center">		
+                <!-- Logo -->
+                {%- include "header-logo" -%}
+              </div>
+              <!-- Header Right -->
+              <div class="col-sm-4" id="header-right">
+                <div class="overflow-currency-cart">
+                  <!-- Currency & Language -->
+                  {%- include 'currencies-switcher' -%}
+                  {%- include 'cartblock' with 'header' -%}
+                </div>
+                <ul class="menu">
+                  <li><a href="/cart">{{ 'general.cart_info.cart' | t }}</a></li>
+                  <li><a href="/checkout">{{ 'general.cart_info.checkout' | t }}</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          {%- assign megamenu_type_having_2ndMenu = '4,5,6,9,14,19,29' | split: ',' -%}
+          {%- if megamenu_type_having_2ndMenu contains settings.advanced_megamenu_type -%}
+          <div class="container container-megamenu2 orderable">
+            {%- endif -%}
+            <!-- Menu -->
+            <div  class="megamenu-background">
+              <div class="">
+                <div class="overflow-megamenu container menu-one-only">
+                  {%- section 'header-menu1' -%}
+                </div>
+              </div>
+            </div>
+            {%- if megamenu_type_having_2ndMenu contains settings.advanced_megamenu_type -%}
+          </div>
+          {%- endif -%}
+          <div class="overflow-menu2">
+            {%- section 'header-menu2' -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Slider -->
+  <div id="slider" class="{%- if settings.slideshow_layout == '1' -%}full-width{%- elsif settings.slideshow_layout == '4' -%}fixed3 fixed2{%- elsif settings.slideshow_layout == '3' -%}fixed2{%- else -%}fixed{%- endif -%}">
+    <div class="background-slider"></div>
+    <div class="background">
+      <div class="shadow"></div>
+      <div class="pattern orderable">
+        {%- include 'header-slideshow' -%}
+      </div>
+    </div>
+  </div>
+</header>

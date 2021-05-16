@@ -1,0 +1,147 @@
+{%- if block.settings.linklist_image != blank -%}
+{%-capture image_size-%}{{block.settings.linklist_image_quality}}{%- endcapture -%}
+{%- assign img_url = block.settings.linklist_image | img_url: image_size, crop: 'center' -%}
+{%- endif -%}
+
+{%-assign borders_class = ' '-%}
+{%-if block.settings.linklist_borders == '1'-%}
+{%-assign borders_class = borders_class | append: ' has-borders' -%}
+{%-if block.settings.linklist_borders_top == true-%}
+{%-assign borders_class = borders_class | append: ' border-top' -%}
+{%-endif-%}
+{%-if block.settings.linklist_borders_bottom == true-%}
+{%-assign borders_class = borders_class | append: ' border-bottom' -%}
+{%-endif-%}
+{%-if block.settings.linklist_borders_left == true-%}
+{%-assign borders_class = borders_class | append: ' border-left' -%}
+{%-endif-%}
+{%-if block.settings.linklist_borders_right == true-%}
+{%-assign borders_class = borders_class | append: ' border-right' -%}
+{%-endif-%}
+{%-assign borders_class = borders_class | append: ' ' -%}
+{%-endif-%}
+{%-assign borders_mobile_class = ' '-%}
+{%-if block.settings.linklist_mobile_borders == '1'-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' has-mobile-borders' -%}
+{%-if block.settings.linklist_mobile_borders_top == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-top' -%}
+{%-endif-%}
+{%-if block.settings.linklist_mobile_borders_bottom == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-bottom' -%}
+{%-endif-%}
+{%-if block.settings.linklist_mobile_borders_left == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-left' -%}
+{%-endif-%}
+{%-if block.settings.linklist_mobile_borders_right == true-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' border-mobile-right' -%}
+{%-endif-%}
+{%-assign borders_mobile_class = borders_mobile_class | append: ' ' -%}
+{%-endif-%}
+{%-assign _onepone = ' '-%}
+{%-if settings.image_lazy_loading_used -%}
+{%-assign _onepone = ' class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-'-%}
+{%-endif-%}
+<div class="col-rb-{{ block.settings.linklist_width }}{{' '}}col-rbm-{{ block.settings.linklist_mobile_width }}">
+  <div id="rich-banner-{{block.id}}" class="{{' rich-banner linklist categories-wall '}}{{borders_class}}{{borders_mobile_class}}" {{ block.shopify_attributes }}
+       style="background-color:{{block.settings.linklist_bg_color}};">
+  
+    <div class="banner-content-wrapper{{' '}}{{block.settings.linklist_text_vpos}}{{' '}}{{block.settings.linklist_text_pos}}">
+     
+      {%-if block.settings.linklist_linklist != blank-%}
+      {%-assign _linklist = linklists[block.settings.linklist_linklist]-%}
+
+      {%-if block.settings.linklist_image != blank and block.settings.linklist_image_pos == '1'-%}
+      <div class="image">
+        <img {{_onepone}}src="{{img_url}}" alt="{{_linklist.title}}">
+      </div>
+      {%-endif-%}
+      
+      <div class="category-wall{{' '}}{{block.settings.linklist_text_align}}">   
+        <h3{%-if block.settings.linklist_sep_color != blank-%}{{' '}}style="border-color:{{block.settings.linklist_sep_color}};"{%-endif-%}>
+            {{_linklist.title}}
+        </h3>
+        <ul>
+          {%-for _link in _linklist.links-%}
+          <li>
+            <a href="{{_link.url}}">{{_link.title}}</a>
+          </li>
+          {%-endfor-%}
+        </ul>
+        
+        {%-if block.settings.linklist_cta != blank-%}
+        <a class="more-categories self-fontsize-adj" data-ori-fontsize="{{block.settings.linklist_cta_size}}px" href="{{block.settings.linklist_cta_url}}" style="font-size:{{block.settings.linklist_cta_size}}px;color:{{block.settings.linklist_cta_color}}!important;background-color:{{block.settings.linklist_cta_bgcolor}}!important;">{{block.settings.linklist_cta}}</a>
+        {%-endif-%}
+      </div>
+      
+      {%-if block.settings.linklist_image != blank and block.settings.linklist_image_pos == '2'-%}
+      <div class="image">
+        <img {{_onepone}}src="{{img_url}}" alt="{{_linklist.title}}">
+      </div>
+      {%-endif-%}
+      
+      {%-else-%}
+      <div class="category-wall text-align-center">   
+        <h3 style="border-color:#000000;">
+            Your Linklist
+        </h3>
+        <ul>
+          <li>
+            <a href="#">Linklist Item</a>
+          </li>
+          <li>
+            <a href="#">Linklist Item</a>
+          </li>
+          <li>
+            <a href="#">Linklist Item</a>
+          </li>
+          <li>
+            <a href="#">Linklist Item</a>
+          </li>
+          <li>
+            <a href="#">Linklist Item</a>
+          </li>
+          <li>
+            <a href="#">...</a>
+          </li>
+        </ul>
+        <a class="more-categories self-fontsize-adj" data-ori-fontsize="12px" href="#" style="font-size:12px;color:#ffffff;background-color:#000000;">
+          Button Text
+        </a>
+      </div>
+      <div class="image">
+        <img src="https://via.placeholder.com/640x360/ECB39F/ffffff?text=Put%20your%20Image%20here."/>
+      </div>
+      {%-endif-%}
+    </div>
+  </div>
+</div>
+<style>
+  @media (max-width: 767px) {
+    .rich-banners#rich-banners-{{section.id}} .rich-banner#rich-banner-{{block.id}} .banner-content-wrapper {
+      min-height:{{block.settings.linklist_mobile_height | append: 'px'}}
+    }
+  }
+  @media (min-width: 768px) {
+    .rich-banners#rich-banners-{{section.id}} .rich-banner#rich-banner-{{block.id}} .banner-content-wrapper {
+      min-height:{{block.settings.linklist_height | append: 'px'}}
+    }
+  }
+  .rich-banners#rich-banners-{{section.id}} .rich-banner#rich-banner-{{block.id}} .category-wall * {
+    color:{{block.settings.linklist_text_color}};
+  }
+  .rich-banners#rich-banners-{{section.id}} .rich-banner#rich-banner-{{block.id}} .banner-content-wrapper.text-pos-left .category-wall{
+    margin-left:{{block.settings.linklist_side_padding_hori}}%;
+  }
+
+  .rich-banners#rich-banners-{{section.id}} .rich-banner#rich-banner-{{block.id}} .banner-content-wrapper.text-pos-right .category-wall{
+    margin-right:{{block.settings.linklist_side_padding_hori}}%;
+  }
+
+  .rich-banners#rich-banners-{{section.id}} .rich-banner#rich-banner-{{block.id}} .banner-content-wrapper.text-vpos-top .category-wall{
+    padding-top:{{block.settings.linklist_side_padding_vert}}%;
+  }
+
+  .rich-banners#rich-banners-{{section.id}} .rich-banner#rich-banner-{{block.id}} .banner-content-wrapper.text-vpos-bottom .category-wall{
+    padding-bottom:{{block.settings.linklist_side_padding_vert}}%;
+  }
+</style>

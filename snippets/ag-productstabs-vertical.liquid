@@ -1,0 +1,155 @@
+{%- assign _block_id = _id -%}
+{%- assign _tabcount = _acm_items | size -%}
+{%- assign _all = _acm_maxcol | times: _acm_limit -%}
+
+{%- assign _class = 3 -%}
+{%- assign _row = _acm_limit -%}
+
+{%- if _acm_limit == 1 -%}
+{%- assign _class = 12 -%}
+{%- endif -%}
+{%- if _acm_limit == 2 -%}
+{%- assign _class = 6 -%}
+{%- endif -%}
+{%- if _acm_limit == 3 -%}
+{%- assign _class = 4 -%}
+{%- endif -%}
+{%- if _acm_limit == 4 -%}
+{%- assign _class = 3 -%}
+{%- endif -%}
+{%- if _acm_limit == 5 -%}
+{%- assign _class = 25 -%}
+{%- endif -%}
+{%- if _acm_limit == 6 -%}
+{%- assign _class = 2 -%}
+{%- endif -%}
+
+{%- if _acm_carousel %}
+{%- assign _master_class = 'GTorE-1200' -%}
+{%- assign _slave_class = 'LT-1200' -%}
+{%- else %}
+{%- assign _master_class = 'GTorE-768' -%}
+{%- assign _slave_class = 'LT-768' -%}
+{%- endif %}
+
+
+<div 
+     data-_tabskin ="{{_acm_skin}}"
+     data-_tabcount="{{_tabcount}}"
+     data-_block_id = "{{ _block_id }}"
+     id ="product-tab-{{_block_id}}"
+     class="ag-products-tabs-{{section.id}} matrialarts-products-tabs filter-product">
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="description">{{_acm_text}}</div>
+      <ul id="tab{{_block_id}}" class="tab-filter-tabs-{{_block_id}} tab-filter-tabs-vertical-{{_block_id}} select-tab">
+        {%- for _item in  _acm_items -%}
+          {%- if _item.type == 'collection_link' -%}
+          <li{%- if forloop.index0 == 0 -%}{{' '}}class="active"{%- endif -%}>
+            <a href="#{{_item.title|handle}}{{_block_id}}-{{forloop.index0}}">{{_item.title}}</a>
+          </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+    <div class="col-sm-9">
+      <div class="tab-content clearfix">
+        {%- for _item in _acm_items -%}
+        {%- assign _id = _block_id | append: "-" | append: forloop.index0 -%}
+        {%- if _item.type == 'collection_link' -%}
+        <div 
+             data-_pid ="{{_id}}"
+             data-_acm_carousel="{{_acm_carousel}}"
+             class="ag-product-tab-item-{{_block_id}} tab-pane{%- if forloop.index0 == 0 -%}{{' '}}active{%- endif -%}" id="{{_item.title|handle}}{{_block_id}}-{{forloop.index0}}">
+          <div class="box clearfix box-with-products without-heading">
+            <div class="box-content products">
+              {%- if _acm_carousel -%}
+                  <!-- Carousel nav -->
+                  <a class="next-button {{_master_class}}" href="#myCarousel{{_id}}" id="myCarousel{{_id}}_next"><span></span></a>
+                  <a class="prev-button {{_master_class}}" href="#myCarousel{{_id}}" id="myCarousel{{_id}}_prev"><span></span></a>
+                  
+                  {%- endif -%}
+
+                  <a class="next-button {{_slave_class}}" href="#myCarousel{{_id}}s" id="myCarousel{{_id}}s_next"><span></span></a>
+                  <a class="prev-button {{_slave_class}}" href="#myCarousel{{_id}}s" id="myCarousel{{_id}}s_prev"><span></span></a>
+
+              
+              <div class="box-product">
+                    <div id="myCarousel{{_id}}"{{' '}}class="{{_master_class}}{{' '}}{%- if _acm_carousel -%}carousel slide{%- endif -%}">
+                      <!-- Carousel items -->
+                      <div class="carousel-inner">
+                        {%- assign _i = 0 -%}
+                        {%- assign _row_fluid = 0 -%}
+
+                        {%- for product in _item.object.products -%}{{' '}}
+                        {%- if forloop.index > _acm_max -%}
+                        {%- break -%}
+                        {%- endif -%}
+                        {%- assign _row_fluid = _row_fluid | plus: 1 -%}
+
+                        {%- if _i == 0 -%}
+                        <div class="active item">
+                          <div class="product-grid">
+                            <div class="row">
+                              {%- endif -%}
+
+                              {%- assign _r = _row_fluid | divided_by: _all -%}
+                              {%- assign _r = _r | times: _all -%}
+                              {%- assign _r = _row_fluid | minus: _r -%}
+
+                              {%- if _row_fluid > _all and _r == 1 -%}{{' '}}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="item">
+                          <div class="product-grid">
+                            <div class="row">
+                              {%- else -%}
+
+                              {%- assign _r = _row_fluid | divided_by: _row -%}
+                              {%- assign _r = _r | times: _row -%}
+                              {%- assign _r = _row_fluid | minus: _r -%}
+
+                              {%- if _row_fluid > _row and _r == 1 -%}{{' '}}
+                            </div>
+                            <div class="row">
+                              {%- endif -%}
+                              {%- endif -%}
+                              <div class="col-sm-{{_class}} col-xs-6{%- if _class == 2 -%}{{' '}}col-md-25 col-lg-2 col-sm-3{%- endif -%}{%- if _class == 2 and _r == 0 -%}{{' '}}hidden-md hidden-sm{%- endif -%}{%- if _class == 2 and _r == 5 -%}{{' '}}hidden-sm{%- endif -%}{%- if _class == 25 -%}{{' '}}col-md-25 col-lg-25 col-sm-3{%- endif -%}{%- if _class == 25 and _r == 0 -%}{{' '}}hidden-sm{%- endif -%}">
+                                {%- include 'product-item' with _acm_url_imgdim -%}
+                              </div>
+                              {%- assign _i = _i | plus: 1 -%}
+                              {%- endfor -%}
+                              {%- if _i > 0 -%}
+                            </div>
+                          </div>
+                        </div>
+                        {%- endif -%}
+                      </div>
+                    </div>
+
+                    <div id="myCarousel{{_id}}s" class="{{_slave_class}} carousel slide">
+                      <!-- Carousel items -->
+                      <div class="carousel-inner">
+                        {%- for product in _item.object.products -%}{{' '}}
+                        {%- if forloop.index > _acm_max -%}
+                        {%- break -%}
+                        {%- endif -%}
+                        <div class="item">
+                          <div class="product-grid">
+                            {%- include 'product-item' with _acm_url_imgdim -%}
+                          </div>
+                        </div>
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                  </div>
+            </div>
+          </div>
+        </div>
+        {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>     
+</div>

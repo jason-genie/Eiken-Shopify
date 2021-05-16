@@ -1,0 +1,27 @@
+{%- if customer -%}
+  {%- capture value -%}{{product.id}}{%- endcapture -%}
+  {%- capture productID -%}{{product.id}}{%- endcapture -%}
+  {%- for tag in customer.tags -%}
+    {%- capture tagID -%}{{tag}}{%- endcapture -%}
+    {%- if tagID contains productID -%}
+      {%- assign value = 'x' | append:tag -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- assign check = value.size | minus:productID.size | modulo:2 -%}
+  {%- if check == 0 -%}{%- assign display_button = true -%}{%- else -%}{%- assign display_button = false -%}{%- endif -%}
+
+  {%- if display_button -%}
+    <form method="post" action="/contact" class="contact-form" accept-charset="UTF-8">
+      <input type="hidden" value="customer" name="form_type" />
+      <input type="hidden" name="utf8" value="✓" />
+      <input type="hidden" name="contact[email]" value="{{customer.email}}" />
+      <input type="hidden" name="contact[tags]" value="{{value}}" />
+      <a class="btn-action{% if wishlist-item == true %} btooltip{% endif %} add-to-wishlist wishlist{{value}}" href="{{pages[settings.wishlist_page].url}}" title="{{'wishlist.general.add_to_wishlist' | t | escape}}" data-added="{{'wishlist.general.browse_wishlist' | t | escape}}" data-loading-text="{{'wishlist.general.loading' | t | escape}}"><i class="fa fa-heart"></i><span>{{'wishlist.general.add_to_wishlist' | t}}</span></a>
+    </form>
+  {%- else -%}
+    <a class="btn-action{% if wishlist-item == true %} btooltip{% endif %} added" href="{{pages[settings.wishlist_page].url}}" title="{{'wishlist.general.browse_wishlist' | t | escape}}"><i class="fa fa-heart"></i><span>{{'wishlist.general.browse_wishlist' | t | escape}}</span></a>
+  {%- endif -%}
+{%- else -%}
+  <a class="btn-action{% if wishlist-item == true %} btooltip{% endif %} add-to-wishlist need-login" href="/account" title="{{'wishlist.general.add_to_wishlist' | t | escape}}"><i class="fa fa-heart"></i><span>{{'wishlist.general.add_to_wishlist' | t | escape}}</span></a>
+{%- endif -%}

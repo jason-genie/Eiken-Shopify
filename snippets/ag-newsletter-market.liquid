@@ -1,0 +1,15 @@
+<div class="market-newsletter clearfix row" id="newsletter{{_id}}">
+  <img src="{{ 'newsletter.png' | asset_url }}" alt="Newsletter" />
+  <div class="col-sm-2 hidden-xs"></div>
+  <div class="col-sm-3">
+    <div class="heading">
+      <p>{{_acm_title}}</p>
+    </div>
+  </div>
+  <div class="inputs col-sm-4">
+    <form action="{{settings.popup_mailchimp_action}}" method="post" name="mc-embedded-subscribe-form" target="_blank">
+      <input type="email" class="email" name="EMAIL" required="required" placeholder="{{_placeholder}}" />
+      <button type="submit" class="button subscribe"><i class="fa fa-plus"></i></button>
+    </form>
+  </div>
+</div>
